@@ -13,7 +13,7 @@
         <version>2.2.4.RELEASE</version>
     </parent>
     <name>petclinic</name>
-
+    
     <properties>
 
         <!-- Generic properties -->
@@ -31,7 +31,19 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-
+	
+	  	<developers>
+	    	<developer>
+	 			<id>Juan</id>
+				<name>Juan</name>
+	 			<email>juanquiroslopez@gmail.com</email>
+	 			<roles>
+	 				<role>programmer</role>
+	 			</roles>
+	 		</developer>
+    	</developers>
+	
+	
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
