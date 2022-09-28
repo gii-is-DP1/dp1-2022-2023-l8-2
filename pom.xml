@@ -33,37 +33,37 @@
     </properties>
     <developers>
         <developer>
-         <id>vicruidel1</id>
-        <name>Victoria del Carmen</name>
-        <email>ruizvictoria10@gmail.com</email>
-        <roles>
-        <role>developer</role>
-        </roles>
+            <id>thokriale</id>
+            <name>Thomas</name>
+            <email>thokriale@alum.us.es</email>
+            <roles>
+                <role>developer</role>
+            </roles>
         </developer>
-	    	<developer>
-	 			<id>Juan</id>
-				<name>Juan</name>
-	 			<email>juanquiroslopez@gmail.com</email>
-	 			<roles>
-	 				<role>programmer</role>
-	 			</roles>
-	 		 </developer>
-            <developer>
-                <id>Pablo</id>
-                <name>Pablo</name>
-                <email>pablo.bermudez.medina@gmail.com</email>
-                <roles>
-                    <role>developer</role>
-                </roles>
-            </developer>
-            <developer>
-                <id>maravimaq</id>
-                <name>María del Mar</name>
-                <email>mmavimaq1802@gmail.com</email>
-                <roles>
-                    <role>developer</role>
-                </roles>
-            </developer>
+        <developer>
+            <id>Juan</id>
+            <name>Juan</name>
+            <email>juanquiroslopez@gmail.com</email>
+            <roles>
+                <role>programmer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>Pablo</id>
+            <name>Pablo</name>
+            <email>pablo.bermudez.medina@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>maravimaq</id>
+            <name>María del Mar</name>
+            <email>mmavimaq1802@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <dependencies>
@@ -260,7 +260,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+                    <wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory
+                    </wroManagerFactory>
                     <cssDestinationFolder>${project.build.directory}/classes/static/resources/css</cssDestinationFolder>
                     <wroFile>${basedir}/src/main/wro/wro.xml</wroFile>
                     <extraConfigFile>${basedir}/src/main/wro/wro.properties</extraConfigFile>
@@ -289,7 +290,6 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
-
 
 
 </project>
