@@ -31,7 +31,16 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
+
     <developers>
+        <developer>
+          <id>joscasvaz</id>
+          <name>Jose Ignacio Castro Vázquez</name>
+          <email>joscasvaz@alum.us.es</email>
+          <roles>
+            <role>developer</role>
+          </roles>
+        </developer>
         <developer>
          <id>vicruidel1</id>
         <name>Victoria del Carmen</name>
