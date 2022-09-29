@@ -70,6 +70,7 @@ INSERT INTO owners VALUES (12, 'Maria del Mar', 'Avila', '2387 S. Fair Way', 'Ma
 INSERT INTO owners VALUES (13, 'Jose', 'Castro', 'Av Kansas City', 'Sevilla', '612345789', 'joscasvaz');
 INSERT INTO owners VALUES (14, 'Juan', 'Lopez', '105 N. Lake St.', 'Sevilla', '92837438', 'jualopqui1');
 INSERT INTO owners VALUES (15, 'Thomas', 'Kristan', '323 Friendly St.', 'Sevilla', '12343423', 'thokriale');
+INSERT INTO owners VALUES (15, 'Victoria', 'Ruiz', '323 Friendly St.', 'Sevilla', '12343423', 'vicruidel1');
 
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
