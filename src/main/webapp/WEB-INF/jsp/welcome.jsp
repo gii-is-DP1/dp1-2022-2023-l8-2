@@ -7,8 +7,10 @@
 
 <petclinic:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
+    
     <div class="row">
         <h2>Title: ${title}</h2>
+        <img src = "static/images/logoPNG_3"/>
         <h2>Group: ${group}</h2>
         <ul>
         	<c:forEach items="${people}" var="person">
