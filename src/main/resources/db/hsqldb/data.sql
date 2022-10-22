@@ -13,6 +13,16 @@ INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
 INSERT INTO users(username,password,enabled) VALUES ('pabberima','pabberima',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
+
+INSERT INTO users(username,password,enabled) VALUES ('maravimaq','m4r4v1m4q',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','owner');
+
+INSERT INTO users(username,password,enabled) VALUES ('joscasvaz','joscasvaz',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
+
+INSERT INTO users(username,password,enabled) VALUES ('thokriale','thokriale',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
+
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
@@ -54,7 +64,14 @@ INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085
 INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'owner1');
 INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'owner1');
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
+
 INSERT INTO owners VALUES (11, 'Pablo', 'Bermudez', '2335 Independence La.', 'Waunakee', '688006024', 'pabberima');
+INSERT INTO owners VALUES (12, 'Maria del Mar', 'Avila', '2387 S. Fair Way', 'Madison', '644359235', 'maravimaq');
+INSERT INTO owners VALUES (13, 'Jose', 'Castro', 'Av Kansas City', 'Sevilla', '612345789', 'joscasvaz');
+INSERT INTO owners VALUES (14, 'Juan', 'Lopez', '105 N. Lake St.', 'Sevilla', '92837438', 'jualopqui1');
+INSERT INTO owners VALUES (15, 'Thomas', 'Kristan', '323 Friendly St.', 'Sevilla', '12343423', 'thokriale');
+INSERT INTO owners VALUES (16, 'Victoria', 'Ruiz', '323 Friendly St.', 'Sevilla', '12343423', 'vicruidel1');
+
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -68,10 +85,19 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (9, 'Lucky', '2011-
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan', '2007-02-24', 2, 8);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 2, 10);
+
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 11);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Cotton', '2018-04-24', 2, 12);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Danny', '2017-04-24', 2, 15);
+
+
 
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
+INSERT INTO achievements(id, name, threshold, description, image) VALUES
+(1, 'viciado', 10.0, 'Si juegas 10 partidas o mas, consideramos que ya estas enganchado.', 'https://bit.ly/certifiedGamer');
+INSERT INTO achievements(id, name, threshold, description, image) VALUES 
+(2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer');
