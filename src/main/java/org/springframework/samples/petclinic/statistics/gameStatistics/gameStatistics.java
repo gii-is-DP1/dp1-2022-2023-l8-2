@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name="gameStatistics")
-public class gameStatistics extends BaseEntity{
+public class GameStatistics extends BaseEntity{
     
     private String gameCreator; //String temporal hasta que implementemos el tipo Player
     //private List<String> players; String temporal hasta que implementemos el tipo Player
