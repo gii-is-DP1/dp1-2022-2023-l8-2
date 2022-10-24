@@ -1,5 +1,16 @@
 package org.springframework.samples.petclinic.card;
 
-public enum CardType {
-    COIN, CUP, RUBY, DIAMOND, NECKLACE, CROWN, BOTTLE, RUM, PISTOL, SWORD
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.samples.petclinic.model.NamedEntity;
+
+@Entity
+@Table(name="card_types")
+public class CardType extends NamedEntity{
+    @NotNull
+    @Column(name="image", unique=true)
+    private String image;
 }

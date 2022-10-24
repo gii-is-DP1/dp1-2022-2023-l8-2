@@ -18,12 +18,14 @@ import lombok.Setter;
 @Table(name="cards")
 public class Card extends BaseEntity{
     
-    @Enumerated(EnumType.STRING)
-    @Column(name="card_type")
-    private CardType cardType;
+    @ManyToOne
+	@JoinColumn(name = "card_type_id")
+	private CardType cardType;
 
     @ManyToOne
     @JoinColumn(name="game_id")
     private Game game;
+
+    /* private Player player; ESPERANDO A IMPLEMENTAR EL TIPO PLAYER*/
     
 }

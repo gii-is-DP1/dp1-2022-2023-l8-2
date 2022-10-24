@@ -1,11 +1,10 @@
 package org.springframework.samples.petclinic.statistics.gameStatistics;
 
-import java.util.HashMap;
+import java.beans.Transient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -17,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="gameStatistics")
+@Table(name="game_statistics")
 public class GameStatistics extends BaseEntity{
 
     @NotNull
@@ -26,15 +25,30 @@ public class GameStatistics extends BaseEntity{
     private Game game;
 
     @NotNull
+    @Column(name="game_creator_name")
     private String gameCreatorName;
 
-/*     @NotNull
-    private HashMap<Player, Integer> playerPointsMap; */ 
+    //private HashMap<String, Integer> playerPointsMap; //String temporal
     
     @NotNull
-    private Double duration;   
+    private Double duration; /* In seconds */
 
-    /*public Integer totalPoints(){} */
-    /* public Player winner(){} */
+/*###################################################################################################################################################### */
+           //                                        TO DO 
+/*###################################################################################################################################################### */
+    @Transient
+    public Integer totalPoints(){
+        return null;
+    } 
+
+    @Transient
+    public String winner(){ /* String hasta que implementemos la entidad Player */
+        return null;
+    }
+
+    @Transient
+    public Integer points(){ 
+        return null;
+    }
 
 }
