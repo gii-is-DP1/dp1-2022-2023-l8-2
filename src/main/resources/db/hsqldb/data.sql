@@ -147,3 +147,7 @@ INSERT INTO cards(id, card_type_id, game_id) VALUES (9, 9, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (10, 10, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (11, 11, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (12, 12, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (13, 1, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (14, 1, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (15, 2, 1);
+

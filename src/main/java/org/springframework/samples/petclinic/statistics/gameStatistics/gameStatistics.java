@@ -1,10 +1,13 @@
 package org.springframework.samples.petclinic.statistics.gameStatistics;
 
 import java.beans.Transient;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -28,10 +31,11 @@ public class GameStatistics extends BaseEntity{
     @Column(name="game_creator_name")
     private String gameCreatorName;
 
-    //private HashMap<String, Integer> playerPointsMap; //String temporal
-    
     @NotNull
     private Double duration; /* In seconds */
+
+    @OneToMany(mappedBy="gameStatistics")
+    private List<PlayerPointsMap> playerPoints;
 
 /*###################################################################################################################################################### */
            //                                        TO DO 
