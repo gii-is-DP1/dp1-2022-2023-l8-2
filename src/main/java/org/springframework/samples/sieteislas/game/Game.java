@@ -1,0 +1,65 @@
+package org.springframework.samples.sieteislas.game;
+
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.springframework.samples.sieteislas.card.Card;
+import org.springframework.samples.sieteislas.message.Message;
+import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name="games")
+public class Game extends BaseEntity{
+
+    @NotBlank
+    @Size(min=3, max=25)
+    @Column(name="game_name", length = 25)
+    private String gameName;
+
+    @Transient
+    @Min(value=1, message = "roll must be at least 1")
+    @Max(value=6, message = "roll must be 6 at maximum")
+    private int diceRoll;
+
+    @Transient
+    @NotNull
+    @Min(value=0)
+    private int turnNum;
+
+    @Transient
+    @NotNull
+    private Double duration;
+
+    @Transient
+    @NotNull
+    private List<Card> islands;
+
+    /* private Player creator; */
+
+    @OneToOne(mappedBy = "game")
+    private GameStatistics statistics;
+
+    @OneToMany(mappedBy = "game")
+    private List<Message> chat;
+
+    @OneToMany(mappedBy = "game")
+    private List<Card> deck;
+
+}
