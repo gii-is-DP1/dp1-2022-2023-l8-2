@@ -38,7 +38,7 @@ public class UserController {
 
 	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 
-	private final OwnerService ownerService;
+	/*private final OwnerService ownerService;
 
 	@Autowired
 	public UserController(OwnerService clinicService) {
@@ -67,6 +67,6 @@ public class UserController {
 			this.ownerService.saveOwner(owner);
 			return "redirect:/";
 		}
-	}
+	}*/
 
 }
