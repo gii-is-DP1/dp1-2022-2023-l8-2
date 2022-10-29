@@ -5,22 +5,22 @@ INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('jualopqui1','jualopqui1',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('vicruidel1','vicruidel1',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('vicruidel1','Victoria','Ruiz','vicruidel1',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('pabberima','pabberima',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('pabberima','Pablo','Bermudez','pabberima',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('maravimaq','m4r4v1m4q',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('maravimaq','Maria del Mar','Avila','m4r4v1m4q',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('joscasvaz','joscasvaz',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('joscasvaz','Jose', 'Castro','joscasvaz',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('thokriale','thokriale',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('thokriale','Thomas','Kristan','thokriale',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
 -- One vet user, named vet1 with passwor v3t
@@ -94,10 +94,14 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO achievements(id, name, threshold, description, image) VALUES
-(1, 'viciado', 10.0, 'Si juegas 10 partidas o mas, consideramos que ya estas enganchado.', 'https://bit.ly/certifiedGamer');
-INSERT INTO achievements(id, name, threshold, description, image) VALUES 
-(2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer');
+INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
+INSERT INTO metrics(id, name) VALUES (2, 'victories');
+INSERT INTO metrics(id, name) VALUES (3, 'points');
+
+INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES
+(1, 'viciado', 10.0, 'Si juegas 10 partidas o mas, consideramos que ya estas enganchado.', 'https://bit.ly/certifiedGamer', 1);
+INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES 
+(2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
 INSERT INTO games(id, game_name) VALUES (1, 'My first game');
 INSERT INTO games(id, game_name) VALUES (2, 'Sala DPanitas');
@@ -110,6 +114,14 @@ INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (2,
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (3, 3, 'jualopqui1', 1798.58);
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (4, 4, 'joscasvaz', 1738.24);
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (5, 5, 'thokriale', 1420.69);
+
+INSERT INTO players(id, username) VALUES (1, 'pabberima');
+INSERT INTO players(id, username) VALUES (2, 'thokriale');
+INSERT INTO players(id, username) VALUES (3, 'joscasvaz');
+INSERT INTO players(id, username) VALUES (4, 'maravimaq');
+INSERT INTO players(id, username) VALUES (5, 'vicruidel1');
+INSERT INTO players(id, username) VALUES (6, 'jualopqui1');
+
 
 INSERT INTO messages (id, game_id, body, date) VALUES (1, 1, 'mensaje', '20120618 10:34:09');
 INSERT INTO messages (id, game_id, body, date) VALUES (2, 1, 'mensaje2', '20210918 18:34:09');
@@ -135,9 +147,9 @@ INSERT INTO card_types(id, name, image) VALUES (10, 'sword', '/resources/images/
 INSERT INTO card_types(id, name, image) VALUES (11, 'emptyIsland', '/resources/images/cards/isla.png');
 INSERT INTO card_types(id, name, image) VALUES (12, 'upsideDown', '/resources/images/cards/reverso.png');
 
-INSERT INTO cards(id, card_type_id, game_id) VALUES (1, 1, 1);
-INSERT INTO cards(id, card_type_id, game_id) VALUES (2, 2, 1);
-INSERT INTO cards(id, card_type_id, game_id) VALUES (3, 3, 1);
+INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (1, 1, 1, 1);
+INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (2, 2, 1, 2);
+INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (3, 3, 1, 3);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (4, 4, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (5, 5, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (6, 6, 1);
@@ -150,4 +162,11 @@ INSERT INTO cards(id, card_type_id, game_id) VALUES (12, 12, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (13, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (14, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (15, 2, 1);
+
+INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (4, 100000, 349759.11, 678, 678, 1);
+INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (1, 96, 18708.63, 2, 1, 2);
+INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (2, 300, 62734.03, 13, 5, 3);
+INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (3, 145, 27712.28, 4, 2, 4);
+INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (5, 222, 42704.52, 9, 4, 5);
+INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (6, 42, 21.28, 1, 0, 6);
 
