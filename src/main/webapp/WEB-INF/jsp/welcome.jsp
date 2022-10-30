@@ -4,9 +4,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sieteislas" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="home">
+<sieteislas:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
-    
     <div class="row">
         <h2>Title: ${title}</h2>
         <h2>Group: ${group}</h2>
@@ -17,4 +16,4 @@
         </ul>
         <img src="/resources/images/logoPNG_3.png"/>
     </div>
-</petclinic:layout>
+</sieteislas:layout>
