@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.statistics.achievement;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,4 +27,8 @@ public class Achievement extends NamedEntity {
     @Column(name = "threshold")
     @NotNull
     private Double threshold;
+    
+	@ManyToOne
+    @JoinColumn(name = "metric_id")
+	private Metric metric;
 }
