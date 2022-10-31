@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PlayerStatisticsService {
+    
     private final PlayerStatisticsRepository playerStatisticsRepository;
     
     @Autowired

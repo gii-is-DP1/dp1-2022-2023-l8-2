@@ -8,7 +8,8 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name="card_types")
 public class CardType extends BaseEntity{

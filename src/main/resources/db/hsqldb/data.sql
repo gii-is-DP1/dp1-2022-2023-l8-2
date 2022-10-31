@@ -103,11 +103,11 @@ INSERT INTO achievements(id, name, threshold, description, image, metric_id) VAL
 INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES 
 (2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
-INSERT INTO games(id, game_name) VALUES (1, 'My first game');
-INSERT INTO games(id, game_name) VALUES (2, 'Sala DPanitas');
-INSERT INTO games(id, game_name) VALUES (3, 'fansPKMN');
-INSERT INTO games(id, game_name) VALUES (4, 'VivaElSevillaFC');
-INSERT INTO games(id, game_name) VALUES (5, 'Betis KK');
+INSERT INTO games(id, game_name, creator_username) VALUES (1, 'My first game', 'pabberima');
+INSERT INTO games(id, game_name, creator_username) VALUES (2, 'Sala DPanitas', 'thokriale');
+INSERT INTO games(id, game_name, creator_username) VALUES (3, 'fansPKMN', 'joscasvaz');
+INSERT INTO games(id, game_name, creator_username) VALUES (4, 'VivaElSevillaFC', 'maravimaq');
+INSERT INTO games(id, game_name, creator_username) VALUES (5, 'Betis KK', 'jualopqui1');
 
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (1, 1, 'jualopqui1', 1808.63);
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (2, 2, 'pabberima', 1676.09);
@@ -115,24 +115,24 @@ INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (3,
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (4, 4, 'joscasvaz', 1738.24);
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (5, 5, 'thokriale', 1420.69);
 
-INSERT INTO players(id, username) VALUES (1, 'pabberima');
-INSERT INTO players(id, username) VALUES (2, 'thokriale');
-INSERT INTO players(id, username) VALUES (3, 'joscasvaz');
-INSERT INTO players(id, username) VALUES (4, 'maravimaq');
-INSERT INTO players(id, username) VALUES (5, 'vicruidel1');
-INSERT INTO players(id, username) VALUES (6, 'jualopqui1');
+INSERT INTO players(id, username, game_id) VALUES (1, 'pabberima', 1);
+INSERT INTO players(id, username, game_id) VALUES (2, 'thokriale', 2);
+INSERT INTO players(id, username, game_id) VALUES (3, 'joscasvaz', 3);
+INSERT INTO players(id, username, game_id) VALUES (4, 'maravimaq', 4);
+INSERT INTO players(id, username, game_id) VALUES (5, 'vicruidel1', 4);
+INSERT INTO players(id, username, game_id) VALUES (6, 'jualopqui1', 5);
 
 
-INSERT INTO messages (id, game_id, body, date) VALUES (1, 1, 'mensaje', '20120618 10:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (2, 1, 'mensaje2', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (3, 1, 'mensaje3', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (4, 2, 'mensaje4', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (5, 2, 'mensaje5', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (6, 2, 'mensaje6', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (7, 3, 'mensaje7', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (8, 4, 'mensaje8', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (9, 4, 'mensaje9', '20210918 18:34:09');
-INSERT INTO messages (id, game_id, body, date) VALUES (10,4, 'mensaje', '20210918 18:34:09');
+INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20120618 10:34:09', 1);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20210918 18:34:09', 2);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (3, 1, 'mensaje3', '20210918 18:34:09', 3);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (4, 2, 'mensaje4', '20210918 18:34:09', 5);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (5, 2, 'mensaje5', '20210918 18:34:09', 4);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (6, 2, 'mensaje6', '20210918 18:34:09', 2);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (7, 3, 'mensaje7', '20210918 18:34:09', 2);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (8, 4, 'mensaje8', '20210918 18:34:09', 2);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (9, 4, 'mensaje9', '20210918 18:34:09', 3);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (10,4, 'mensaje', '20210918 18:34:09', 1);
 
 INSERT INTO card_types(id, name, image) VALUES (1, 'coin', '/resources/images/cards/doblon.png');
 INSERT INTO card_types(id, name, image) VALUES (2, 'coup', '/resources/images/cards/copa.png');

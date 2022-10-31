@@ -1,8 +1,6 @@
 package org.springframework.samples.petclinic.game;
 
-import java.time.Duration;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -12,14 +10,14 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.springframework.samples.petclinic.card.Card;
 import org.springframework.samples.petclinic.message.Message;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.statistics.gameStatistics.GameStatistics;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,7 +50,7 @@ public class Game extends BaseEntity{
     @NotNull
     private List<Card> islands;
 
-    /* private Player creator; */
+    private String creatorUsername;
 
     @OneToOne(mappedBy = "game")
     private GameStatistics statistics;
@@ -62,5 +60,10 @@ public class Game extends BaseEntity{
 
     @OneToMany(mappedBy = "game")
     private List<Card> deck;
+
+    @NotEmpty
+    @Size(min=1, max=4)
+    @OneToMany(mappedBy = "game")
+    private List<Player> players;
 
 }

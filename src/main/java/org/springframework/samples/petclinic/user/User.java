@@ -37,10 +37,6 @@ public class User{
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private Player player;
 
-	//@JoinColumn(name = "username")
-	//private List<Player> friends;
-
-	
 	@NotBlank
 	@Column(name = "password")
 	String password;
