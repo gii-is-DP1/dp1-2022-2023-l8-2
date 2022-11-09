@@ -5,7 +5,7 @@ INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 
-INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/384.png');
 INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 
 INSERT INTO users(username,first_name,last_name,password,enabled) VALUES ('vicruidel1','Victoria','Ruiz','vicruidel1',TRUE);
@@ -121,7 +121,6 @@ INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 3);
 INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 4);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 4);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
-
 
 INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20120618 10:34:09', 1);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20210918 18:34:09', 2);

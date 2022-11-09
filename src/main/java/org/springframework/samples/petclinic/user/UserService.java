@@ -44,12 +44,8 @@ public class UserService {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
-	
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
-	}
 
-    public User findById(String name) {
-        return this.userRepository.findById(name).get();
-    }
+	public Optional<User> findByUsername(String username) {
+		return this.userRepository.findByUsername(username);
+	}
 }

@@ -15,7 +15,7 @@
             <c:out value="${error} "/>
         </c:forEach>
     </div>
-    <form:form modelAttribute="game" class="form-horizontal" id="add-owner-form">
+    <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
         
         <input type="hidden" name="id" value="${game.id}"/>    
         <input type="hidden" name="active" value="${game.active}"/>    

@@ -31,7 +31,7 @@ public class User{
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "profileImage")
+	@Column(name = "profile_image")
 	private String profileImage;
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
