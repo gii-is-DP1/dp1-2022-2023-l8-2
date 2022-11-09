@@ -27,7 +27,7 @@ import lombok.Setter;
 @Table(name = "players")
 public class Player extends BaseEntity{
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JoinColumn(name = "user", referencedColumnName = "username")
 	private User user;
 	
 	@OneToMany(mappedBy = "player", cascade = CascadeType.ALL)

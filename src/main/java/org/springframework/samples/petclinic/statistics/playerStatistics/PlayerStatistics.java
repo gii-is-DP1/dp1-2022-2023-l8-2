@@ -37,8 +37,4 @@ public class PlayerStatistics extends BaseEntity{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "player_id")
 	private Player player;
-	
-	
-    //private Card favCard; 
-
 }

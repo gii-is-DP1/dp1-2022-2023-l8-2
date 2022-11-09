@@ -29,8 +29,11 @@ public class Game extends BaseEntity{
     
     @NotBlank
     @Size(min=3, max=25)
-    @Column(name="game_name", length = 25)
+    @Column(name="game_name", length = 25, unique = true)
     private String gameName;
+
+    @NotNull
+    private Boolean active;
 
     @Transient
     @Min(value=1, message = "roll must be at least 1")
@@ -65,5 +68,6 @@ public class Game extends BaseEntity{
     @Size(min=1, max=4)
     @OneToMany(mappedBy = "game")
     private List<Player> players;
+   
 
 }
