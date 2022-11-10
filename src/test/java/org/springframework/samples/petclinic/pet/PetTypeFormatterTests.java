@@ -14,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.samples.sieteislas.pet.PetService;
+import org.springframework.samples.sieteislas.pet.PetType;
+import org.springframework.samples.sieteislas.pet.PetTypeFormatter;
 
 /**
  * Test class for {@link PetTypeFormatter}
