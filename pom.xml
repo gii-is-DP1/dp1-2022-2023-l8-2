@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic</artifactId>
+    <artifactId>sieteislas</artifactId>
     <version>2.2.0.BUILD-SNAPSHOT</version>
 
     <parent>
@@ -12,8 +12,8 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>petclinic</name>
-    
+    <name>sieteislas</name>
+
     <properties>
 
         <!-- Generic properties -->
@@ -27,10 +27,11 @@
         <webjars-jquery.version>2.2.4</webjars-jquery.version>
         <wro4j.version>1.8.0</wro4j.version>
 
-        <jacoco.version>0.8.5</jacoco.version>
+        <jacoco.version>0.8.8</jacoco.version>
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
+<<<<<<< HEAD
     <developers>
         <developer>
          <id>vicruidel1</id>
@@ -57,6 +58,51 @@
                 </roles>                	
             </developer>
             <developer>
+=======
+
+    <developers>
+        <developer>
+            <id>joscasvaz</id>
+            <name>Jose Ignacio Castro Vázquez</name>
+            <email>joscasvaz@alum.us.es</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>thokriale</id>
+            <name>Thomas</name>
+            <email>thokriale@alum.us.es</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>vicruidel1</id>
+            <name>Victoria del Carmen</name>
+            <email>ruizvictoria10@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>Juan</id>
+            <name>Juan</name>
+            <email>juanquiroslopez@gmail.com</email>
+            <roles>
+                <role>programmer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>Pablo</id>
+            <name>Pablo</name>
+            <email>pablo.bermudez.medina@gmail.com</email>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+        <developer>
+>>>>>>> origin/master
             <id>maravimaq</id>
             <name>María del Mar</name>
             <email>mmavimaq1802@gmail.com</email>
@@ -64,9 +110,14 @@
                 <role>developer</role>
             </roles>
         </developer>
+<<<<<<< HEAD
          </developers>
 
     
+=======
+    </developers>
+
+>>>>>>> origin/master
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
@@ -85,16 +136,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <dependency>  
-            <groupId>org.springframework.security</groupId>  
-            <artifactId>spring-security-taglibs</artifactId>  
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
         </dependency>
         <!-- Databases - Uses H2 by default -->
         <!-- dependency>
                 <groupId>org.hsqldb</groupId>
                 <artifactId>hsqldb</artifactId>
                 <scope>runtime</scope>
-        </dependency-->        
+        </dependency-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -104,7 +155,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- validation 
+        <!-- validation
         <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
@@ -174,7 +225,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>    
+            <version>1.18.20</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -190,7 +241,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties 
+                        <!-- Spring Boot Actuator displays build-related information if a META-INF/build-info.properties
                         file is present -->
                         <goals>
                             <goal>build-info</goal>
@@ -226,7 +277,7 @@
                 </executions>
             </plugin>
 
-            <!-- Spring Boot Actuator displays build-related information if a git.properties 
+            <!-- Spring Boot Actuator displays build-related information if a git.properties
             file is present at the classpath -->
             <plugin>
                 <groupId>pl.project13.maven</groupId>
