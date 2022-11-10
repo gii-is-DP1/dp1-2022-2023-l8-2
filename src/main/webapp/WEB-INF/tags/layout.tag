@@ -7,10 +7,10 @@
 
 <!doctype html>
 <html>
-<petclinic:htmlHeader/>
+<sieteislas:htmlHeader/>
 
 <body>
-<petclinic:bodyHeader menuName="${pageName}"/>
+<sieteislas:bodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">
     <div class="container xd-container">
@@ -25,10 +25,9 @@
 
         <jsp:doBody/>
 
-        <petclinic:pivotal/>
     </div>
 </div>
-<petclinic:footer/>
+<sieteislas:footer/>
 <jsp:invoke fragment="customScript" />
 
 </body>

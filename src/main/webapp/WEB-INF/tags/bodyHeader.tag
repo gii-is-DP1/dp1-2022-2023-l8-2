@@ -4,4 +4,4 @@
 <%@ attribute name="menuName" required="true" rtexprvalue="true"
               description="Name of the active menu: home, game, achievements or error" %>
 
-<petclinic:menu name="${menuName}"/>
+<sieteislas:menu name="${menuName}"/>

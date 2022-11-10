@@ -11,7 +11,9 @@
 	<div class="container">
 		<div class="navbar-header">
 			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
+				href="<spring:url value="/" htmlEscape="true" />">
+				<img src= "/resources/images/favicon.png" width="50" height="50">
+			</a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target="#main-navbar">
 				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span
@@ -22,25 +24,25 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'home'}" url="/"
+				<sieteislas:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Home</span>
-				</petclinic:menuItem>
+				</sieteislas:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
+				<sieteislas:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find owners</span>
-				</petclinic:menuItem>
+				</sieteislas:menuItem>
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
+				<sieteislas:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Veterinarians</span>
-				</petclinic:menuItem>
+				</sieteislas:menuItem>
 
-				<petclinic:menuItem active="${name eq 'achievements'}" url="/statistics/achievements/"
+				<sieteislas:menuItem active="${name eq 'achievements'}" url="/statistics/achievements/"
 					title="achievements" dropdown="true" >
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Achievements</span>
@@ -61,7 +63,7 @@
 							</div>
 						</li>
 					</ul>
-				</petclinic:menuItem>
+				</sieteislas:menuItem>
 
 			</ul>
 

@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sieteislas" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="error">
+<sieteislas:layout pageName="error">
 
     <spring:url value="/resources/images/pets.png" var="petsImage"/>
     <img src="${petsImage}"/>
@@ -11,4 +11,4 @@
 
     <p>${exception.message}</p>
 
-</petclinic:layout>
+</sieteislas:layout>
