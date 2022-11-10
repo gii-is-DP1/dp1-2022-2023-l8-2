@@ -40,6 +40,13 @@
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
+				<sec:authorize access="isAuthenticated()">
+					<petclinic:menuItem active="${name eq 'users'}" url="/users/home/profile" >
+							<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+							<span>Profile</span>
+					</petclinic:menuItem>
+				</sec:authorize>
+		
 				<petclinic:menuItem active="${name eq 'achievements'}" url="/statistics/achievements/"
 					title="achievements" dropdown="true" >
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>

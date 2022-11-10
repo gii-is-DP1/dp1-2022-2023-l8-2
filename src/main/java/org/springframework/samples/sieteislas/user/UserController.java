@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.sieteislas.user;
 
+import java.security.Principal;
 import java.util.Map;
 import javax.validation.Valid;
 
@@ -75,6 +76,12 @@ public class UserController {
 			this.ownerService.saveOwner(owner);
 			return "redirect:/";
 		}
+	}
+
+	@GetMapping("/users/home/profile")
+	public String getUserFromHome(Principal principal){
+		String redirect = String.format("redirect:/users/profile/%s", principal.getName());
+		return redirect;
 	}
 
 	@GetMapping(value="/users/profile/{username}")

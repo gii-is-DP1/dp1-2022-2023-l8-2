@@ -38,7 +38,8 @@ public class GameController {
     @GetMapping("/new")
     public String initCreateGameForm(Principal principal, ModelMap model){
         String creatorUsername = principal.getName();
-        Game game = this.gameService.setUpNewGame(creatorUsername);
+        Game game = new Game();
+        game.setCreatorUsername(principal.getName());
         model.put("game", game);
         return VIEWS_CREATE_GAME_FORM;
     }
