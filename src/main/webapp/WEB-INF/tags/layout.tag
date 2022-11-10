@@ -25,7 +25,6 @@
 
         <jsp:doBody/>
 
-        <sieteislas:pivotal/>
     </div>
 </div>
 <sieteislas:footer/>
