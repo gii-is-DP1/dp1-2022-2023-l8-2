@@ -23,9 +23,13 @@
         </tr>
     </table>
 
-    <spring:url value="/users/edit/{username}" var="editUrl">
+    
+    <c:if test="${user.username.equals(principalName)}">
+        <spring:url value="/users/edit/{username}" var="editUrl">
         <spring:param name="username" value="${user.username}"/>
     </spring:url>
-    <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+        <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+    </c:if>
+    
 
 </petclinic:layout>
