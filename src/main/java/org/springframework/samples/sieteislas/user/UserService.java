@@ -41,11 +41,15 @@ public class UserService {
 
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
-		//user.setEnabled(true);
+		user.setEnabled(true);
 		userRepository.save(user);
 	}
 
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
+	}
+
+	public Optional<User> findByUsername(String username) {
+		return this.userRepository.findByUsername(username);
 	}
 }
