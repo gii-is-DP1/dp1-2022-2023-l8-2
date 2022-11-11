@@ -1,29 +1,40 @@
 package org.springframework.samples.sieteislas.user;
 
-import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.*;
-
+import javax.validation.constraints.NotBlank;
+import org.springframework.samples.sieteislas.player.Player;
 import lombok.Getter;
 import lombok.Setter;
 
 
-@Entity
 @Getter
 @Setter
-@Table(name="users")
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Column(nullable = false, length = 100, unique = true)
-    String username;
+@Entity
+@Table(name = "users")
+public class User{
+	@Id
+	String username;
+	
+	@NotBlank
+	@Column(name = "first_name")
+	private String firstName;
+	
+	@Column(name = "last_name")
+	private String lastName;
+	
+	@Column(name = "profile_image")
+	private String profileImage;
+	
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+	private Player player;
 
-    @Column(nullable = false, length = 100)
-    private String password;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Authorities> authorities;
-
-    boolean enabled;
+	@NotBlank
+	@Column(name = "password")
+	String password;
+	
+	boolean enabled;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private Set<Authorities> authorities;
 }

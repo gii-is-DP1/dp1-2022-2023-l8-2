@@ -12,6 +12,8 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.player.Player;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,5 +37,8 @@ public class Message extends BaseEntity{
     @JoinColumn(name="game_id")
     private Game game;
 
-    /* private Player emisor; ESPERANDO A IMPLEMENTAR EL TIPO PLAYER*/
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name="player")
+    private Player player; 
 }
