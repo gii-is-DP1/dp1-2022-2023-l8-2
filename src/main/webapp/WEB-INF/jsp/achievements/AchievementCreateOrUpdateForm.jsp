@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sieteislas" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="achievements">
+<sieteislas:layout pageName="achievements">
     <jsp:body>
         <h2>
             <c:if test="${achievement['new']}">New </c:if> Achievement
@@ -37,4 +37,4 @@
         <c:if test="${!pet['new']}">
         </c:if>
     </jsp:body>
-</petclinic:layout>
+</sieteislas:layout>

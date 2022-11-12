@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<petclinic:layout pageName="achievements">
+<sieteislas:layout pageName="achievements">
     <h2>Achievements</h2>
 
     <table id="achievementsTable" class="table table-striped">
@@ -52,4 +52,4 @@
             </c:forEach>
         </tbody>
     </table>
-</petclinic:layout>
+</sieteislas:layout>
