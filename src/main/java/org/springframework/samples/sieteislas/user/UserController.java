@@ -74,7 +74,7 @@ public class UserController {
 		}
 		else {
 			//creating owner, user, and authority
-			this.playerService.savePlayer(player);
+			this.playerService.save(player);
 			return "redirect:/";
 		}
 	}
@@ -87,7 +87,7 @@ public class UserController {
 
 	@GetMapping(value="/users/profile/{username}")
 	public String showProfile(@PathVariable("username") String username, Principal principal, ModelMap model){
-		User user = this.userService.findByUsername(username).get();
+		User user = this.userService.findUser(username).get();
 
 		model.put("principalName", principal.getName());
 		model.put("user", user);
@@ -97,7 +97,7 @@ public class UserController {
 
 	@GetMapping(value="/users/edit/{username}")
 	public String initUserEditForm(@PathVariable("username") String username, ModelMap model){
-		User user = this.userService.findByUsername(username).get();
+		User user = this.userService.findUser(username).get();
 		model.put("user", user);
 		return VIEWS_UPDATE_USER_PROFILE;
 	}
@@ -110,7 +110,7 @@ public class UserController {
 			return VIEWS_UPDATE_USER_PROFILE;
 		} else{
 
-			User userToUpdate = this.userService.findByUsername(username).get();
+			User userToUpdate = this.userService.findUser(username).get();
 			BeanUtils.copyProperties(user, userToUpdate, "username","player","password","enabled","authorities"); 
 			this.userService.saveUser(userToUpdate);
 			

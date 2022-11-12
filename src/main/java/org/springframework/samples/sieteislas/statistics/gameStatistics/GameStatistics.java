@@ -34,7 +34,7 @@ public class GameStatistics extends BaseEntity{
     @NotNull
     private Double duration; /* In seconds */
 
-    @OneToMany(mappedBy="gameStatistics")
+    @OneToMany(mappedBy="gameStatistics", cascade=CascadeType.ALL)
     private List<PlayerPointsMap> playerPoints;
 
 /*###################################################################################################################################################### */
@@ -53,6 +53,14 @@ public class GameStatistics extends BaseEntity{
     @Transient
     public Integer points(){
         return null;
+    }
+
+    public static GameStatistics createDefault(Game game2) {
+        GameStatistics statistics = new GameStatistics();
+        statistics.setGame(game2);
+        statistics.setGameCreatorName(game2.getCreatorUsername());
+        statistics.setDuration(0.0);
+        return statistics;
     }
 
 }
