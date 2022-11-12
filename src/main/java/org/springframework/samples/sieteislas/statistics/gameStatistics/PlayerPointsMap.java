@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.player.Player;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,9 @@ public class PlayerPointsMap extends BaseEntity{
     @NotNull
     private Integer points;
 
-    /* private Player player; */
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name="player")
+    private Player player;
 
 }

@@ -6,6 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.player.Player;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +25,8 @@ public class Card extends BaseEntity{
     @JoinColumn(name="game_id")
     private Game game;
 
-    /* private Player player; ESPERANDO A IMPLEMENTAR EL TIPO PLAYER*/
+    @ManyToOne
+    @JoinColumn(name="player_id")
+    private Player player;   
 
 }

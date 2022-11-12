@@ -11,12 +11,14 @@ import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 
 import lombok.Getter;
@@ -33,6 +35,9 @@ public class Game extends BaseEntity{
     @Column(name="game_name", length = 25)
     private String gameName;
 
+    @NotNull
+    private Boolean active;
+    
     @Transient
     @Min(value=1, message = "roll must be at least 1")
     @Max(value=6, message = "roll must be 6 at maximum")
@@ -51,7 +56,7 @@ public class Game extends BaseEntity{
     @NotNull
     private List<Card> islands;
 
-    /* private Player creator; */
+    private String creatorUsername;
 
     @OneToOne(mappedBy = "game")
     private GameStatistics statistics;
@@ -61,5 +66,10 @@ public class Game extends BaseEntity{
 
     @OneToMany(mappedBy = "game")
     private List<Card> deck;
+
+    @NotEmpty
+    @Size(min=1, max=4)
+    @OneToMany(mappedBy = "game")
+    private List<Player> players;
 
 }
