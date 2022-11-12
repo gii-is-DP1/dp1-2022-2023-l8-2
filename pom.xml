@@ -31,34 +31,6 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-<<<<<<< HEAD
-    <developers>
-        <developer>
-         <id>vicruidel1</id>
-        <name>Victoria del Carmen</name>
-        <email>ruizvictoria10@gmail.com</email>
-        <roles>
-        <role>developer</role>
-        </roles>
-        </developer>
-	    	<developer>
-	 			<id>Juan</id>
-				<name>Juan</name>
-	 			<email>juanquiroslopez@gmail.com</email>
-	 			<roles>
-	 				<role>programmer</role>
-	 			</roles>
-	 		 </developer>   
-            <developer>
-                <id>Pablo</id>
-                <name>Pablo</name>
-                <email>pablo.bermudez.medina@gmail.com</email>
-                <roles>
-                    <role>developer</role>
-                </roles>                	
-            </developer>
-            <developer>
-=======
 
     <developers>
         <developer>
@@ -102,7 +74,6 @@
             </roles>
         </developer>
         <developer>
->>>>>>> origin/master
             <id>maravimaq</id>
             <name>María del Mar</name>
             <email>mmavimaq1802@gmail.com</email>
@@ -110,14 +81,8 @@
                 <role>developer</role>
             </roles>
         </developer>
-<<<<<<< HEAD
-         </developers>
-
-    
-=======
     </developers>
 
->>>>>>> origin/master
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>

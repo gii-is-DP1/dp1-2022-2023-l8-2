@@ -15,7 +15,7 @@ INSERT INTO users(username,password,enabled) VALUES ('pabberima','pabberima',TRU
 INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
 
 INSERT INTO users(username,password,enabled) VALUES ('maravimaq','m4r4v1m4q',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','owner');
+INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('joscasvaz','joscasvaz',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
