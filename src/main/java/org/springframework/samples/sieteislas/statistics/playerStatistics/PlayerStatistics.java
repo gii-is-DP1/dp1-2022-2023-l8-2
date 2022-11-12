@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.player.Player;
 /* import org.springframework.samples.sieteislas.player.Player; */
 import org.springframework.samples.sieteislas.user.User;
 
@@ -38,11 +39,8 @@ public class PlayerStatistics extends BaseEntity{
 	@Column(name = "games_won")
     private Integer gamesWon;
 	
-/* 	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "player_id")
 	private Player player;
-	 */
-	
-    //private Card favCard; 
 
 }

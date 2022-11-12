@@ -42,6 +42,13 @@
 					<span>Veterinarians</span>
 				</sieteislas:menuItem>
 
+				<sec:authorize access="isAuthenticated()">
+					<sieteislas:menuItem active="${name eq 'users'}" url="/users/home/profile" title="profile">
+							<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+							<span>Profile</span>
+					</sieteislas:menuItem>
+				</sec:authorize>
+
 				<sieteislas:menuItem active="${name eq 'achievements'}" url="/statistics/achievements/"
 					title="achievements" dropdown="true" >
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
