@@ -49,7 +49,4 @@ public class UserService {
 		return userRepository.findById(username);
 	}
 
-	public Optional<User> findByUsername(String username) {
-		return this.userRepository.findByUsername(username);
-	}
 }
