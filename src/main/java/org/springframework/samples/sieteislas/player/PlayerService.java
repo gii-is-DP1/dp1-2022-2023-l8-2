@@ -19,7 +19,8 @@ public class PlayerService {
 		return this.playerRepository.findPlayerByUser(user);
 	}
 
-    public void savePlayer(@Valid Player player) {
-    }
+    public void save(@Valid Player player) {
+		this.playerRepository.save(player);
+	}
 
 }

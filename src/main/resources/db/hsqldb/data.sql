@@ -8,19 +8,19 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/384.png');
 INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('vicruidel1','vicruidel1',TRUE);
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('vicruidel1','vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('pabberima','pabberima',TRUE);
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('pabberima','pabberima',TRUE, 'https://images7.memedroid.com/images/UPLOADED838/6349de0cca9d3.jpeg');
 INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('maravimaq','m4r4v1m4q',TRUE);
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('maravimaq','m4r4v1m4q',TRUE, 'https://i.pinimg.com/originals/5e/2b/33/5e2b33ae3c1689020430612f69b0a037.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('joscasvaz','joscasvaz',TRUE);
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('joscasvaz','joscasvaz',TRUE, 'https://sevillafc.es/themes/da_vinci/images/opta_images/logo_sevilla_fc.png');
 INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('thokriale','thokriale',TRUE);
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('thokriale','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
 INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
@@ -48,7 +48,7 @@ INSERT INTO players(id, user, game_id) VALUES (1, 'pabberima', 1);
 INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', 2);
 INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 3);
 INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 4);
-INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 4);
+INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
 
 INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20120618 10:34:09', 1);
