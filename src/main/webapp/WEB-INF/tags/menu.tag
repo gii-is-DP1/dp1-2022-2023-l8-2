@@ -36,10 +36,19 @@
 					<span>Find owners</span>
 				</sieteislas:menuItem>
 
-				<sieteislas:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
+				<sieteislas:menuItem active="${name eq 'Players'}" url="/players/"
+					title="Players" dropdown="true" >
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
+					<span>Players</span>
+					<ul class="dropdown-menu">
+						<li>
+							<div class="navbar-login">
+								<p class="text-left">
+									<a href="<c:url value="/players/" />">Players Listing</a>
+								</p>
+							</div>
+						</li>
+					</ul>
 				</sieteislas:menuItem>
 
 				<sec:authorize access="isAuthenticated()">
