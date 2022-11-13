@@ -3,6 +3,8 @@ package org.springframework.samples.sieteislas.user;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.samples.sieteislas.player.Player;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +16,8 @@ import lombok.Setter;
 @Table(name = "users")
 public class User{
 	@Id
+	@GeneratedValue(generator="uuid")
+	@GenericGenerator(name="uuid", strategy = "uuid2")
 	String username;
 	
 	@NotBlank
