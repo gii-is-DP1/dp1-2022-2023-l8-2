@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/statistics/achievements")
@@ -66,4 +67,33 @@ public class AchievementController {
         }
         return "redirect:/statistics/achievements/";
     }
+    
+	public ModelAndView showAll(){
+		
+		ModelAndView res = new ModelAndView(ACHIEVEMENTS_LISTING);
+		res.addObject("achievements", achievementService.getAllAchievements());
+		
+		return res;
+	}
+    
+	@GetMapping(value = "/new")
+	public ModelAndView create() {
+		
+		Achievement a = new Achievement();
+        ModelAndView res = new ModelAndView(CREATE_OR_UPDATE_ACHIEVEMENT_FORM);
+        res.addObject("achievement", a);
+        
+        return res;
+	}
+	
+	@PostMapping(value = "/new")
+	public ModelAndView post(Achievement a) {
+		
+		achievementService.saveAchievement(a);
+		
+        ModelAndView res = showAll();
+        res.addObject("message", "The achievement was created successfully");
+        
+        return res;
+	}
 }
