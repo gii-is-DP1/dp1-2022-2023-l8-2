@@ -72,6 +72,22 @@
 					</ul>
 				</sieteislas:menuItem>
 
+				<sieteislas:menuItem active="${name eq 'gameStatistics'}" url="/statistics/gameStatistics/"
+					title="Game Stats" dropdown="true" >
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Game Stats</span>
+					<ul class="dropdown-menu">
+						<li>
+							<div class="navbar-login">
+								<p class="text-left">
+									<a href="<c:url value="/statistics/gameStatistics/" />">Game Listing</a>
+								</p>
+							</div>
+						</li>
+					</ul>
+				</sieteislas:menuItem>
+
+
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
