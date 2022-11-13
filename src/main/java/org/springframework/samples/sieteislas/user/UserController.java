@@ -16,6 +16,7 @@
 package org.springframework.samples.sieteislas.user;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
+import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Juergen Hoeller
@@ -41,12 +44,13 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @author Michael Isvy
  */
 @Controller
+
 public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 	private static final String VIEWS_USER_PROFILE = "users/userProfile";
 	private static final String VIEWS_UPDATE_USER_PROFILE = "users/userProfileEditForm";
-
+	
 	private final UserService userService;
 	private final PlayerService playerService;
 
@@ -141,5 +145,6 @@ public class UserController {
 		
 		return "redirect:/";
 	}
+	
 
 }
