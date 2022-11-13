@@ -15,6 +15,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User{
+	
 	@Id
 	@GeneratedValue(generator="uuid")
 	@GenericGenerator(name="uuid", strategy = "uuid2")

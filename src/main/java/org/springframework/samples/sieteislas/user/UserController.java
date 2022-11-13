@@ -17,6 +17,7 @@ package org.springframework.samples.sieteislas.user;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
+	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 	private static final String VIEWS_USER_PROFILE = "users/userProfile";
 	private static final String VIEWS_UPDATE_USER_PROFILE = "users/userProfileEditForm";
 
@@ -62,19 +63,34 @@ public class UserController {
 
 	@GetMapping(value = "/users/new")
 	public String initCreationForm(Map<String, Object> model) {
-		Player player = new Player();
-		model.put("owner", player);
-		return VIEWS_OWNER_CREATE_FORM;
+		User user = new User();
+		model.put("users", user);
+		return VIEWS_USER_CREATE_FORM;
 	}
 
 	@PostMapping(value = "/users/new")
-	public String processCreationForm(@Valid Player player, BindingResult result) {
+	public String processCreationForm(@Valid User user, BindingResult result) {
 		if (result.hasErrors()) {
-			return VIEWS_OWNER_CREATE_FORM;
+			return VIEWS_USER_CREATE_FORM;
 		}
 		else {
 			//creating owner, user, and authority
-			this.playerService.save(player);
+			
+			user.setEnabled(true);
+			
+			Player player = new Player();
+			
+			player.setUser(user);
+			user.setPlayer(player);
+			
+			Authorities auth = new Authorities();
+			auth.setUser(user);
+			auth.setAuthority("player");
+			
+			user.setAuthorities(Set.of(auth));
+			
+			this.userService.saveUser(user);
+			
 			return "redirect:/";
 		}
 	}
@@ -116,6 +132,14 @@ public class UserController {
 			
 			return String.format("redirect:/users/profile/%s", username);                                                                        
 		}
+	}
+	
+	@GetMapping(value="/users/delete/{username}")
+	public String deleteUser(@PathVariable("username") String username) {
+		
+		userService.deleteByUsername(username);
+		
+		return "redirect:/";
 	}
 
 }
