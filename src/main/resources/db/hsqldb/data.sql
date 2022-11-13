@@ -46,8 +46,8 @@ INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (5,
 
 INSERT INTO players(id, user, game_id) VALUES (1, 'pabberima', 1);
 INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', 2);
-INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 3);
-INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 4);
+INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 5);
+INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 5);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
 
