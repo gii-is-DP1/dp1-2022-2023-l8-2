@@ -52,4 +52,7 @@
             </c:forEach>
         </tbody>
     </table>
+    
+    <a href="/statistics/achievements/new" class="btn btn-default">Add Achievement</a>
+    
 </sieteislas:layout>
