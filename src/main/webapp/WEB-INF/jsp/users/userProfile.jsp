@@ -29,6 +29,11 @@
         <spring:param name="username" value="${user.username}"/>
     </spring:url>
         <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+    
+    <spring:url value="/users/delete/{username}" var="deleteUrl">
+        <spring:param name="username" value="${user.username}"/>
+    </spring:url>
+        <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete User</a>
     </c:if>
     
 
