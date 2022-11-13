@@ -14,19 +14,23 @@
             <tr>
                 <th>Game Id</th>
                 <th>Game Creator Name</th>
-                <th>Game Participants</th>
+                <th>Game Players Names</th>
                 <th>Duration</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${game_statistics}" var="game_statistic">
+            <c:forEach items="${gameStatistics}" var="game_statistic">
                 <tr>
                     <td>
-                        <c:out value="${game_statistic.game_id}" />
+                        <c:out value="${game_statistic.game.id}" />
                     </td>
                     <td>
-                        <c:out value="${game_statistic.game_creator_name}" />
+                        <c:out value="${game_statistic.gameCreatorName}" />
+                    </td>
+                    <td>
+                        <c:forEach var="player" items="${game}">
+                        <c:out value="${player.user.name} "/>
+                    </c:forEach>
                     </td>
                     <td>
                         <c:out value="${game_statistic.duration}" />

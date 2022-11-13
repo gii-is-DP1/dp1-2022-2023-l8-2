@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,4 +19,5 @@ public class GameStatisticsService {
      public Collection<GameStatistics> getAllGameStatistcs() {
         return (Collection<GameStatistics>) gameStatisticsRepository.findAll();
     }
+
 }
