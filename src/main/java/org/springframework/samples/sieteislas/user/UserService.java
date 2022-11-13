@@ -49,4 +49,10 @@ public class UserService {
 		return userRepository.findById(username);
 	}
 
+	public void deleteByUsername(String username) {
+		
+		User userToDelete = findUser(username).get();
+		userRepository.delete(userToDelete);
+	}
+
 }

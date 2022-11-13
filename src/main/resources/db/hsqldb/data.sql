@@ -17,7 +17,7 @@ INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
 INSERT INTO users(username,password,enabled, profile_image) VALUES ('maravimaq','m4r4v1m4q',TRUE, 'https://i.pinimg.com/originals/5e/2b/33/5e2b33ae3c1689020430612f69b0a037.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','owner');
 
-INSERT INTO users(username,password,enabled, profile_image) VALUES ('joscasvaz','joscasvaz',TRUE, 'https://sevillafc.es/themes/da_vinci/images/opta_images/logo_sevilla_fc.png');
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('joscasvaz','joscasvaz',TRUE, 'https://www.alacesta.com/1682-thickbox_default/escudo-betis.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
 
 INSERT INTO users(username,password,enabled, profile_image) VALUES ('thokriale','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
