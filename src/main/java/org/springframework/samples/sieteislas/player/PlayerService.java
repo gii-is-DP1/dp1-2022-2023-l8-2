@@ -1,8 +1,11 @@
 package org.springframework.samples.sieteislas.player;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +25,9 @@ public class PlayerService {
     public void save(@Valid Player player) {
 		this.playerRepository.save(player);
 	}
+    public Collection<Player> getAllPlayers() {
+        return (Collection<Player>) playerRepository.findAll();
+    }
+ 
 
 }
