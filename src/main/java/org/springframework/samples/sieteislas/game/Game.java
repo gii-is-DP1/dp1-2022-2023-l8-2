@@ -70,7 +70,7 @@ public class Game extends BaseEntity{
 
     @NotEmpty
     @Size(min=1, max=4)
-    @OneToMany(mappedBy = "game", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade=CascadeType.PERSIST)
     private List<Player> players;
 
 }

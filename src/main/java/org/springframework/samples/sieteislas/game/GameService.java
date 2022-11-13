@@ -2,6 +2,8 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
@@ -70,5 +72,21 @@ public class GameService {
 
     public Game findById(Integer id) {
         return this.gameRepository.findById(id).get();
+    }
+
+    public void kickPlayer(Game game, String name) {
+        List<Player> players = game.getPlayers().stream()
+                                                .filter(x-> !x.getUser().getUsername().equals(name))
+                                                .collect(Collectors.toList());
+                                                game.setPlayers(players);
+        save(game);
+    }
+
+    public void delete(Game game) {
+        Player p = game.getPlayers().get(0);
+        p.setGame(null);
+        this.playerRepository.save(p);
+        
+        this.gameRepository.delete(game);
     }
 }
