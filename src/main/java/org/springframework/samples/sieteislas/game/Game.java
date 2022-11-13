@@ -2,6 +2,7 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -58,18 +59,18 @@ public class Game extends BaseEntity{
 
     private String creatorUsername;
 
-    @OneToOne(mappedBy = "game")
+    @OneToOne(mappedBy = "game", cascade=CascadeType.ALL)
     private GameStatistics statistics;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade=CascadeType.ALL)
     private List<Message> chat;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade=CascadeType.ALL)
     private List<Card> deck;
 
     @NotEmpty
     @Size(min=1, max=4)
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade=CascadeType.ALL)
     private List<Player> players;
 
 }
