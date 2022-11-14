@@ -9,27 +9,35 @@
 
 <sieteislas:layout pageName="Game lobby">
     <div style="display:inline-flex; width: 100%; height: 20%;">
-        <h1> Game name: <c:out value="${game.gameName}" /> </h2>
+        <h1 style="position: absolute; left:40%"> WELCOME TO <i><c:out value="${game.gameName}" /></i> LOBBY </h2>
         <p style="margin-left: auto;">
-            <a href="#" class="glyphicon glyphicon-log-out" style="font-size: 200%;"></a>
+            <spring:url value="/games/lobby/{id}/exit" var="lobbyExitUrl">
+                <spring:param name="id" value="${game.id}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(lobbyExitUrl)}" class="glyphicon glyphicon-log-out" style="font-size: 200%; color: darkgoldenrod"></a>
         </p>    
     </div>
 
-    
     <h2>PLAYERS (<c:out value="${fn:length(game.players)}"/>/4)</h2>
-    <div style="display:inline-flex;">
-        <c:forEach items="${game.players}" var="player">
-            <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); max-width: 300px; margin: auto; text-align: center; ">
-                <img src="${player.user.profileImage}" alt="image" style="width: 100%;">
-                <h4><c:out value="${player.user.username}" /></h4>
 
+    <div style="display:inline-flex; position:absolute; left: 5%; width: 100%;">
+        <c:forEach items="${game.players}" var="player">
+            <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin: 10px; text-align: center; width: 20%; height: 20%;">
+                <div style="width: 100%; height: 100%;">
+                    <img src="${player.user.profileImage}" alt="image" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h4 style="color: black;"><c:out value="${player.user.username}" /></h4>
                 <c:if test="${principalName.equals(game.creatorUsername)}">
                     <c:if test="${!player.user.username.equals(game.creatorUsername)}">
-                        <spring:url value="/games/lobby/{id}/kick/{username}" var="lobbyKickUrl">
-                            <spring:param name="username" value="${player.user.username}"/>
+                        <spring:url value="/games/lobby/{id}/kick" var="lobbyKickUrl">
                             <spring:param name="id" value="${game.id}"/>
                         </spring:url>
-                        <a href="${fn:escapeXml(lobbyKickUrl)}" class="glyphicon glyphicon-remove"></a>
+                        <a href="${fn:escapeXml(lobbyKickUrl)}" class="glyphicon glyphicon-remove">
+                            <p style="color: darkgoldenrod;">KICK</p>
+                        </a>
+                    </c:if>
+                    <c:if test="${player.user.username.equals(game.creatorUsername)}">
+                        <p class="glyphicon glyphicon-king" style="color: rgb(112, 107, 107); font-size: 150%;"></p>
                     </c:if>
                 </c:if>
             </div>

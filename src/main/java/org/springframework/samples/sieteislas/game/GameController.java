@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/games")
@@ -61,4 +63,29 @@ public class GameController {
         model.put("game", game);
         return VIEWS_GAMES_LOBBY;
     }
+
+    @GetMapping("/lobby/{id}/exit")
+    public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        if(game.getPlayers().size() < 2){
+            this.gameService.delete(game);
+        } else{
+            //this.gameService.kickPlayer(game, principal.getName());
+        }       
+        return "redirect:/"; 
+    }
+
+    @GetMapping("/lobby/{id}/kick")
+    public String kickFromLobby(@RequestAttribute("playerId") String playerId, Principal principal, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(playerId));
+        if(game.getPlayers().size()==1){
+            this.gameService.delete(game);
+            return "welcome";
+        } else{
+            this.gameService.kickPlayer(game, principal.getName());
+            String redirect = String.format("redirect:/games/lobby/%s", playerId);
+            return redirect;
+        }        
+    }
+
 }
