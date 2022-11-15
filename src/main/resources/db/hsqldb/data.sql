@@ -8,7 +8,7 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/384.png');
 INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 
-INSERT INTO users(username,first_name, last_name, password,enabled, profile_image) VALUES ('vicruidel1','Victoria del Carmen', 'Ruiz Delgado' ,'vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
+INSERT INTO users(username, password,enabled, profile_image) VALUES ('vicruidel1','vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
 INSERT INTO users(username,password,enabled, profile_image) VALUES ('pabberima','pabberima',TRUE, 'https://images7.memedroid.com/images/UPLOADED838/6349de0cca9d3.jpeg');
