@@ -4,8 +4,6 @@ package org.springframework.samples.sieteislas.player;
 import java.util.Collection;
 import java.util.Map;
 
-import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
-import org.springframework.samples.sieteislas.statistics.achievement.AchievementService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
