@@ -107,10 +107,13 @@ public class UserController {
 
 	@GetMapping(value="/users/profile/{username}")
 	public String showProfile(@PathVariable("username") String username, Principal principal, ModelMap model){
+		
 		User user = this.userService.findUser(username).get();
+		Boolean isAdmin = userService.isAdmin(principal.getName());
 
 		model.put("principalName", principal.getName());
 		model.put("user", user);
+		model.put("isAdmin", isAdmin);
 
 		return VIEWS_USER_PROFILE;
 	}
