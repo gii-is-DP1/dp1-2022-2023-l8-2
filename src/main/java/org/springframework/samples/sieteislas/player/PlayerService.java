@@ -1,11 +1,13 @@
 package org.springframework.samples.sieteislas.player;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
+import org.springframework.samples.sieteislas.statistics.achievement.AchievementRepository;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.stereotype.Service;
 

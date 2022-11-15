@@ -2,6 +2,7 @@ package org.springframework.samples.sieteislas.statistics.achievement;
 
 import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,6 @@ public class AchievementService {
     public Collection<Achievement> getAllAchievements() {
         return (Collection<Achievement>) achievementRepository.findAll();
     }
-
     public Achievement getAchievementById(Integer id) {
         return achievementRepository.findById(id).get();
     }

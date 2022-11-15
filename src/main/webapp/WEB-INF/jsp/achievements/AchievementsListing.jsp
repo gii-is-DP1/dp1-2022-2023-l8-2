@@ -62,5 +62,7 @@
     <c:if test="${isAdmin}">
     	<a href="/statistics/achievements/new" class="btn btn-default">Add Achievement</a>
     </c:if>
+
+    
     
 </sieteislas:layout>
