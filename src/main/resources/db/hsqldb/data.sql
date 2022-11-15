@@ -37,7 +37,6 @@ INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPan
 INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', FALSE,'joscasvaz');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', FALSE,'maravimaq');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (5, 'Betis KK', TRUE,'jualopqui1');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (6, 'Team Pikachu', FALSE,'vicruidel1');
 
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (1, 1, 'jualopqui1', 1808.63);
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (2, 2, 'pabberima', 1676.09);
