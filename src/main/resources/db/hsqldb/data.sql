@@ -1,5 +1,5 @@
 -- One admin user, named admin1 with password 4dm1n and authority admin
-INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('admin1','4dm1n',TRUE, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 -- One owner user, named owner1 with password 0wn3r
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
@@ -8,19 +8,19 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/384.png');
 INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 
-INSERT INTO users(username, password,enabled, profile_image) VALUES ('vicruidel1','vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('vicruidel1','Victoria','del Carmen','vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
-INSERT INTO users(username,password,enabled, profile_image) VALUES ('pabberima','pabberima',TRUE, 'https://images7.memedroid.com/images/UPLOADED838/6349de0cca9d3.jpeg');
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('pabberima','Pablo','Bermudez','pabberima',TRUE, 'https://images7.memedroid.com/images/UPLOADED838/6349de0cca9d3.jpeg');
 INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
 
-INSERT INTO users(username,password,enabled) VALUES ('maravimaq','m4r4v1m4q',TRUE);
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('maravimaq','Maria del Mar','Avila','m4r4v1m4q', TRUE, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');
 INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','admin');
 
-INSERT INTO users(username,password,enabled, profile_image) VALUES ('joscasvaz','joscasvaz',TRUE, 'https://www.alacesta.com/1682-thickbox_default/escudo-betis.jpg');
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('joscasvaz','Jose Ignacio','Castro Vazquez','joscasvaz',TRUE, 'https://www.alacesta.com/1682-thickbox_default/escudo-betis.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
 
-INSERT INTO users(username,password,enabled, profile_image) VALUES ('thokriale','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('thokriale','Thomas','Kriale','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
 INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
@@ -50,6 +50,7 @@ INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 5);
 INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 5);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
+INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 3);
 
 INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20120618 10:34:09', 1);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20210918 18:34:09', 2);
