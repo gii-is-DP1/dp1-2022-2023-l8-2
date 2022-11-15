@@ -50,10 +50,17 @@ public class UserService {
 	public Optional<User> findUser(String username) {
 		return userRepository.findById(username);
 	}
+	
 	public void deleteByUsername(String username) {
-		
 		User userToDelete = findUser(username).get();
 		userRepository.delete(userToDelete);
+	}
+	
+	public Boolean isAdmin(String username) {
+		User userToCheck = findUser(username).get();
+		return userToCheck.getAuthorities().stream()
+				.map(Authorities::getAuthority)
+				.anyMatch(a -> a.equals("admin"));
 	}
 
 }

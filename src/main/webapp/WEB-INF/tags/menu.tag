@@ -82,14 +82,14 @@
 				</sieteislas:menuItem>
 
 				<sieteislas:menuItem active="${name eq 'gameStatistics'}" url="/statistics/gameStatistics/"
-					title="Game Stats" dropdown="true" >
+					title="Statistics" dropdown="true" >
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Game Stats</span>
+					<span>Statistics</span>
 					<ul class="dropdown-menu">
 						<li>
 							<div class="navbar-login">
 								<p class="text-left">
-									<a href="<c:url value="/statistics/gameStatistics/" />">Game Listing</a>
+									<a href="<c:url value="/statistics/gameStatistics/" />">Game Stats</a>
 								</p>
 							</div>
 						</li>
