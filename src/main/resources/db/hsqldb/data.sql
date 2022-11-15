@@ -8,7 +8,7 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('jualopqui1','Juan','Lopez','jualopqui1',TRUE, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/384.png');
 INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 
-INSERT INTO users(username,password,enabled, profile_image) VALUES ('vicruidel1','vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
+INSERT INTO users(username,first_name, last_name, password,enabled, profile_image) VALUES ('vicruidel1','Victoria del Carmen', 'Ruiz Delgado' ,'vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
 INSERT INTO users(username,password,enabled, profile_image) VALUES ('pabberima','pabberima',TRUE, 'https://images7.memedroid.com/images/UPLOADED838/6349de0cca9d3.jpeg');
@@ -37,6 +37,7 @@ INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPan
 INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', FALSE,'joscasvaz');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', FALSE,'maravimaq');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (5, 'Betis KK', TRUE,'jualopqui1');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (6, 'Team Pikachu', FALSE,'vicruidel1');
 
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (1, 1, 'jualopqui1', 1808.63);
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (2, 2, 'pabberima', 1676.09);
