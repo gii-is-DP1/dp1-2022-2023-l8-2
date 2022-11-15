@@ -21,6 +21,10 @@
             <th>Image</th>
             <td><img src="${user.profileImage}" style="width: 80px; height:auto"/></td>
         </tr>
+         <tr>
+            <th>Achievements</th>
+            <td><c:out value="${user.player.achievements}"/></td>
+        </tr>
     </table>
 
     
