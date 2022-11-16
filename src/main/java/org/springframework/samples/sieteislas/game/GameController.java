@@ -71,23 +71,27 @@ public class GameController {
     @GetMapping("/lobby/{id}/exit")
     public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
-        if(game.getPlayers().size() < 2){
-            this.gameService.delete(game);
-        } else{
-            //this.gameService.kickPlayer(game, principal.getName());
-        }       
+        Boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
+        if(isPlayer){
+            if(game.getPlayers().size() < 2){
+                this.gameService.delete(game);
+            } else{
+                this.gameService.exitGame(game, principal.getName());
+            }  
+        }
+             
         return "redirect:/"; 
     }
 
-    @GetMapping("/lobby/{id}/kick")
-    public String kickFromLobby(@RequestAttribute("playerId") String playerId, Principal principal, ModelMap model){
-        Game game = this.gameService.findById(Integer.valueOf(playerId));
-        if(game.getPlayers().size()==1){
+    @GetMapping("/lobby/{id}/kick/{playerId}")
+    public String kickFromLobby(@PathVariable("id") String id, @PathVariable("playerId") String playerId){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        if(game.getPlayers().size()<2){ //Esta comprobacion para tenerla controlada en teoria nunca podriamos kickearnos a nosotros mismos.
             this.gameService.delete(game);
             return "welcome";
         } else{
-            this.gameService.kickPlayer(game, principal.getName());
-            String redirect = String.format("redirect:/games/lobby/%s", playerId);
+            this.gameService.kickOfGame(Integer.valueOf(playerId));
+            String redirect = String.format("redirect:/games/lobby/%s", id);
             return redirect;
         }        
     }
