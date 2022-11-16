@@ -6,36 +6,38 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<sieteislas:layout pageName="players">
-    <h2>Players</h2>
+<sieteislas:layout pageName="My achievements">
+    <h2>My achievements</h2>
 
     <table id="playersTable" class="table table-striped">
         <thead>
             <tr>
-                <th>Username</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Achievements</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Threshold</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${players}" var="player">
+            <c:forEach items="${player.achievements}" var="player">
                 <tr>
                     <td>
-                        <c:out value="${player.user.username}" />
+                        <c:out value="${player.achievement.name}" />
                     </td>
                     <td>
-                        <c:out value="${player.user.firstName}" />
+                        <c:out value="${player.achievement.description}" />
                     </td>
                     <td>
-                        <c:out value="${player.user.lastName}" />
+                        <img src="${player.achievement.badgeImage}"
+                            style="width: 80px; height:auto" />
                     </td>
                     <td>
-                        <c:out value="${player.achievements}" />
+                        <c:out value="${player.achievement.threshold}" />
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
-    </table>
+    </table> 
 </sieteislas:layout>

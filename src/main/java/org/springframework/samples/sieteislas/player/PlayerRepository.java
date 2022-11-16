@@ -11,5 +11,4 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 
     @Query("SELECT p FROM Player p WHERE p.user LIKE :user")
     Player findPlayerByUser(@Param("user") User user);
-
 }

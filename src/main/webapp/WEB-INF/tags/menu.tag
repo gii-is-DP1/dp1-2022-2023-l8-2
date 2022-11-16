@@ -12,7 +12,7 @@
 		<div class="navbar-header">
 			<a class="navbar-brand"
 				href="<spring:url value="/" htmlEscape="true" />">
-				<img src= "/resources/images/favicon.png" width="50" height="50">
+				<img src= "/resources/images/favicon.png" width="100" height="100" align="right">
 			</a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target="#main-navbar">
