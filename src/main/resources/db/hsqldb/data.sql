@@ -11,7 +11,7 @@ INSERT INTO authorities(id,username,authority) VALUES (4,'jualopqui1','owner');
 INSERT INTO users(username,password,enabled, profile_image) VALUES ('vicruidel1','vicruidel1',TRUE, 'https://i.pinimg.com/originals/dc/ab/b7/dcabb7fbb2f763d680d20a3d228cc6f9.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (5,'vicruidel1','owner');
 
-INSERT INTO users(username,password,enabled, profile_image) VALUES ('pabberima','pabberima',TRUE, 'https://images7.memedroid.com/images/UPLOADED838/6349de0cca9d3.jpeg');
+INSERT INTO users(username,password,enabled, profile_image) VALUES ('pabberima','pabberima',TRUE, 'https://cdn11.bigcommerce.com/s-n2jcqcuzo0/products/1003/images/1823/confederate-flag-sticker-largestickerthe-dixie-shop-14558404__36614.1595394123.386.513.png?');
 INSERT INTO authorities(id,username,authority) VALUES (6,'pabberima','owner');
 
 INSERT INTO users(username,password,enabled) VALUES ('maravimaq','m4r4v1m4q',TRUE);
@@ -47,7 +47,7 @@ INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (5,
 INSERT INTO players(id, user, game_id) VALUES (1, 'pabberima', 1);
 INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', 2);
 INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 5);
-INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 5);
+INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 1);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
 
@@ -97,3 +97,7 @@ INSERT INTO player_statistics(id, total_points, time_played, games_played, games
 INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (3, 145, 27712.28, 4, 2, 4);
 INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (5, 222, 42704.52, 9, 4, 5);
 INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (6, 42, 21.28, 1, 0, 6);
+
+INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 1);
+INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 2);
+INSERT INTO player_achievements(player_id, achievement_id) VALUES (2, 1);

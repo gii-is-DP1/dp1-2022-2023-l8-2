@@ -25,8 +25,9 @@
                         <c:out value="${player.user.username}" />
                     </td>
                     <td>
-                        <c:out value="${player.cards}" />
-                    </td>
+                        <c:forEach var="card" items="${player.cards}">
+                            <c:out value="${card.cardType.name} "/>
+                        </c:forEach>
                     <td>
                         <c:out value="${player.achievements}" />
                     </td>
