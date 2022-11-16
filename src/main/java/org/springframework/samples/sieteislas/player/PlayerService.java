@@ -28,6 +28,10 @@ public class PlayerService {
     public Collection<Player> getAllPlayers() {
         return (Collection<Player>) playerRepository.findAll();
     }
+
+    public void findById(String playerId) {
+		this.playerRepository.findById(playerId);
+	}
  
 
 }

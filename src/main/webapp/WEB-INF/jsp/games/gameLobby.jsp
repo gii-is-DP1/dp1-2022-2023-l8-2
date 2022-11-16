@@ -29,8 +29,9 @@
                 <h4 style="color: black;"><c:out value="${player.user.username}" /></h4>
                 <c:if test="${principalName.equals(game.creatorUsername)}">
                     <c:if test="${!player.user.username.equals(game.creatorUsername)}">
-                        <spring:url value="/games/lobby/{id}/kick" var="lobbyKickUrl">
+                        <spring:url value="/games/lobby/{id}/kick/{playerId}" var="lobbyKickUrl">
                             <spring:param name="id" value="${game.id}"/>
+                            <spring:param name="playerId" value="${player.id}"/>
                         </spring:url>
                         <a href="${fn:escapeXml(lobbyKickUrl)}" class="glyphicon glyphicon-remove">
                             <p style="color: darkgoldenrod;">KICK</p>
