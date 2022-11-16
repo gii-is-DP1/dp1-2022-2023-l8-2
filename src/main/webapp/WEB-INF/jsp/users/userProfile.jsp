@@ -21,19 +21,25 @@
             <th>Image</th>
             <td><img src="${user.profileImage}" style="width: 80px; height:auto"/></td>
         </tr>
+         <tr>
+            <th>Achievements</th>
+            <td><c:out value="${user.player.achievements}"/></td>
+        </tr>
     </table>
 
     
-    <c:if test="${user.username.equals(principalName)}">
+    <c:if test="${user.username.equals(principalName) || isAdmin}">
         <spring:url value="/users/edit/{username}" var="editUrl">
-        <spring:param name="username" value="${user.username}"/>
-    </spring:url>
+        	<spring:param name="username" value="${user.username}"/>
+    	</spring:url>
         <a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit User</a>
+    </c:if>
     
-    <spring:url value="/users/delete/{username}" var="deleteUrl">
-        <spring:param name="username" value="${user.username}"/>
-    </spring:url>
-        <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete User</a>
+    <c:if test="${isAdmin}">
+	    <spring:url value="/users/delete/{username}" var="deleteUrl">
+	        <spring:param name="username" value="${user.username}"/>
+	    </spring:url>
+	        <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete User</a>
     </c:if>
     
 
