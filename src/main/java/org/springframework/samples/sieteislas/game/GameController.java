@@ -2,11 +2,14 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
+import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GameController {
     private static final String VIEWS_GAMES_LOBBY = "games/gameLobby";
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
+    private static final String VIEWS_GAMES_LIST= "games/gamesList";
 
     private GameService gameService;
     private GameStatisticsService gameStatisticService;
@@ -86,6 +90,13 @@ public class GameController {
             String redirect = String.format("redirect:/games/lobby/%s", playerId);
             return redirect;
         }        
+    }
+    
+   @GetMapping("/active")
+    public String getActiveGames(Map<String, Object> model) {
+        Collection<Game> games = gameService.getActiveGames();
+        model.put("games", games);
+        return VIEWS_GAMES_LIST;
     }
 
 }

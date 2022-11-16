@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
+import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsRepository;
 import org.springframework.samples.sieteislas.user.User;
@@ -69,7 +71,11 @@ public class GameService {
     public void save(Game game) {
         this.gameRepository.save(game);
     }
-
+    
+    public Collection<Game> getActiveGames() {
+        return  gameRepository.getActiveGames(true);
+    }
+    
     public Game findById(Integer id) {
         return this.gameRepository.findById(id).get();
     }
