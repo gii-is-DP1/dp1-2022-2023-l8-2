@@ -29,7 +29,7 @@ public class PlayerService {
         return (Collection<Player>) playerRepository.findAll();
     }
 
-    public void findById(String playerId) {
+    public void findById(Integer playerId) {
 		this.playerRepository.findById(playerId);
 	}
  
