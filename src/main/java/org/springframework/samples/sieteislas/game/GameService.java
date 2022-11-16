@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,11 +10,13 @@ import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
+import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsRepository;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GameService {
@@ -49,14 +52,14 @@ public class GameService {
         List<Card> deck = createDeck();
         game.setDeck(deck);
 
-        
         User user = this.userRepository.findById(creatorName).get();
         Player creator = this.playerRepository.findPlayerByUser(user);
         creator.setGame(game);
+        
         List<Player> players = List.of(creator);
         game.setPlayers(players);
 
-        //Guardamos juego en la bbdd
+        //Guardamos el nuevo juego en la bbdd
         this.gameRepository.save(game);
 
         return game;
@@ -69,17 +72,21 @@ public class GameService {
     public void save(Game game) {
         this.gameRepository.save(game);
     }
-
+    
+    public Collection<Game> getActiveGames() {
+        return  gameRepository.getActiveGames(true);
+    }
+    
     public Game findById(Integer id) {
         return this.gameRepository.findById(id).get();
     }
 
-    public void kickPlayer(Game game, String name) {
-        List<Player> players = game.getPlayers().stream()
-                                                .filter(x-> !x.getUser().getUsername().equals(name))
-                                                .collect(Collectors.toList());
-                                                game.setPlayers(players);
-        save(game);
+    public void exitGame(Game game, String name) {
+
+        User user = this.userRepository.findById(name).get();
+        Player p = this.playerRepository.findPlayerByUser(user);
+        p.setGame(null);
+        this.playerRepository.save(p);  
     }
 
     public void delete(Game game) {
@@ -88,5 +95,17 @@ public class GameService {
         this.playerRepository.save(p);
         
         this.gameRepository.delete(game);
+    }
+
+    public boolean isPlayer(List<Player> players, String principalName) {
+        return players.stream()
+                        .map(x->x.getUser().getUsername())
+                        .anyMatch(x-> x.equals(principalName));
+    }
+
+    public void kickOfGame(Integer playerId) {
+        Player p = this.playerRepository.findById(playerId).get();
+        p.setGame(null);
+        this.playerRepository.save(p);
     }
 }

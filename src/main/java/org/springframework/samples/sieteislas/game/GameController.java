@@ -2,11 +2,14 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
+import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GameController {
     private static final String VIEWS_GAMES_LOBBY = "games/gameLobby";
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
+    private static final String VIEWS_GAMES_LIST= "games/gamesList";
 
     private GameService gameService;
     private GameStatisticsService gameStatisticService;
@@ -67,25 +71,36 @@ public class GameController {
     @GetMapping("/lobby/{id}/exit")
     public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
-        if(game.getPlayers().size() < 2){
-            this.gameService.delete(game);
-        } else{
-            //this.gameService.kickPlayer(game, principal.getName());
-        }       
+        Boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
+        if(isPlayer){
+            if(game.getPlayers().size() < 2){
+                this.gameService.delete(game);
+            } else{
+                this.gameService.exitGame(game, principal.getName());
+            }  
+        }
+             
         return "redirect:/"; 
     }
 
-    @GetMapping("/lobby/{id}/kick")
-    public String kickFromLobby(@RequestAttribute("playerId") String playerId, Principal principal, ModelMap model){
-        Game game = this.gameService.findById(Integer.valueOf(playerId));
-        if(game.getPlayers().size()==1){
+    @GetMapping("/lobby/{id}/kick/{playerId}")
+    public String kickFromLobby(@PathVariable("id") String id, @PathVariable("playerId") String playerId){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        if(game.getPlayers().size()<2){ //Esta comprobacion para tenerla controlada en teoria nunca podriamos kickearnos a nosotros mismos.
             this.gameService.delete(game);
             return "welcome";
         } else{
-            this.gameService.kickPlayer(game, principal.getName());
-            String redirect = String.format("redirect:/games/lobby/%s", playerId);
+            this.gameService.kickOfGame(Integer.valueOf(playerId));
+            String redirect = String.format("redirect:/games/lobby/%s", id);
             return redirect;
         }        
+    }
+    
+   @GetMapping("/active")
+    public String getActiveGames(Map<String, Object> model) {
+        Collection<Game> games = gameService.getActiveGames();
+        model.put("games", games);
+        return VIEWS_GAMES_LIST;
     }
 
 }

@@ -12,7 +12,7 @@
 		<div class="navbar-header">
 			<a class="navbar-brand"
 				href="<spring:url value="/" htmlEscape="true" />">
-				<img src= "/resources/images/favicon.png" width="50" height="50">
+				<img src= "/resources/images/favicon.png" width="100" height="100" align="right">
 			</a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target="#main-navbar">
@@ -30,10 +30,10 @@
 					<span>Home</span>
 				</sieteislas:menuItem>
 
-				<sieteislas:menuItem active="${name eq 'owners'}" url="/owners/find"
-					title="find owners">
+				<sieteislas:menuItem active="${name eq 'games'}" url="#"
+					title="find games">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find owners</span>
+					<span>Find games</span>
 				</sieteislas:menuItem>
 
 				<sieteislas:menuItem active="${name eq 'Players'}" url="/players/"
