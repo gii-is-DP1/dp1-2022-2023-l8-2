@@ -83,10 +83,17 @@
 						<li>
 							<div class="navbar-login">
 								<p class="text-left">
-									<a href="<c:url value="/statistics/gameStatistics/" />">Game Stats</a>
+									<a href="<c:url value="/statistics/previousGames/" />">Previous Games</a>
 								</p>
 							</div>
 						</li>
+                        <li>
+                            <div class="navbar-login">
+                                <p class="text-left">
+                                    <a href="<c:url value="/statistics/dashboard/" />">Dashboard</a>
+                                </p>
+                            </div>
+                        </li>
 					</ul>
 				</sieteislas:menuItem>
 

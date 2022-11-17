@@ -15,8 +15,22 @@ public class GameStatisticsService {
         this.gameStatisticsRepository = gameStatisticsRepository;
     }
 
-     public Collection<GameStatistics> getAllGameStatistcs() {
+    public Collection<GameStatistics> getAllGameStatistics() {
         return (Collection<GameStatistics>) gameStatisticsRepository.findAll();
+    }
+
+    public Double getMaxTimePlayed() {
+        return gameStatisticsRepository.maxTimePlayed();
+    }
+
+    public Double getAvgTimePlayed() {
+        return gameStatisticsRepository.avgTimePlayed();
+    }
+
+    public Double getMinTimePlayed() { return gameStatisticsRepository.minTimePlayed();  }
+
+    public Double getTotalTimePlayed() {
+        return gameStatisticsRepository.totalTimePlayed();
     }
 
 }
