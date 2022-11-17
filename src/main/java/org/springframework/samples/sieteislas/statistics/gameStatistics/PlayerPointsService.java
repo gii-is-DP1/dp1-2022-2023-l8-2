@@ -17,10 +17,12 @@ public class PlayerPointsService {
     public PlayerPointsService(PlayerPointsRepository playerPointsRepository) {
         this.playerPointsRepository = playerPointsRepository;
     }
-
-    public Collection<PlayerPointsMap> getAllPlayerPointsMap(GameStatistics gameStatistics) {
+/*
+    public Collection<PlayerPointsMap> getAllPointsMap(GameStatistics gameStatistics) {
         return playerPointsRepository.findByGameStatistics(gameStatistics.getGame().getId());
     }
+
+ */
 
     public Collection<String> getAllPlayerPointsMaps(Collection<GameStatistics> gameStatistics) {
         List<String> players = new ArrayList<>();
@@ -32,10 +34,39 @@ public class PlayerPointsService {
             players.add(playerNested.toString());
             playerNested.clear();
         }
-
         return players;
     }
 
+    public Integer getMaxPoints() {
+        return playerPointsRepository.findMaxPoints();
+    }
+    public Integer getMinPoints() {
+        return playerPointsRepository.findMinPoints();
+    }
+    public Integer getAvgPoints() {
+        return playerPointsRepository.findAvgPoints();
+    }
+    public Integer getTotalPoints() {
+        return playerPointsRepository.findTotalPoints();
+    }
 
+    public Double getAvgTimePlayedByUser(String currentUser) {
+        return playerPointsRepository.findAvgTimePlayedByUser(currentUser);
+    }
 
+    public Double getMaxTimePlayedByUser(String currentUser) {
+        return playerPointsRepository.findMaxTimePlayedByUser(currentUser);
+    }
+
+    public Double getMinTimePlayedByUser(String currentUser) {
+        return playerPointsRepository.findMinTimePlayedByUser(currentUser);
+    }
+
+    public Double getTotalTimePlayedByUser(String currentUser) {
+        return playerPointsRepository.findTotalTimePlayedByUser(currentUser);
+    }
+
+    public Integer getNumberGamesByUser(String currentUser) {
+        return playerPointsRepository.getNumberGamesByUser(currentUser);
+    }
 }

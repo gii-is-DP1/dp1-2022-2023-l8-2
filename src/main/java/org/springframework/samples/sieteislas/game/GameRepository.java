@@ -9,8 +9,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GameRepository extends CrudRepository<Game, Integer>{
-	
+
 	@Query("SELECT g FROM Game g WHERE g.active LIKE :active")
 	List<Game> getActiveGames(@Param("active") Boolean active);
 
+    @Query("SELECT count(g) FROM Game g")
+    Integer getNumberGames();
 }

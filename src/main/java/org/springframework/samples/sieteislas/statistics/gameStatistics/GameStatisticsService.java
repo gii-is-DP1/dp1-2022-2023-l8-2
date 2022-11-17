@@ -20,17 +20,26 @@ public class GameStatisticsService {
     }
 
     public Double getMaxTimePlayed() {
-        return gameStatisticsRepository.maxTimePlayed();
+        return gameStatisticsRepository.findMaxTimePlayed();
     }
 
     public Double getAvgTimePlayed() {
-        return gameStatisticsRepository.avgTimePlayed();
+        return gameStatisticsRepository.findAvgTimePlayed();
     }
 
-    public Double getMinTimePlayed() { return gameStatisticsRepository.minTimePlayed();  }
+    public Double getMinTimePlayed() {
+        return gameStatisticsRepository.findMinTimePlayed();
+    }
 
     public Double getTotalTimePlayed() {
-        return gameStatisticsRepository.totalTimePlayed();
+        return gameStatisticsRepository.findTotalTimePlayed();
     }
+
+    public Integer getNumberGames() {
+        return gameStatisticsRepository.getNumberGames();
+    }
+
+
+
 
 }

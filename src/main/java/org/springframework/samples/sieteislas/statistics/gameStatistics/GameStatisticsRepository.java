@@ -12,15 +12,17 @@ import java.util.Optional;
 public interface GameStatisticsRepository extends CrudRepository<GameStatistics, Integer> {
 
     @Query("SELECT sum(duration) FROM GameStatistics ")
-    public Double totalTimePlayed();
+    public Double findTotalTimePlayed();
 
     @Query("SELECT min(duration) FROM GameStatistics")
-    public Double minTimePlayed();
+    public Double findMinTimePlayed();
 
     @Query("SELECT max(duration) FROM GameStatistics")
-    public Double maxTimePlayed();
+    public Double findMaxTimePlayed();
 
     @Query("SELECT avg(duration) FROM GameStatistics")
-    public Double avgTimePlayed();
+    public Double findAvgTimePlayed();
 
+    @Query("SELECT count(g) FROM GameStatistics g")
+    Integer getNumberGames();
 }
