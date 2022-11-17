@@ -16,6 +16,7 @@ import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStat
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GameService {
@@ -51,14 +52,14 @@ public class GameService {
         List<Card> deck = createDeck();
         game.setDeck(deck);
 
-
         User user = this.userRepository.findById(creatorName).get();
         Player creator = this.playerRepository.findPlayerByUser(user);
         creator.setGame(game);
+        
         List<Player> players = List.of(creator);
         game.setPlayers(players);
 
-        //Guardamos juego en la bbdd
+        //Guardamos el nuevo juego en la bbdd
         this.gameRepository.save(game);
 
         return game;
@@ -80,12 +81,12 @@ public class GameService {
         return this.gameRepository.findById(id).get();
     }
 
-    public void kickPlayer(Game game, String name) {
-        List<Player> players = game.getPlayers().stream()
-                                                .filter(x-> !x.getUser().getUsername().equals(name))
-                                                .collect(Collectors.toList());
-                                                game.setPlayers(players);
-        save(game);
+    public void exitGame(Game game, String name) {
+
+        User user = this.userRepository.findById(name).get();
+        Player p = this.playerRepository.findPlayerByUser(user);
+        p.setGame(null);
+        this.playerRepository.save(p);  
     }
 
     public void delete(Game game) {
@@ -96,8 +97,15 @@ public class GameService {
         this.gameRepository.delete(game);
     }
 
-    public Integer getNumberGames() {
-        return gameRepository.getNumberGames();
+    public boolean isPlayer(List<Player> players, String principalName) {
+        return players.stream()
+                        .map(x->x.getUser().getUsername())
+                        .anyMatch(x-> x.equals(principalName));
     }
 
+    public void kickOfGame(Integer playerId) {
+        Player p = this.playerRepository.findById(playerId).get();
+        p.setGame(null);
+        this.playerRepository.save(p);
+    }
 }

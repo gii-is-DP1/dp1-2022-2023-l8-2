@@ -7,7 +7,7 @@ import org.springframework.samples.sieteislas.user.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlayerRepository extends CrudRepository<Player, String>{
+public interface PlayerRepository extends CrudRepository<Player, Integer>{
 
     @Query("SELECT p FROM Player p WHERE p.user LIKE :user")
     Player findPlayerByUser(@Param("user") User user);
