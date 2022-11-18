@@ -48,7 +48,7 @@ public class GameService {
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
-        
+
         List<Card> deck = createDeck();
         game.setDeck(deck);
 
@@ -72,11 +72,11 @@ public class GameService {
     public void save(Game game) {
         this.gameRepository.save(game);
     }
-    
+
     public Collection<Game> getActiveGames() {
         return  gameRepository.getActiveGames(true);
     }
-    
+
     public Game findById(Integer id) {
         return this.gameRepository.findById(id).get();
     }
@@ -93,7 +93,7 @@ public class GameService {
         Player p = game.getPlayers().get(0);
         p.setGame(null);
         this.playerRepository.save(p);
-        
+
         this.gameRepository.delete(game);
     }
 
