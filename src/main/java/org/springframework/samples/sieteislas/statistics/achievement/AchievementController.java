@@ -22,22 +22,21 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/statistics/achievements")
 public class AchievementController {
-
+	
     private String CREATE_OR_UPDATE_ACHIEVEMENT_FORM = "/achievements/AchievementCreateOrUpdateForm";
     private String ACHIEVEMENTS_LISTING = "/achievements/AchievementsListing";
-
-
+    
     private final AchievementService achievementService;
     private final UserService userService;
-
+    
     @Autowired
     public AchievementController(AchievementService achievementService,
     		UserService userService) {
-        this.achievementService = achievementService;
+        
+    	this.achievementService = achievementService;
         this.userService = userService;
     }
-
-    //GET ALL
+    
     @GetMapping("/")
     public String getAllAchievements(Map<String, Object> model,
     		Principal principal) {
@@ -50,32 +49,38 @@ public class AchievementController {
         
         return ACHIEVEMENTS_LISTING;
     }
-    //DELETE
+    
     @GetMapping("/delete/{achievementId}")
     public String deleteAchievement(@PathVariable("achievementId") int id){
-        achievementService.deleteAchievementById(id);
-        return "redirect:/statistics/achievements/"; //Redirect to GET ALL url. (which provides de achievement listing view)
+        
+    	achievementService.deleteAchievementById(id);
+       
+    	return "redirect:/statistics/achievements/";
     }
-
-    //UPDATE (2 STEPS)
-    //UPDATE (1/2; Retrieve the FORM)
+    
     @GetMapping("/edit/{id}")
     public String initUpdateForm(@PathVariable("id") int id, Map<String, Object> model) {
-        Achievement achievement = this.achievementService.getAchievementById(id);
+       
+    	Achievement achievement = this.achievementService.getAchievementById(id);
         model.put("achievement", achievement);
+        
         return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
     }
-
-    //UPDATE (2/2; After the user fills it, we POST the form)
-    @PostMapping("/edit/{id}")                                  //result stores the possible errors
+    
+    @PostMapping("/edit/{id}")
     public String processUpdateForm(@Valid Achievement achievement, BindingResult result,
                             @PathVariable("id") int id, Map<String, Object> model){
-        if(result.hasErrors()){
+        
+    	if(result.hasErrors()){
+        	
             model.put("achievement", achievement);
             return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+            
         } else{
+        	
             Achievement achievement2Update = this.achievementService.getAchievementById(id);
-            BeanUtils.copyProperties(achievement, achievement2Update, "id"); //demas argumentos props que se ignoran.
+            BeanUtils.copyProperties(achievement, achievement2Update, "id");
+            
             achievementService.saveAchievement(achievement2Update);
         }
         return "redirect:/statistics/achievements/";
@@ -90,23 +95,27 @@ public class AchievementController {
 	}
     
 	@GetMapping(value = "/new")
-	public ModelAndView create() {
+	public String create(Map<String, Object> model) {
 		
 		Achievement a = new Achievement();
-        ModelAndView res = new ModelAndView(CREATE_OR_UPDATE_ACHIEVEMENT_FORM);
-        res.addObject("achievement", a);
+        model.put("achievement", a);
         
-        return res;
+        return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
 	}
 	
 	@PostMapping(value = "/new")
-	public ModelAndView post(Achievement a) {
+	public String post(@Valid Achievement a, Map<String, Object> model,
+			BindingResult result) {
 		
-		achievementService.saveAchievement(a);
-		
-        ModelAndView res = showAll();
-        res.addObject("message", "The achievement was created successfully");
+		if(result.hasErrors()){
+			
+            model.put("achievement", a);
+            return CREATE_OR_UPDATE_ACHIEVEMENT_FORM;
+            
+        } else
+        	achievementService.saveAchievement(a);
         
-        return res;
+        return "redirect:/statistics/achievements/";
 	}
+	
 }

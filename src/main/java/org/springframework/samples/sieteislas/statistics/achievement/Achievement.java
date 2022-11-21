@@ -21,6 +21,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "achievements")
 public class Achievement extends NamedEntity {
+	
     @Column(name = "description")
     @NotBlank
     private String description;
