@@ -79,9 +79,15 @@ public class GameStatisticsController {
         globalNumberGamesMap.put("avgNumberGames", avgNumberGames);
         model.put("globalNumberGames", globalNumberGamesMap);
 
-        Integer totalNumberGamesUser = playerPointsService.getNumberGamesByUser(currentUser);
+        Integer totalNumberGamesUser = playerPointsService.getTotalNumberGamesByUser(currentUser);
+        Integer maxNumberGamesUser = playerPointsService.getMaxNumberGamesByUser(currentUser);
+        Integer minNumberGamesUser = playerPointsService.getMinNumberGamesByUser(currentUser);
+        Integer avgNumberGamesUser = playerPointsService.getAvgNumberGamesByUser(currentUser);
         Map<String, Integer> userNumberGamesMap = new HashMap<String, Integer>();
-        userNumberGamesMap.put("totalNumberGames", totalNumberGamesUser);
+        userNumberGamesMap.put("totalNumberGamesUser", totalNumberGamesUser);
+        userNumberGamesMap.put("maxNumberGamesUser", maxNumberGamesUser);
+        userNumberGamesMap.put("minNumberGamesUser", minNumberGamesUser);
+        userNumberGamesMap.put("avgNumberGamesUser", avgNumberGamesUser);
         model.put("userNumberGames", userNumberGamesMap);
 
         Integer totalPoints = playerPointsService.getTotalPoints();

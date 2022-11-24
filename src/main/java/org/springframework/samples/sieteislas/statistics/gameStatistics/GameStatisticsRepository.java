@@ -30,4 +30,5 @@ public interface GameStatisticsRepository extends CrudRepository<GameStatistics,
     @Query("SELECT count(g) FROM GameStatistics g GROUP BY g.month, g.year")
     Collection<Integer> getNumberGames();
 
+
 }

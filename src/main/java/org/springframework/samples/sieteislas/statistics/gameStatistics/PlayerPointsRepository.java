@@ -5,6 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 
 @Repository
 public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, Integer> {
@@ -34,8 +36,11 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT round(avg(p.gameStatistics.duration),2) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
     public Double findAvgTimePlayedByUser(@Param("currentUser") String currentUser);
 
-
     @Query("SELECT count(p) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
-    public Integer getNumberGamesByUser(@Param("currentUser") String currentUser);
+    public Integer getTotalNumberGamesByUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT count(p) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser " +
+        "GROUP BY p.gameStatistics.month, p.gameStatistics.year")
+    public Collection<Integer> getGroupedNumberGamesByUser(@Param("currentUser") String currentUser);
 
 }

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static java.util.Collections.max;
+import static java.util.Collections.min;
+
 @Service
 public class PlayerPointsService {
 
@@ -66,7 +69,17 @@ public class PlayerPointsService {
         return playerPointsRepository.findTotalTimePlayedByUser(currentUser);
     }
 
-    public Integer getNumberGamesByUser(String currentUser) {
-        return playerPointsRepository.getNumberGamesByUser(currentUser);
+    public Integer getTotalNumberGamesByUser(String currentUser) {
+        return playerPointsRepository.getTotalNumberGamesByUser(currentUser);
     }
+    public Integer getMaxNumberGamesByUser(String currentUser) {
+        return max(playerPointsRepository.getGroupedNumberGamesByUser(currentUser));
+    }
+    public Integer getMinNumberGamesByUser(String currentUser) {
+        return min(playerPointsRepository.getGroupedNumberGamesByUser(currentUser));
+    }
+    public Integer getAvgNumberGamesByUser(String currentUser) {
+        return (int)playerPointsRepository.getGroupedNumberGamesByUser(currentUser).stream().mapToDouble(d -> d).average().orElse(0.0);
+    }
+
 }
