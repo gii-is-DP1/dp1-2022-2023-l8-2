@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.user;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -39,5 +40,5 @@ public class User{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
 	
-	 
+	private List<User> friends;
 }
