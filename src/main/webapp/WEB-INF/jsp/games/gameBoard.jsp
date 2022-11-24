@@ -8,15 +8,11 @@
 <!DOCTYPE html>
 <html>
 	<sieteislas:htmlHeader/>
-	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-8">col-8</div>
-				<div class="col-4">col-4</div>
-				<div class="btn btn-default">hola</div>
-			</div>
+	<body class="container-fluid">
+		<div class="row">
+			<div class="col-8">col-8</div>
+			<div class="col-4">col-4</div>
+			<div class="btn btn-default">hola</div>
 		</div>
-		
-
 	</body>
 </html>

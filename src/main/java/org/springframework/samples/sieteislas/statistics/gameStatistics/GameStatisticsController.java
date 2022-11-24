@@ -3,12 +3,7 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.sieteislas.game.GameService;
-import org.springframework.samples.sieteislas.player.Player;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
