@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.game;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.model.BaseEntity;
@@ -56,16 +58,16 @@ public class Game extends BaseEntity{
     @Transient
     @NotNull
     private List<Card> islands;
-
+    
     private String creatorUsername;
 
-    @OneToOne(mappedBy = "game", cascade=CascadeType.ALL)
+    @OneToOne(mappedBy = "game", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     private GameStatistics statistics;
 
-    @OneToMany(mappedBy = "game", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Message> chat;
 
-    @OneToMany(mappedBy = "game", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "game", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Card> deck;
 
     @NotEmpty
