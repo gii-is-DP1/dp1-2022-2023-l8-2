@@ -20,7 +20,7 @@ INSERT INTO authorities(id,username,authority) VALUES (7,'maravimaq','admin');
 INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('joscasvaz','Jose Ignacio','Castro Vazquez','joscasvaz',TRUE, 'https://www.alacesta.com/1682-thickbox_default/escudo-betis.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
 
-INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('thokriale','Thomas','Kriale','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('thokriale','Thomas','Kristan','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
 INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
@@ -38,11 +38,11 @@ INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN'
 INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', FALSE,'maravimaq');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (5, 'Betis KK', TRUE,'jualopqui1');
 
-INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (1, 1, 'jualopqui1', 1808.63);
-INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (2, 2, 'pabberima', 1676.09);
-INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (3, 3, 'jualopqui1', 1798.58);
-INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (4, 4, 'joscasvaz', 1738.24);
-INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (5, 5, 'thokriale', 1420.69);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (1, 'pabberima', 1808.63, 2021, 07);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (2, 'thokriale', 1676.09, 2021, 08);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (3, 'joscasvaz', 1798.58, 2021, 08);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (4, 'maravimaq', 1738.24, 2021, 09);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (5, 'jualopqui1', 1420.69, 2021, 09);
 
 INSERT INTO players(id, user, game_id) VALUES (1, 'pabberima', 1);
 INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', 2);
@@ -52,7 +52,22 @@ INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
 INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 3);
 
-INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20120618 10:34:09', 1);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (1, 1, 140, 1);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (2, 1, 95, 2);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (3, 2, 130, 2);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (4, 2, 125, 4);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (5, 2, 100, 6);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (6, 3, 50, 3);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (7, 3, 85, 6);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (8, 4, 105, 4);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (9, 4, 100, 1);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (10, 5, 130, 6);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (11, 5, 120, 3);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (12, 5, 65, 2);
+INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (13, 5, 80, 1);
+
+
+INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20210618 10:34:09', 1);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20210918 18:34:09', 2);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (3, 1, 'mensaje3', '20210918 18:34:09', 3);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (4, 2, 'mensaje4', '20210918 18:34:09', 5);
@@ -102,3 +117,4 @@ INSERT INTO player_statistics(id, total_points, time_played, games_played, games
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 2);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (2, 1);
+

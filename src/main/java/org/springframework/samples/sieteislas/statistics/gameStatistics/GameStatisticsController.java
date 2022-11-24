@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.game.GameService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -42,7 +43,7 @@ public class GameStatisticsController {
     }
 
     @GetMapping("/dashboard")
-    public String getGlobalTimePlayed(Map<String, Object> model) {
+    public String getDashboardData(Map<String, Object> model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = authentication.getName();
         Double avgTimePlayedUser = playerPointsService.getAvgTimePlayedByUser(currentUser);
@@ -54,7 +55,7 @@ public class GameStatisticsController {
         timePlayedUserMap.put("maxTimePlayed", maxTimePlayedUser);
         timePlayedUserMap.put("minTimePlayed", minTimePlayedUser);
         timePlayedUserMap.put("totalTimePlayed", totalTimePlayedUser);
-        model.put("globalTimePlayedUser", timePlayedUserMap);
+        model.put("userTimePlayed", timePlayedUserMap);
 
         Double avgTimePlayed = gameStatisticsService.getAvgTimePlayed();
         Double maxTimePlayed = gameStatisticsService.getMaxTimePlayed();
@@ -67,9 +68,15 @@ public class GameStatisticsController {
         timePlayedMap.put("totalTimePlayed", totalTimePlayed);
         model.put("globalTimePlayed", timePlayedMap);
 
-        Integer totalNumberGames = gameStatisticsService.getNumberGames();
+        Integer totalNumberGames = gameStatisticsService.getTotalNumberGames();
+        Integer minNumberGames = gameStatisticsService.getMinNumberGames();
+        Integer maxNumberGames = gameStatisticsService.getMaxNumberGames();
+        Integer avgNumberGames = gameStatisticsService.getAvgNumberGames();
         Map<String, Integer> globalNumberGamesMap = new HashMap<String, Integer>();
         globalNumberGamesMap.put("totalNumberGames", totalNumberGames);
+        globalNumberGamesMap.put("minNumberGames", minNumberGames);
+        globalNumberGamesMap.put("maxNumberGames", maxNumberGames);
+        globalNumberGamesMap.put("avgNumberGames", avgNumberGames);
         model.put("globalNumberGames", globalNumberGamesMap);
 
         Integer totalNumberGamesUser = playerPointsService.getNumberGamesByUser(currentUser);
