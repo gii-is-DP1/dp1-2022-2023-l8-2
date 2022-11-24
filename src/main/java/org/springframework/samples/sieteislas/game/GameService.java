@@ -3,6 +3,8 @@ package org.springframework.samples.sieteislas.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
