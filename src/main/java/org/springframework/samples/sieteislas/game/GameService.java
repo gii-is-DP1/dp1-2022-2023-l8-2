@@ -108,4 +108,12 @@ public class GameService {
         p.setGame(null);
         this.playerRepository.save(p);
     }
+    
+    public void rollDice(Game game) {
+    	
+    	Double rand = Math.random() * 5;
+    	Long num = Math.round(rand) + 1L;
+    	
+    	game.setDiceRoll(num.intValue());
+    }
 }
