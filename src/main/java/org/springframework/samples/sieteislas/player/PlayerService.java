@@ -30,6 +30,10 @@ public class PlayerService {
     public Collection<Player> getAllPlayers() {
         return (Collection<Player>) playerRepository.findAll();
     }
+
+    public void findById(Integer playerId) {
+		this.playerRepository.findById(playerId);
+	}
  
 
 }

@@ -30,6 +30,12 @@
 					<span>Home</span>
 				</sieteislas:menuItem>
 
+				<sieteislas:menuItem active="${name eq 'games'}" url="/games/active"
+					title="find games">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Find games</span>
+				</sieteislas:menuItem>
+
 				<sieteislas:menuItem active="${name eq 'Players'}" url="/players/"
 					title="Players" dropdown="true" >
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
@@ -83,10 +89,17 @@
 						<li>
 							<div class="navbar-login">
 								<p class="text-left">
-									<a href="<c:url value="/statistics/gameStatistics/" />">Game Stats</a>
+									<a href="<c:url value="/statistics/previousGames/" />">Previous Games</a>
 								</p>
 							</div>
 						</li>
+                        <li>
+                            <div class="navbar-login">
+                                <p class="text-left">
+                                    <a href="<c:url value="/statistics/dashboard/" />">Dashboard</a>
+                                </p>
+                            </div>
+                        </li>
 					</ul>
 				</sieteislas:menuItem>
 

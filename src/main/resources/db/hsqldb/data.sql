@@ -33,9 +33,9 @@ INSERT INTO achievements(id, name, threshold, description, image, metric_id) VAL
 (2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
 INSERT INTO games(id, game_name, active, creator_username) VALUES (1, 'My first game', TRUE, 'pabberima');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPanitas', FALSE,'thokriale');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', FALSE,'joscasvaz');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', FALSE,'maravimaq');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPanitas', TRUE,'thokriale');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', TRUE,'joscasvaz');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (5, 'Betis KK', TRUE,'jualopqui1');
 
 INSERT INTO game_statistics(id, game_id, game_creator_name, duration) VALUES (1, 1, 'jualopqui1', 1808.63);
@@ -50,7 +50,7 @@ INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 5);
 INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 1);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
-INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 3);
+INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 5);
 
 INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20120618 10:34:09', 1);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20210918 18:34:09', 2);
