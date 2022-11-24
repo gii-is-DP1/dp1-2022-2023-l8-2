@@ -32,12 +32,19 @@
                     </c:forEach>
                 </td>  
                 <td>
-                    <spring:url value="/games/join/{gameId}" var="joinGameUrl">
-                        <spring:param name="gameId" value="${game.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(joinGameUrl)}">
-                        <p>JOIN GAME</p>
-                    </a>
+                    <c:choose>
+                        <c:when test="${4 > fn:length(game.players)}">
+                            <spring:url value="/games/join/{gameId}" var="joinGameUrl">
+                                <spring:param name="gameId" value="${game.id}"/>
+                            </spring:url>
+                            <a href="${fn:escapeXml(joinGameUrl)}">
+                                <p class="btn btn-success">JOIN GAME</p>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="#" class="btn btn-danger">FULL!</a>
+                        </c:otherwise>
+                    </c:choose>
                 </td>            
             </tr>
         </c:forEach>

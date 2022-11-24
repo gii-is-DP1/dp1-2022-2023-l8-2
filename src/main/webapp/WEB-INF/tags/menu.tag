@@ -30,7 +30,7 @@
 					<span>Home</span>
 				</sieteislas:menuItem>
 
-				<sieteislas:menuItem active="${name eq 'games'}" url="#"
+				<sieteislas:menuItem active="${name eq 'games'}" url="/games/active"
 					title="find games">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find games</span>
