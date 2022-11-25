@@ -20,10 +20,13 @@
     <div style="position:absolute; left:45%; bottom: 5%;">
         <c:choose>
             <c:when test="${fn:length(game.players) > 1}">
-                <a href="#" class="btn btn-success">Start Game!</a>
+                <spring:url value="/games/gameBoard/{gameId}" var="startGameUrl">
+                    <spring:param name="gameId" value="${game.id}"/>
+                </spring:url>
+                <a href="${fn:escapeXml(startGameUrl)}" class="btn btn-success">Start Game!</a>
             </c:when>
             <c:otherwise>
-                <a href="#" class="btn btn-danger">There must be at least 2 players to start the game!</a>
+                <a href="" class="btn btn-danger">There must be at least 2 players to start the game!</a>
             </c:otherwise>
         </c:choose>
     </div>

@@ -39,7 +39,7 @@ public class User{
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
-	
+  
 	@ManyToMany
 	@JoinTable(name="friends", 
 				joinColumns = @JoinColumn(name="user_id"),
@@ -51,4 +51,5 @@ public class User{
 				joinColumns = @JoinColumn(name="friend_id"),
 				inverseJoinColumns = @JoinColumn(name="user_id"))
 	private List<User> friendOf;
+  
 }
