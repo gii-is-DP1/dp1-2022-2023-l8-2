@@ -49,7 +49,7 @@ public class Game extends BaseEntity{
     @Transient
     @NotNull
     @Min(value=0)
-    private int turnNum;
+    private int playerTurn;
 
     @Transient
     @NotNull
