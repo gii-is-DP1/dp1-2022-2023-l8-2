@@ -39,7 +39,7 @@
                     <img src="${player.user.profileImage}" alt="image" style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
                 <h4 style="color: black;"><c:out value="${player.user.username}" /></h4>
-                <c:if test="${principalName.equals(game.creatorUsername)}">
+                <c:if test="${!game.players.contains(principalName)}">
                     <c:if test="${!player.user.username.equals(game.creatorUsername)}">
                         <spring:url value="/games/lobby/{id}/kick/{playerId}" var="lobbyKickUrl">
                             <spring:param name="id" value="${game.id}"/>
