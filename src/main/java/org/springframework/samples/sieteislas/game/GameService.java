@@ -3,6 +3,7 @@ package org.springframework.samples.sieteislas.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
-import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsRepository;
 import org.springframework.samples.sieteislas.user.User;
@@ -109,9 +109,17 @@ public class GameService {
         p.setGame(null);
         this.playerRepository.save(p);
     }
-
+    
     public void nextPlayer(){
         //TODO: calc next player : num mod nPlayers
     }
-
+    
+    public void rollDice(Game game) {
+    	
+    	Double rand = Math.random() * 5;
+    	Long num = Math.round(rand);
+    	
+    	game.setDiceRoll(num.intValue());
+    }
+    
 }

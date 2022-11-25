@@ -102,3 +102,11 @@ INSERT INTO player_statistics(id, total_points, time_played, games_played, games
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 2);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (2, 1);
+
+INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'joscasvaz');
+INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'thokriale');
+INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'thokriale');
+
+INSERT INTO friends(friend_id, user_id) VALUES ('joscasvaz', 'jualopqui1');
+INSERT INTO friends(friend_id, user_id) VALUES ('thokriale', 'jualopqui1');
+INSERT INTO friends(friend_id, user_id) VALUES ('thokriale', 'joscasvaz');
