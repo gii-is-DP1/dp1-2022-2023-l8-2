@@ -32,6 +32,7 @@
                     </c:forEach>
                 </td>  
                 <td>
+                    
                     <c:choose>
                         <c:when test="${4 > fn:length(game.players)}">
                             <spring:url value="/games/join/{gameId}" var="joinGameUrl">
@@ -45,6 +46,7 @@
                             <a href="#" class="btn btn-danger">FULL!</a>
                         </c:otherwise>
                     </c:choose>
+                 
                 </td>            
             </tr>
         </c:forEach>

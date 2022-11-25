@@ -108,5 +108,14 @@ public class GameController {
     public String getGameBoard(ModelMap model){
         return VIEWS_GAMES_GAMEBOARD;
     }
+    
+    @GetMapping("/join/{id}")
+    public String joinLobby(@PathVariable("id") String id, Principal principal) {
+    	Game game = this.gameService.findById(Integer.valueOf(id));
+    	this.gameService.joinGame(game, principal.getName());
+
+    	 String redirect = String.format("redirect:/games/lobby/%s", id);
+         return redirect;
+    }
 
 }
