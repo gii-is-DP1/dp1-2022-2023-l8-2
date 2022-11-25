@@ -1,17 +1,11 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
-import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
-import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,9 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/games")
@@ -43,6 +35,14 @@ public class GameController {
         this.playerService = playerService;
         this.userService = userService;
         this.gameStatisticService = gameStatisticService;
+    }
+
+    //GET ALL ACTIVE GAMES
+    @GetMapping("/active")
+    public String getActiveGames(Map<String, Object> model) {
+        Collection<Game> games = gameService.getActiveGames();
+        model.put("games", games);
+        return VIEWS_GAMES_LIST;
     }
 
     //CREATING A NEW GAME
@@ -95,12 +95,12 @@ public class GameController {
             return redirect;
         }        
     }
-    
-    @GetMapping("/active")
-    public String getActiveGames(Map<String, Object> model) {
-        Collection<Game> games = gameService.getActiveGames();
-        model.put("games", games);
-        return VIEWS_GAMES_LIST;
+
+    @GetMapping("/gameBoard/{gameId}")
+    public String startGame(@PathVariable("gameId") String id, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        model.put("game", game);
+        return VIEWS_GAMES_GAMEBOARD;
     }
 
     @GetMapping("/gameBoard")

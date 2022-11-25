@@ -18,7 +18,6 @@ import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStat
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GameService {
@@ -38,7 +37,7 @@ public class GameService {
     public Game setUpNewGame(Game game, String creatorName) {
         game.setCreatorUsername(creatorName);
         game.setActive(true);
-        game.setTurnNum(0);
+        game.setPlayerTurn(0);
         game.setDuration(0.0);
         game.setDiceRoll(1);
 
@@ -110,4 +109,9 @@ public class GameService {
         p.setGame(null);
         this.playerRepository.save(p);
     }
+
+    public void nextPlayer(){
+        //TODO: calc next player : num mod nPlayers
+    }
+
 }
