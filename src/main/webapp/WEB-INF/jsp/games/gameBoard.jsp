@@ -55,6 +55,10 @@
 		border-radius: 10px; 
 		margin-left: 3px;
 	}
+	.profileImage{
+		width: 50px;
+		height: 50px;
+	}
 
 </style>
 
@@ -74,18 +78,24 @@
 			<div class="col-md-3 no-float">
 				<div class="board-element board-border">
 					<div>Aqui van los mensajes</div>
+					<div>Aqui van los mensajes</div>
+					<div>Aqui van los mensajes</div>
+					<div>Aqui van los mensajes</div>
+					<div>Aqui van los mensajes</div>
 					<div>
-						<form style="bottom: 0;">
+						<form>
 							<input type="text" class="message-input">
 							<button type="submit" class="btn btn-default">Submit</button>
 						</form>
 					</div>
 					
 				</div>
-				<div class="board-element board-border">Player1</div>
-				<div class="board-element board-border">Player2</div>
-				<div class="board-element board-border">Player3</div>
-				<div class="board-element board-border">Player4</div>
+				<c:forEach items="${game.players}" var="player">
+					<div class="board-element board-border">
+						<c:out value="${player.user.username}"></c:out>
+						<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 		<sieteislas:footer/>
