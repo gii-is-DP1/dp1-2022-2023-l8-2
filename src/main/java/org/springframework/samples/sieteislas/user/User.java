@@ -40,5 +40,5 @@ public class User{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
 	
-	private List<User> friends;
+	// private List<User> friends;
 }

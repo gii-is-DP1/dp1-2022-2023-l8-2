@@ -86,6 +86,7 @@ public class GameService {
         User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(null);
+        //game.setActive(false);
         this.playerRepository.save(p);  
     }
 
@@ -107,5 +108,12 @@ public class GameService {
         Player p = this.playerRepository.findById(playerId).get();
         p.setGame(null);
         this.playerRepository.save(p);
+    }
+    
+    public void joinGame(Game game, String name) {
+    	User user = this.userRepository.findById(name).get();
+        Player p = this.playerRepository.findPlayerByUser(user);
+        p.setGame(game);
+        this.playerRepository.save(p);  
     }
 }
