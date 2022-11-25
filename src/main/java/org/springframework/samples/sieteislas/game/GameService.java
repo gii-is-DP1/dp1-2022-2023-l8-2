@@ -111,7 +111,6 @@ public class GameService {
         this.playerRepository.save(p);
     }
     
-
     public void joinGame(Game game, String name) {
     	User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
@@ -130,6 +129,5 @@ public class GameService {
     	
     	game.setDiceRoll(num.intValue());
     }
-    
 
 }
