@@ -3,6 +3,9 @@ package org.springframework.samples.sieteislas.game;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,6 @@ import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
-import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsRepository;
 import org.springframework.samples.sieteislas.user.User;
@@ -35,7 +37,7 @@ public class GameService {
     public Game setUpNewGame(Game game, String creatorName) {
         game.setCreatorUsername(creatorName);
         game.setActive(true);
-        game.setTurnNum(0);
+        game.setPlayerTurn(0);
         game.setDuration(0.0);
         game.setDiceRoll(1);
 
@@ -51,14 +53,14 @@ public class GameService {
         List<Card> deck = createDeck();
         game.setDeck(deck);
 
-
         User user = this.userRepository.findById(creatorName).get();
         Player creator = this.playerRepository.findPlayerByUser(user);
         creator.setGame(game);
+        
         List<Player> players = List.of(creator);
         game.setPlayers(players);
 
-        //Guardamos juego en la bbdd
+        //Guardamos el nuevo juego en la bbdd
         this.gameRepository.save(game);
 
         return game;
@@ -80,12 +82,13 @@ public class GameService {
         return this.gameRepository.findById(id).get();
     }
 
-    public void kickPlayer(Game game, String name) {
-        List<Player> players = game.getPlayers().stream()
-                                                .filter(x-> !x.getUser().getUsername().equals(name))
-                                                .collect(Collectors.toList());
-                                                game.setPlayers(players);
-        save(game);
+    public void exitGame(Game game, String name) {
+
+        User user = this.userRepository.findById(name).get();
+        Player p = this.playerRepository.findPlayerByUser(user);
+        p.setGame(null);
+        //game.setActive(false);
+        this.playerRepository.save(p);  
     }
 
     public void delete(Game game) {
@@ -96,8 +99,34 @@ public class GameService {
         this.gameRepository.delete(game);
     }
 
-    public Integer getNumberGames() {
-        return gameRepository.getNumberGames();
+    public boolean isPlayer(List<Player> players, String principalName) {
+        return players.stream()
+                        .map(x->x.getUser().getUsername())
+                        .anyMatch(x-> x.equals(principalName));
     }
 
+    public void kickOfGame(Integer playerId) {
+        Player p = this.playerRepository.findById(playerId).get();
+        p.setGame(null);
+        this.playerRepository.save(p);
+    }
+    
+    public void joinGame(Game game, String name) {
+    	User user = this.userRepository.findById(name).get();
+        Player p = this.playerRepository.findPlayerByUser(user);
+        p.setGame(game);
+        this.playerRepository.save(p);  
+    }
+
+    public void nextPlayer(){
+        //TODO: calc next player : num mod nPlayers
+    }
+    
+    public void rollDice(Game game) {
+    	
+    	Double rand = Math.random() * 5;
+    	Long num = Math.round(rand);
+    	
+    	game.setDiceRoll(num.intValue());
+    }
 }

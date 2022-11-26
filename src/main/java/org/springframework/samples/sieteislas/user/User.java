@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.user;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -38,6 +39,16 @@ public class User{
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
+  
+	@ManyToMany
+	@JoinTable(name="friends", 
+				joinColumns = @JoinColumn(name="user_id"),
+				inverseJoinColumns = @JoinColumn(name="friend_id"))
+	private List<User> friends;
 	
-	 
+	@ManyToMany
+	@JoinTable(name="friends", 
+				joinColumns = @JoinColumn(name="friend_id"),
+				inverseJoinColumns = @JoinColumn(name="user_id"))
+	private List<User> friendOf;
 }

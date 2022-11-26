@@ -3,8 +3,6 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.game.GameService;

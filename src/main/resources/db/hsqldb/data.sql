@@ -33,9 +33,9 @@ INSERT INTO achievements(id, name, threshold, description, image, metric_id) VAL
 (2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
 INSERT INTO games(id, game_name, active, creator_username) VALUES (1, 'My first game', TRUE, 'pabberima');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPanitas', FALSE,'thokriale');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', FALSE,'joscasvaz');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', FALSE,'maravimaq');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPanitas', TRUE,'thokriale');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', TRUE,'joscasvaz');
+INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq');
 INSERT INTO games(id, game_name, active, creator_username) VALUES (5, 'Betis KK', TRUE,'jualopqui1');
 
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (1, 'pabberima', 1808.63, 2021, 07);
@@ -50,7 +50,7 @@ INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 5);
 INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 1);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
-INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 3);
+INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 5);
 
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (1, 1, 140, 1);
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (2, 1, 95, 2);
@@ -118,3 +118,10 @@ INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 2);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (2, 1);
 
+INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'joscasvaz');
+INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'thokriale');
+INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'thokriale');
+
+INSERT INTO friends(friend_id, user_id) VALUES ('joscasvaz', 'jualopqui1');
+INSERT INTO friends(friend_id, user_id) VALUES ('thokriale', 'jualopqui1');
+INSERT INTO friends(friend_id, user_id) VALUES ('thokriale', 'joscasvaz');
