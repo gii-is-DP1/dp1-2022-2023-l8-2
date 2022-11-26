@@ -37,7 +37,7 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-    <h2><sec:authentication property="name"/>s Partidas</h2>
+    <h2>Partidas de <sec:authentication property="name"/></h2>
     <table id="userNumberGamesTable" class="table table-striped">
         <thead>
         <tr>
@@ -95,7 +95,7 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-    <h2><sec:authentication property="name"/>s Partidas</h2>
+    <h2>Partidas de <sec:authentication property="name"/></h2>
     <table id="userNumberGamesTable" class="table table-striped">
         <thead>
         <tr>

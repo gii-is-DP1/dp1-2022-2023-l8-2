@@ -1,6 +1,8 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import java.beans.Transient;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +13,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.model.BaseEntity;
 import lombok.Getter;
@@ -37,6 +43,13 @@ public class GameStatistics extends BaseEntity{
     @OneToMany(mappedBy="gameStatistics", cascade=CascadeType.ALL)
     private List<PlayerPointsMap> playerPoints;
 
+    @NotNull
+    @Column(name="month")
+    private Integer month;
+
+    @NotNull
+    @Column(name="year")
+    private Integer year;
 
 
 /*###################################################################################################################################################### */
@@ -62,6 +75,8 @@ public class GameStatistics extends BaseEntity{
         statistics.setGame(game2);
         statistics.setGameCreatorName(game2.getCreatorUsername());
         statistics.setDuration(0.0);
+        statistics.setMonth(YearMonth.now().getMonthValue());
+        statistics.setYear(YearMonth.now().getYear());
         return statistics;
     }
 
