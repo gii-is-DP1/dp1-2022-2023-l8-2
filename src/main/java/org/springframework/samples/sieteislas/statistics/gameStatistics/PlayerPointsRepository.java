@@ -39,8 +39,7 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT count(p) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
     public Integer getTotalNumberGamesByUser(@Param("currentUser") String currentUser);
 
-    @Query("SELECT count(p) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser " +
-        "GROUP BY p.gameStatistics.month, p.gameStatistics.year")
+    @Query("SELECT count(p) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser GROUP BY p.gameStatistics.month, p.gameStatistics.year")
     public Collection<Integer> getGroupedNumberGamesByUser(@Param("currentUser") String currentUser);
 
 }

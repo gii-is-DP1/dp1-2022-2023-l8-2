@@ -46,60 +46,13 @@ public class GameStatisticsController {
     public String getDashboardData(Map<String, Object> model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = authentication.getName();
-        Double avgTimePlayedUser = playerPointsService.getAvgTimePlayedByUser(currentUser);
-        Double maxTimePlayedUser = playerPointsService.getMaxTimePlayedByUser(currentUser);
-        Double minTimePlayedUser = playerPointsService.getMinTimePlayedByUser(currentUser);
-        Double totalTimePlayedUser = playerPointsService.getTotalTimePlayedByUser(currentUser);
-        Map<String, Double> timePlayedUserMap = new HashMap<String, Double>();
-        timePlayedUserMap.put("avgTimePlayed", avgTimePlayedUser);
-        timePlayedUserMap.put("maxTimePlayed", maxTimePlayedUser);
-        timePlayedUserMap.put("minTimePlayed", minTimePlayedUser);
-        timePlayedUserMap.put("totalTimePlayed", totalTimePlayedUser);
-        model.put("userTimePlayed", timePlayedUserMap);
-
-        Double avgTimePlayed = gameStatisticsService.getAvgTimePlayed();
-        Double maxTimePlayed = gameStatisticsService.getMaxTimePlayed();
-        Double minTimePlayed = gameStatisticsService.getMinTimePlayed();
-        Double totalTimePlayed = gameStatisticsService.getTotalTimePlayed();
-        Map<String, Double> timePlayedMap = new HashMap<String, Double>();
-        timePlayedMap.put("avgTimePlayed", avgTimePlayed);
-        timePlayedMap.put("maxTimePlayed", maxTimePlayed);
-        timePlayedMap.put("minTimePlayed", minTimePlayed);
-        timePlayedMap.put("totalTimePlayed", totalTimePlayed);
-        model.put("globalTimePlayed", timePlayedMap);
-
-        Integer totalNumberGames = gameStatisticsService.getTotalNumberGames();
-        Integer minNumberGames = gameStatisticsService.getMinNumberGames();
-        Integer maxNumberGames = gameStatisticsService.getMaxNumberGames();
-        Integer avgNumberGames = gameStatisticsService.getAvgNumberGames();
-        Map<String, Integer> globalNumberGamesMap = new HashMap<String, Integer>();
-        globalNumberGamesMap.put("totalNumberGames", totalNumberGames);
-        globalNumberGamesMap.put("minNumberGames", minNumberGames);
-        globalNumberGamesMap.put("maxNumberGames", maxNumberGames);
-        globalNumberGamesMap.put("avgNumberGames", avgNumberGames);
-        model.put("globalNumberGames", globalNumberGamesMap);
-
-        Integer totalNumberGamesUser = playerPointsService.getTotalNumberGamesByUser(currentUser);
-        Integer maxNumberGamesUser = playerPointsService.getMaxNumberGamesByUser(currentUser);
-        Integer minNumberGamesUser = playerPointsService.getMinNumberGamesByUser(currentUser);
-        Integer avgNumberGamesUser = playerPointsService.getAvgNumberGamesByUser(currentUser);
-        Map<String, Integer> userNumberGamesMap = new HashMap<String, Integer>();
-        userNumberGamesMap.put("totalNumberGamesUser", totalNumberGamesUser);
-        userNumberGamesMap.put("maxNumberGamesUser", maxNumberGamesUser);
-        userNumberGamesMap.put("minNumberGamesUser", minNumberGamesUser);
-        userNumberGamesMap.put("avgNumberGamesUser", avgNumberGamesUser);
-        model.put("userNumberGames", userNumberGamesMap);
-
-        Integer totalPoints = playerPointsService.getTotalPoints();
-        Integer minPoints = playerPointsService.getMinPoints();
-        Integer maxPoints = playerPointsService.getMaxPoints();
-        Integer avgPoints = playerPointsService.getAvgPoints();
-        Map<String, Integer> pointsMap = new HashMap<String, Integer>();
-        pointsMap.put("totalPoints", totalPoints);
-        pointsMap.put("minPoints", minPoints);
-        pointsMap.put("maxPoints", maxPoints);
-        pointsMap.put("avgPoints", avgPoints);
-        model.put("globalPoints", pointsMap);
+        model.put("globalTimePlayed", gameStatisticsService.getTimePlayedGlobalMap());
+        model.put("globalNumberGames", gameStatisticsService.getNumberGamesGlobalMap());
+        model.put("globalPoints", playerPointsService.getPointsGlobal());String str = "anonymousUser";
+        if(!currentUser.equals("anonymousUser")) {
+            model.put("userTimePlayed", playerPointsService.getTimePlayedUserMap(currentUser));
+            model.put("userNumberGames", playerPointsService.getNumberGamesUserMap(currentUser));
+        }
         return DASHBOARD;
     }
 
