@@ -2,8 +2,10 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -105,6 +107,22 @@ public class GameController {
 
     @GetMapping("/gameBoard")
     public String getGameBoard(ModelMap model){
+        return VIEWS_GAMES_GAMEBOARD;
+    }
+    
+    @GetMapping("/gameBoard/{gameId}/rollDice")
+    public String diceManager(@PathVariable("gameId") String id, ModelMap model,
+    		Principal principal) {
+    	
+    	Game game = gameService.findById(Integer.valueOf(id));
+    	
+    	gameService.rollDice(game);
+    	List<Card> possibleChoices = gameService.possibleChoices(game);
+    	
+    	model.put("game", game);
+    	model.put("possibleChoices", possibleChoices);
+    	model.put("username", principal.getName());
+    	
         return VIEWS_GAMES_GAMEBOARD;
     }
 

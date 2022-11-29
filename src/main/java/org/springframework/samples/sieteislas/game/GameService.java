@@ -115,16 +115,17 @@ public class GameService {
     	Long num = Math.round(rand);
     	
     	game.setDiceRoll(num.intValue());
+    	gameRepository.save(game);
     }
     
-    public int calculateHigher(Integer numCards, int diceRoll) {
+    private int calculateHigher(Integer numCards, int diceRoll) {
     	
     	int res = numCards + diceRoll;
     	
     	return (5 < res) ? 5 : res;
     }
     
-    public int calculateLower(Integer numCards, int diceRoll) {
+    private int calculateLower(Integer numCards, int diceRoll) {
     	
     	int res = diceRoll - numCards;
     	
