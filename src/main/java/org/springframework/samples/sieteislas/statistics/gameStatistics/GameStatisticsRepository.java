@@ -6,23 +6,29 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Repository
 public interface GameStatisticsRepository extends CrudRepository<GameStatistics, Integer> {
 
-    @Query("SELECT sum(duration) FROM GameStatistics ")
+    @Query("SELECT round(sum(duration),2) FROM GameStatistics ")
     public Double findTotalTimePlayed();
 
-    @Query("SELECT min(duration) FROM GameStatistics")
+    @Query("SELECT round(min(duration),2) FROM GameStatistics")
     public Double findMinTimePlayed();
 
-    @Query("SELECT max(duration) FROM GameStatistics")
+    @Query("SELECT round(max(duration),2) FROM GameStatistics")
     public Double findMaxTimePlayed();
 
-    @Query("SELECT avg(duration) FROM GameStatistics")
+    @Query("SELECT round(avg(duration),2) FROM GameStatistics")
     public Double findAvgTimePlayed();
 
     @Query("SELECT count(g) FROM GameStatistics g")
-    Integer getNumberGames();
+    Integer getTotalNumberGames();
+
+    @Query("SELECT count(g) FROM GameStatistics g GROUP BY g.month, g.year")
+    Collection<Integer> getNumberGames();
+
+
 }
