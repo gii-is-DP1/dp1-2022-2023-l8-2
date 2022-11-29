@@ -60,6 +60,10 @@
 		height: 50px;
 	}
 
+	.island{
+		background-color: rgba(245, 222, 179, 0.6);
+	}
+
 </style>
 
 <!DOCTYPE html>
@@ -69,8 +73,9 @@
 		<div class="row">
 			<div class="col-md-9 ">
 				<div class="board board-border">.
-					<c:forEach items="${game.players}" var="island">
-						<div class="board-border" style="width: 15%; display: inline-block;">
+					<c:forEach items="${game.players}" var="island" varStatus="loop">
+						<div class="board-border island" style="width: 15%; display: inline-block;">
+							<h2 color="black">ISLAND ${loop.index + 1}</h2>
 							<img src="/resources/images/cards/reverso.png" alt="island">
 						</div>
 					</c:forEach>
