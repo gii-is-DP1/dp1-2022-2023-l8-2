@@ -119,6 +119,7 @@ public class GameController {
 
     	 String redirect = String.format("redirect:/games/lobby/%s", id);
          return redirect;
+    }
 
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model,
