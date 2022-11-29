@@ -79,6 +79,11 @@
 							<img src="/resources/images/cards/reverso.png" alt="island">
 						</div>
 					</c:forEach>
+					<br>
+					<div class="board-border island" style="width: 15%; display: inline-block;">
+						<h2 color="black">DECK</h2>
+						<img src="/resources/images/cards/reverso.png" alt="island">
+					</div>
 				</div>
 				<div class="board-element board-border" >
 					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">CARTAS</div>
@@ -100,10 +105,11 @@
 					</div>
 					
 				</div>
+				<h2 color="black" class="island board-border">PLAYERS</h2>
 				<c:forEach items="${game.players}" var="player">
 					<div class="board-element board-border">
-						<c:out value="${player.user.username}"></c:out>
 						<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
+						<c:out value="${player.user.username}"></c:out>
 					</div>
 				</c:forEach>
 			</div>
