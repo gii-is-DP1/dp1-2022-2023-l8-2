@@ -110,9 +110,8 @@ public class GameService {
         p.setGame(null);
         this.playerRepository.save(p);
     }
-    
+
     public void nextPlayer(Game game){
-        
         int currentPlayer = game.getPlayerTurn();
         int numPlayers = game.getPlayers().size();
         //TODO: calc next player: num mod numPlayers
@@ -120,15 +119,13 @@ public class GameService {
         
         game.setPlayerTurn(nextPlayer);
         this.gameRepository.save(game);
+    }
+
     public void joinGame(Game game, String name) {
     	User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(game);
         this.playerRepository.save(p);  
-    }
-
-    public void nextPlayer(){
-        //TODO: calc next player : num mod nPlayers
     }
     
     public void rollDice(Game game) {
