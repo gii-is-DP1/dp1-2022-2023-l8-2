@@ -100,6 +100,7 @@ public class GameController {
 
     @GetMapping("/gameBoard/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
+        //Repartir cartas a jugadores
         Game game = this.gameService.findById(Integer.valueOf(id));
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
@@ -110,6 +111,15 @@ public class GameController {
         return VIEWS_GAMES_GAMEBOARD;
     }
     
+
+    @GetMapping("/join/{id}")
+    public String joinLobby(@PathVariable("id") String id, Principal principal) {
+    	Game game = this.gameService.findById(Integer.valueOf(id));
+    	this.gameService.joinGame(game, principal.getName());
+
+    	 String redirect = String.format("redirect:/games/lobby/%s", id);
+         return redirect;
+
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model,
     		Principal principal) {
@@ -124,6 +134,7 @@ public class GameController {
     	model.put("username", principal.getName());
     	
         return VIEWS_GAMES_GAMEBOARD;
+
     }
 
 }

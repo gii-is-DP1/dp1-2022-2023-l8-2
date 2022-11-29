@@ -6,7 +6,9 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
-    <h2> Current Games </h2>
+<a href="/games/new" class="btn btn-default">CREATE NEW GAME!</a>   
+
+<h2> Current Games </h2>
 
     <table id="gamesTable" class="table table-striped">
         <thead>
@@ -32,6 +34,7 @@
                     </c:forEach>
                 </td>  
                 <td>
+                    
                     <c:choose>
                         <c:when test="${4 > fn:length(game.players)}">
                             <spring:url value="/games/join/{gameId}" var="joinGameUrl">
@@ -45,6 +48,7 @@
                             <a href="#" class="btn btn-danger">FULL!</a>
                         </c:otherwise>
                     </c:choose>
+                 
                 </td>            
             </tr>
         </c:forEach>

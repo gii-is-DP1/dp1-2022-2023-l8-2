@@ -51,5 +51,4 @@ public class User{
 				joinColumns = @JoinColumn(name="friend_id"),
 				inverseJoinColumns = @JoinColumn(name="user_id"))
 	private List<User> friendOf;
-  
 }
