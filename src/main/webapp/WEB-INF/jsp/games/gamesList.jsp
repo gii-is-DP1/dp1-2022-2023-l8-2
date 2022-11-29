@@ -6,7 +6,9 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
-    <h2> Current Games </h2>
+<a href="/games/new" class="btn btn-default">CREATE NEW GAME!</a>   
+
+<h2> Current Games </h2>
 
     <table id="gamesTable" class="table table-striped">
         <thead>

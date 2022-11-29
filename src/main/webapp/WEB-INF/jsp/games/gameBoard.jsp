@@ -68,12 +68,17 @@
 	<body class="container-fluid">
 		<div class="row">
 			<div class="col-md-9 no-float">
-				<div class="board board-border">.</div>
+				<div class="board board-border">.
+					<c:forEach items="${game.players}" var="island">
+						<div class="board-border" style="width: 12%;">
+							<img src="/resources/images/cards/reverso.png" alt="island">
+						</div>
+					</c:forEach>
+				</div>
 				<div class="board-element board-border" >
 					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">CARTAS</div>
 					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO</div>
 				</div>
-				
 			</div>
 			<div class="col-md-3 no-float">
 				<div class="board-element board-border">
