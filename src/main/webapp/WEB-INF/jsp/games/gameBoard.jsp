@@ -79,7 +79,7 @@
 					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">CARTAS</div>
 					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO
 						<c:if test = "${game.players.get(playerTurn).equals(username)}">
-							<spring:url value="/gameBoard/{id}/rollDice" class="btn btn-default" var="rollDice">TIRAR DADO
+							<spring:url value="/gameBoard/{id}/rollDice" var="rollDice">TIRAR DADO
                 			<spring:param name="id" value="${game.id}"/>
             				</spring:url>
 						</c:if>
