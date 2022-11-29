@@ -67,10 +67,10 @@
 	<sieteislas:htmlHeader/>
 	<body class="container-fluid">
 		<div class="row">
-			<div class="col-md-9 no-float">
+			<div class="col-md-9 ">
 				<div class="board board-border">.
 					<c:forEach items="${game.players}" var="island">
-						<div class="board-border" style="width: 12%;">
+						<div class="board-border" style="width: 15%; display: inline-block;">
 							<img src="/resources/images/cards/reverso.png" alt="island">
 						</div>
 					</c:forEach>
@@ -80,7 +80,7 @@
 					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO</div>
 				</div>
 			</div>
-			<div class="col-md-3 no-float">
+			<div class="col-md-3 ">
 				<div class="board-element board-border">
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>
