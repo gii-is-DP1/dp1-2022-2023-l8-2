@@ -98,8 +98,9 @@ public class GameController {
 
     @GetMapping("/gameBoard/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
-        //Repartir cartas a jugadores
+        //instancia deck
         Game game = this.gameService.findById(Integer.valueOf(id));
+        //Repartir cartas a jugadores
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }
