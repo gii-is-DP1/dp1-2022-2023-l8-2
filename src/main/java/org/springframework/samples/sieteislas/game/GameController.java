@@ -103,39 +103,32 @@ public class GameController {
         }        
     }
 
-    @GetMapping("/gameBoard/{gameId}")
+    @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
-        //Repartir cartas a jugadores
-    	
         Game game = this.gameService.findById(Integer.valueOf(id));
-        List<Card> cartas = gameService.createDeck(game);
-        int i = 1;
-        for (Player player: game.getPlayers()) {
-        	Card doblon1 = this.cardService.findById(i);
-        	player.getCards().add(doblon1);
-        	cartas.remove(i-1);
-        	i +=1;
-        	
-        	Card doblon2 = this.cardService.findById(i);
-        	player.getCards().add(doblon2);
-        	cartas.remove(i-1);
-        	i +=1;
-        	
-        	Card doblon3 = this.cardService.findById(i);
-        	player.getCards().add(doblon3);
-        	cartas.remove(i-1);
-        	i+=1;
-        	
+        List<Card> doblones = gameService.createDeck(game).stream()
+                                        .filter(x->(x.getCardType().getName()).equals("coin"))
+                                        .collect(Collectors.toList());
+        //Repartimos 3 doblones a cada jugador
+        for(Player player: game.getPlayers()) { 
+            for(int i=0; i < 3; i++){
+                Card doblon = doblones.stream() 
+                                        .filter(x-> x.getPlayer() == null)
+                                        .findFirst().get();
+                this.gameService.moveCardToPlayer(doblon, player);
+                this.cardService.save(doblon);
+            }
         }
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}")
+    public String renderBoard(@PathVariable("gameId") String id, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }
-
-    @GetMapping("/gameBoard")
-    public String getGameBoard(ModelMap model){
-        return VIEWS_GAMES_GAMEBOARD;
-    }
-    
 
     @GetMapping("/join/{id}")
     public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {

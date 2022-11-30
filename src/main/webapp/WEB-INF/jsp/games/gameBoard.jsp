@@ -98,8 +98,10 @@
 			</div>
 			<div class="col-md-3 ">
 				<div class="board-element board-border">
-					<div>Aqui van los mensajes</div>
-					<div>Aqui van los mensajes</div>
+					<div></div>
+					<div>
+						<c:out value="${fn:length(game.deck)}"></c:out>
+					</div>
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>
@@ -116,6 +118,7 @@
 					<div class="board-element board-border">
 						<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
 						<c:out value="${player.user.username}"></c:out>
+						<c:out value="${fn:length(player.cards)}"></c:out>
 					</div>
 				</c:forEach>
 			</div>
