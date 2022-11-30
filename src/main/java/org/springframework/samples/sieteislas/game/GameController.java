@@ -2,8 +2,14 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.card.Card;
+import org.springframework.samples.sieteislas.card.CardService;
+import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -27,19 +33,21 @@ public class GameController {
     private GameStatisticsService gameStatisticService;
     private PlayerService playerService;
     private UserService userService;
+    private CardService cardService;
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService, UserService userService,
-                            GameStatisticsService gameStatisticService){
+                            GameStatisticsService gameStatisticService, CardService cardService){
         this.gameService = gameService;
         this.playerService = playerService;
         this.userService = userService;
         this.gameStatisticService = gameStatisticService;
+        this.cardService = cardService;
     }
 
     //GET ALL ACTIVE GAMES
     @GetMapping("/active")
-    public String getActiveGames(Map<String, Object> model) {
+    public String getActiveGames(Map<String, Object> model, Principal principal) {
         Collection<Game> games = gameService.getActiveGames();
         model.put("games", games);
         return VIEWS_GAMES_LIST;
@@ -99,7 +107,27 @@ public class GameController {
     @GetMapping("/gameBoard/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
         //Repartir cartas a jugadores
+    	
         Game game = this.gameService.findById(Integer.valueOf(id));
+        List<Card> cartas = gameService.createDeck(game);
+        int i = 1;
+        for (Player player: game.getPlayers()) {
+        	Card doblon1 = this.cardService.findById(i);
+        	player.getCards().add(doblon1);
+        	cartas.remove(i-1);
+        	i +=1;
+        	
+        	Card doblon2 = this.cardService.findById(i);
+        	player.getCards().add(doblon2);
+        	cartas.remove(i-1);
+        	i +=1;
+        	
+        	Card doblon3 = this.cardService.findById(i);
+        	player.getCards().add(doblon3);
+        	cartas.remove(i-1);
+        	i+=1;
+        	
+        }
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }
@@ -110,7 +138,7 @@ public class GameController {
     }
     
     @GetMapping("/join/{id}")
-    public String joinLobby(@PathVariable("id") String id, Principal principal) {
+    public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
     	Game game = this.gameService.findById(Integer.valueOf(id));
     	this.gameService.joinGame(game, principal.getName());
 
