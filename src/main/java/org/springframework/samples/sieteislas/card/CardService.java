@@ -20,7 +20,7 @@ public class CardService {
 	}
     
     public Card findById(Integer cardId) {
-		this.cardRepository.findById(cardId).get();
+		return this.cardRepository.findById(cardId).get();
 	}
 
 }
