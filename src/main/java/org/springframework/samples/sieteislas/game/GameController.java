@@ -135,7 +135,6 @@ public class GameController {
     	model.put("username", principal.getName());
     	
         return VIEWS_GAMES_GAMEBOARD;
-
     }
 
 }

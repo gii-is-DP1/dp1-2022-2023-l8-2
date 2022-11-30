@@ -41,22 +41,19 @@ public class Game extends BaseEntity{
     @NotNull
     private Boolean active;
     
-    @Transient
-    @Min(value=1, message = "roll must be at least 1")
-    @Max(value=6, message = "roll must be 6 at maximum")
+    @Min(value=0, message = "roll must be at least 0")
+    @Max(value=5, message = "roll must be 5 at maximum")
     private int diceRoll;
 
-    @Transient
     @NotNull
     @Min(value=0)
     private int playerTurn;
 
-    @Transient
     @NotNull
     private Double duration;
-
-    @Transient
+    
     @NotNull
+    @OneToMany(mappedBy = "game", cascade=CascadeType.PERSIST)
     private List<Card> islands;
     
     private String creatorUsername;
