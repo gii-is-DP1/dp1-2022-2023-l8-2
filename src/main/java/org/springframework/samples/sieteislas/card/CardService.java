@@ -23,4 +23,8 @@ public class CardService {
 		return this.cardRepository.findById(cardId).get();
 	}
 
+    public void save(Card card) {
+        this.cardRepository.save(card);
+    }
+
 }

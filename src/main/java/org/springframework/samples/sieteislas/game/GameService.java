@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
+import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
 import org.springframework.samples.sieteislas.card.CardTypeRepository;
 import org.springframework.samples.sieteislas.message.Message;
@@ -24,14 +25,17 @@ public class GameService {
     private final PlayerRepository playerRepository;
     private final UserRepository userRepository;
     private final CardTypeRepository cardTypeRepository;
+    private final CardRepository cardRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, GameStatisticsRepository gameStatisticsRepository, PlayerRepository playerRepository, UserRepository userRepository, CardTypeRepository cardTypeRepository){
+    public GameService(GameRepository gameRepository, GameStatisticsRepository gameStatisticsRepository, PlayerRepository playerRepository, 
+        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
         this.gameRepository = gameRepository;
         this.gameStatisticsRepository = gameStatisticsRepository;
         this.playerRepository = playerRepository;
         this.userRepository = userRepository;
         this.cardTypeRepository = cardTypeRepository;
+        this.cardRepository = cardRepository;
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
@@ -72,29 +76,41 @@ public class GameService {
         	Card card = new Card();
         	card.setGame(game);
         	if (i < 27) {//doblones
-        		card.setCardType(cardTypeRepository.findById(1).get());
+        		card.setCardType(getCardType("coin"));
         	} else if ( i >= 27 && i < 30) {//calices
-        		card.setCardType(cardTypeRepository.findById(2).get());
+        		card.setCardType(getCardType("coup"));
         	} else if ( i >= 30 && i < 33) {//rubies
-        		card.setCardType(cardTypeRepository.findById(3).get());
+        		card.setCardType(getCardType("ruby"));
         	} else if ( i >= 33 && i < 36) {//diamantes
-        		card.setCardType(cardTypeRepository.findById(4).get());
+        		card.setCardType(getCardType("diamond"));
         	} else if ( i >= 36 && i < 40) {//collares
-        		card.setCardType(cardTypeRepository.findById(5).get());
+        		card.setCardType(getCardType("necklace"));
         	} else if ( i >= 40 && i < 44) {//mapas
-        		card.setCardType(cardTypeRepository.findById(6).get());
+        		card.setCardType(getCardType("bottle"));
         	} else if ( i >= 44 && i < 48) {//coronas
-        		card.setCardType(cardTypeRepository.findById(7).get());
+        		card.setCardType(getCardType("crown"));
         	} else if ( i >= 48 && i < 54) {//revolveres
-        		card.setCardType(cardTypeRepository.findById(8).get());
+        		card.setCardType(getCardType("pistol"));
         	} else if ( i >= 54 && i < 60) {//espadas
-        		card.setCardType(cardTypeRepository.findById(9).get());
+        		card.setCardType(getCardType("sword"));
         	} else {//barriles
-        		card.setCardType(cardTypeRepository.findById(10).get());
+        		card.setCardType(getCardType("rum"));
         	}
+            card.setGame(game);
+            this.cardRepository.save(card);
         	cartas.add(card);
         }
         return cartas;
+    }
+
+    private CardType getCardType(String name){
+        return cardTypeRepository.getTypeByName(name);
+    }
+
+    public void moveCardToPlayer(Card card, Player player) {
+        card.setGame(null);
+        card.setPlayer(player);
+        this.cardRepository.save(card);
     }
 
     public void save(Game game) {
@@ -189,5 +205,7 @@ public class GameService {
     	return islands.subList(calculateLower(numCards, diceRoll),
     			calculateHigher(numCards, diceRoll));
     }
+
+
 
 }
