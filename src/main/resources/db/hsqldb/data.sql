@@ -91,9 +91,9 @@ INSERT INTO card_types(id, name, image) VALUES (10, 'sword', '/resources/images/
 INSERT INTO card_types(id, name, image) VALUES (11, 'emptyIsland', '/resources/images/cards/isla.png');
 INSERT INTO card_types(id, name, image) VALUES (12, 'upsideDown', '/resources/images/cards/reverso.png');
 
-INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (1, 1, 1, 1);
-INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (2, 2, 1, 2);
-INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (3, 3, 1, 3);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (1, 1, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (2, 2, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (3, 3, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (4, 4, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (5, 5, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (6, 6, 1);

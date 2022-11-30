@@ -87,13 +87,21 @@
 				</div>
 				<div class="board-element board-border" >
 					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">CARTAS</div>
-					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO</div>
+					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO
+						<c:if test = "${game.players.get(playerTurn).equals(username)}">
+							<spring:url value="/gameBoard/{id}/rollDice" var="rollDice">TIRAR DADO
+                			<spring:param name="id" value="${game.id}"/>
+            				</spring:url>
+						</c:if>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-3 ">
 				<div class="board-element board-border">
-					<div>Aqui van los mensajes</div>
-					<div>Aqui van los mensajes</div>
+					<div></div>
+					<div>
+						<c:out value="${fn:length(game.deck)}"></c:out>
+					</div>
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>
@@ -110,6 +118,7 @@
 					<div class="board-element board-border">
 						<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
 						<c:out value="${player.user.username}"></c:out>
+						<c:out value="${fn:length(player.cards)}"></c:out>
 					</div>
 				</c:forEach>
 			</div>
