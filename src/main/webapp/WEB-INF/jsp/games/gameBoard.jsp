@@ -60,6 +60,10 @@
 		height: 50px;
 	}
 
+	.island{
+		background-color: rgba(245, 222, 179, 0.6);
+	}
+
 </style>
 
 <!DOCTYPE html>
@@ -67,20 +71,32 @@
 	<sieteislas:htmlHeader/>
 	<body class="container-fluid">
 		<div class="row">
-			<div class="col-md-9 no-float">
+			<div class="col-md-9 ">
 				<div class="board board-border">.
-					<c:forEach items="${game.players}" var="island">
-						<div class="board-border" style="width: 12%;">
+					<c:forEach items="${game.players}" var="island" varStatus="loop">
+						<div class="board-border island" style="width: 15%; display: inline-block;">
+							<h2 color="black">ISLAND ${loop.index + 1}</h2>
 							<img src="/resources/images/cards/reverso.png" alt="island">
 						</div>
 					</c:forEach>
+					<br>
+					<div class="board-border island" style="width: 15%; display: inline-block;">
+						<h2 color="black">DECK</h2>
+						<img src="/resources/images/cards/reverso.png" alt="island">
+					</div>
 				</div>
 				<div class="board-element board-border" >
 					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">CARTAS</div>
-					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO</div>
+					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO
+						<c:if test = "${game.players.get(playerTurn).equals(username)}">
+							<spring:url value="/gameBoard/{id}/rollDice" var="rollDice">TIRAR DADO
+                			<spring:param name="id" value="${game.id}"/>
+            				</spring:url>
+						</c:if>
+					</div>
 				</div>
 			</div>
-			<div class="col-md-3 no-float">
+			<div class="col-md-3 ">
 				<div class="board-element board-border">
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>
@@ -95,10 +111,11 @@
 					</div>
 					
 				</div>
+				<h2 color="black" class="island board-border">PLAYERS</h2>
 				<c:forEach items="${game.players}" var="player">
 					<div class="board-element board-border">
-						<c:out value="${player.user.username}"></c:out>
 						<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
+						<c:out value="${player.user.username}"></c:out>
 					</div>
 				</c:forEach>
 			</div>

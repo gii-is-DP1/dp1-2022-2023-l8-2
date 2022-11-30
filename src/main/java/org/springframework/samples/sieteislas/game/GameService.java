@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardType;
@@ -64,7 +60,6 @@ public class GameService {
         List<Player> players = List.of(creator);
         game.setPlayers(players);
 
-        //Guardamos el nuevo juego en la bbdd
         this.gameRepository.save(game);
 
         return game;
@@ -166,6 +161,33 @@ public class GameService {
     	Long num = Math.round(rand);
     	
     	game.setDiceRoll(num.intValue());
+    	gameRepository.save(game);
+    }
+    
+    private int calculateHigher(Integer numCards, int diceRoll) {
+    	
+    	int res = numCards + diceRoll;
+    	
+    	return (5 < res) ? 5 : res;
+    }
+    
+    private int calculateLower(Integer numCards, int diceRoll) {
+    	
+    	int res = diceRoll - numCards;
+    	
+    	return (res < 0) ? 0 : res;
+    }
+    
+    public List<Card> possibleChoices(Game game){
+    	
+    	int diceRoll = game.getDiceRoll();
+    	List<Card> islands = game.getIslands();
+    	
+    	Player playing = game.getPlayers().get(game.getPlayerTurn());
+    	Integer numCards = playing.getCards().size();
+    	
+    	return islands.subList(calculateLower(numCards, diceRoll),
+    			calculateHigher(numCards, diceRoll));
     }
 
 }
