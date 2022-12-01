@@ -2,6 +2,7 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -88,9 +89,14 @@ public class GameService {
         		card.setCardType(getCardType("rum"));
         	}
             card.setGame(game);
-            this.cardRepository.save(card);
-        	cartas.add(card);
+                cartas.add(card);
         }
+
+        Collections.shuffle(cartas);
+        for(Card c : cartas){
+        this.cardRepository.save(c);
+        }
+
         return cartas;
     }
 
