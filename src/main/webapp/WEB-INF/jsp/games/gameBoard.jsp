@@ -90,7 +90,7 @@
 					<c:forEach items="${game.deck}" var="card" varStatus="loop" end="5">
 						<div class="board-border island" style="width: 15%; display: inline-block;">
 							<h2 color="black">ISLAND ${loop.index + 1}</h2>
-							<img src="/resources/images/cards/${card.cardType.name}.png" alt="island">
+							<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
 						</div>
 					</c:forEach>
 					<br>
