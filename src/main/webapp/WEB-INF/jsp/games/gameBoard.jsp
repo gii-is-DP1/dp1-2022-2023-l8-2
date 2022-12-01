@@ -81,12 +81,25 @@
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">
-						<h2 color="black">DECK</h2>
+						<h2 color="black">DECK
+							(<c:out value="${fn:length(game.deck)}"></c:out>)
+						</h2>
 						<img src="/resources/images/cards/reverso.png" alt="island">
 					</div>
 				</div>
 				<div class="board-element board-border" >
-					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">CARTAS</div>
+					<div class="board-border" style="display: inline-block; width: 79%; height: 100%;">
+						<c:choose>
+							<c:when test="${isPlayer}">
+								<c:forEach items="${player.cards}" var="card">
+									<c:out value="${card.cardType.name}"></c:out>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<h1>YOU'RE ON SPECTATOR MODE</h1>
+							</c:otherwise>
+						</c:choose>
+					</div>
 					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO
 						<c:if test = "${game.players.get(playerTurn).equals(username)}">
 							<spring:url value="/gameBoard/{id}/rollDice" var="rollDice">TIRAR DADO
@@ -100,7 +113,7 @@
 				<div class="board-element board-border">
 					<div></div>
 					<div>
-						<c:out value="${fn:length(game.deck)}"></c:out>
+						
 					</div>
 					<div>Aqui van los mensajes</div>
 					<div>Aqui van los mensajes</div>

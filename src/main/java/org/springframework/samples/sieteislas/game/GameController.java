@@ -85,6 +85,9 @@ public class GameController {
                 this.gameService.delete(game);
             } else{
                 this.gameService.exitGame(game, principal.getName());
+                if(game.getCreatorUsername().equals(principal.getName())){
+                    this.gameService.selectNewCreator(game);
+                }
             }  
         }
         return "redirect:/"; 
@@ -105,35 +108,36 @@ public class GameController {
 
     @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
-<<<<<<< HEAD
-        //instancia deck
         Game game = this.gameService.findById(Integer.valueOf(id));
-        //Repartir cartas a jugadores
-        model.put("game", game);
-        return VIEWS_GAMES_GAMEBOARD;
-=======
-        Game game = this.gameService.findById(Integer.valueOf(id));
-        List<Card> doblones = gameService.createDeck(game).stream()
-                                        .filter(x->(x.getCardType().getName()).equals("coin"))
-                                        .collect(Collectors.toList());
-        //Repartimos 3 doblones a cada jugador
-        for(Player player: game.getPlayers()) { 
-            for(int i=0; i < 3; i++){
-                Card doblon = doblones.stream() 
-                                        .filter(x-> x.getPlayer() == null)
-                                        .findFirst().get();
-                this.gameService.moveCardToPlayer(doblon, player);
-                this.cardService.save(doblon);
+        if(game.getActive()){
+            List<Card> doblones = gameService.createDeck(game).stream()
+                                            .filter(x->(x.getCardType().getName()).equals("coin"))
+                                            .collect(Collectors.toList());
+            //Repartimos 3 doblones a cada jugador
+            for(Player player: game.getPlayers()) { 
+                for(int i=0; i < 3; i++){
+                    Card doblon = doblones.stream() 
+                                            .filter(x-> x.getPlayer() == null)
+                                            .findFirst().get();
+                    this.gameService.moveCardToPlayer(doblon, player);
+                    this.cardService.save(doblon);
+                }
             }
+            this.gameService.toggleActive(game, false);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
->>>>>>> origin/master
     }
 
     @GetMapping("/gameBoard/{gameId}")
-    public String renderBoard(@PathVariable("gameId") String id, ModelMap model){
+    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
+        boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
+        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
+        
+        model.put("isPlayer", isPlayer);
+        model.put("isCurrentPlayer", isCurrentPlayer);
+        model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }

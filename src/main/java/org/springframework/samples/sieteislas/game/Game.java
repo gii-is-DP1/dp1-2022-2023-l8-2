@@ -54,10 +54,6 @@ public class Game extends BaseEntity{
     @Transient
     @NotNull
     private Double duration;
-
-    @Transient
-    @NotNull
-    private List<Card> islands;
     
     private String creatorUsername;
 
@@ -70,7 +66,6 @@ public class Game extends BaseEntity{
     @OneToMany(mappedBy = "game", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Card> deck;
 
-    @NotEmpty
     @Size(min=1, max=4)
     @OneToMany(mappedBy = "game", cascade=CascadeType.PERSIST)
     private List<Player> players;
