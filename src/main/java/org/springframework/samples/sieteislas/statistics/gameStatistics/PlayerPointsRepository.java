@@ -23,6 +23,17 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT round(avg(points),2) FROM PlayerPointsMap")
     public Integer findAvgPoints();
 
+    @Query("SELECT round(sum(p.points),2) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    public Integer findTotalPointsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT round(min(p.points),2) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    public Integer findMinPointsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT round(max(p.points),2) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    public Integer findMaxPointsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT round(avg(p.points),2) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    public Integer findAvgPointsUser(@Param("currentUser") String currentUser);
 
     @Query("SELECT round(sum(p.gameStatistics.duration),2) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
     public Double findTotalTimePlayedByUser(@Param("currentUser") String currentUser);

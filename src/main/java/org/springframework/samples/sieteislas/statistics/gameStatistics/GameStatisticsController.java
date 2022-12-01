@@ -2,6 +2,7 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.game.Game;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class GameStatisticsController {
 
 
-    private String GAMESTATISTICS_LISTING = "/gameStatistics/GameStatisticsListing";
+    private String GAMESTATISTICS_LISTING = "/gameStatistics/previousGamesListing";
     private String DASHBOARD = "/gameStatistics/statisticsDashboard";
     private final GameStatisticsService gameStatisticsService;
     private final PlayerPointsService playerPointsService;
@@ -34,7 +35,7 @@ public class GameStatisticsController {
     @GetMapping("/previousGames")
     public String getAllGameStatistics(Map<String, Object> model) {
         Collection<GameStatistics> gameStats = gameStatisticsService.getAllGameStatistics();
-        Collection<String> playerPointsMaps = playerPointsService.getAllPlayerPointsMaps(gameStats);
+        Collection<List<String>> playerPointsMaps = playerPointsService.getAllPlayerPointsMaps(gameStats);
         model.put("gameStatistics", gameStats);
         model.put("playerPointsMaps", playerPointsMaps);
         return GAMESTATISTICS_LISTING;
@@ -46,10 +47,11 @@ public class GameStatisticsController {
         String currentUser = authentication.getName();
         model.put("globalTimePlayed", gameStatisticsService.getTimePlayedGlobalMap());
         model.put("globalNumberGames", gameStatisticsService.getNumberGamesGlobalMap());
-        model.put("globalPoints", playerPointsService.getPointsGlobal());String str = "anonymousUser";
+        model.put("globalPoints", playerPointsService.getPointsGlobal());
         if(!currentUser.equals("anonymousUser")) {
             model.put("userTimePlayed", playerPointsService.getTimePlayedUserMap(currentUser));
             model.put("userNumberGames", playerPointsService.getNumberGamesUserMap(currentUser));
+            model.put("userPoints", playerPointsService.getPointsUser(currentUser));
         }
         return DASHBOARD;
     }

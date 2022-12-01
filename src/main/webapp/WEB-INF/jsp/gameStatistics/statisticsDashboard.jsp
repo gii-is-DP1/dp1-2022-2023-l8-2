@@ -8,15 +8,16 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <sieteislas:layout pageName="dashboard">
-    <h1>N&#250mero de Partidas</h1>
+    <h1 style="text-align: center;">DASHBOARD</h1>
+    <h1>Number of Games</h1>
     <h2>Global</h2>
     <table id="globalNumberGamesTable" class="table table-striped">
         <thead>
         <tr>
             <th>Total</th>
-            <th>M&#237nimo por Mes</th>
-            <th>M&#225ximo por Mes</th>
-            <th>Promedio por Mes</th>
+            <th>Minimum per Month</th>
+            <th>Maximum per Month</th>
+            <th>Average per Month</th>
         </tr>
         </thead>
         <tbody>
@@ -37,44 +38,44 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-    <h2>Partidas de <sec:authentication property="name"/></h2>
-    <table id="userNumberGamesTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th>Total</th>
-            <th>M&#237nimo por Mes</th>
-            <th>M&#225ximo por Mes</th>
-            <th>Promedio por Mes</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-                <c:out value="${userNumberGames.totalNumberGamesUser}"/>
-            </td>
-            <td>
-                <c:out value="${userNumberGames.maxNumberGamesUser}"/>
-            </td>
-            <td>
-                <c:out value="${userNumberGames.minNumberGamesUser}"/>
-            </td>
-            <td>
-                <c:out value="${userNumberGames.avgNumberGamesUser}"/>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <h2>Games of <sec:authentication property="name"/></h2>
+        <table id="userNumberGamesTable" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Total</th>
+                <th>Minimum per Month</th>
+                <th>Maximum per Month</th>
+                <th>Average per Month</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <c:out value="${userNumberGames.totalNumberGamesUser}"/>
+                </td>
+                <td>
+                    <c:out value="${userNumberGames.maxNumberGamesUser}"/>
+                </td>
+                <td>
+                    <c:out value="${userNumberGames.minNumberGamesUser}"/>
+                </td>
+                <td>
+                    <c:out value="${userNumberGames.avgNumberGamesUser}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </sec:authorize>
 
-    <h1>Duraci&#243n de las Partidas (en Segundos)</h1>
+    <h1>Duration of the Games (in sec)</h1>
     <h2>Global</h2>
-    <table id="globalNumberGamesTable" class="table table-striped">
+    <table id="globalDurationGamesTable" class="table table-striped">
         <thead>
         <tr>
             <th>Total</th>
-            <th>M&#237nimo</th>
-            <th>M&#225ximo</th>
-            <th>Promedio</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Average</th>
         </tr>
         </thead>
         <tbody>
@@ -95,60 +96,89 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-    <h2>Partidas de <sec:authentication property="name"/></h2>
-    <table id="userNumberGamesTable" class="table table-striped">
+        <h2>Games of <sec:authentication property="name"/></h2>
+        <table id="userDurationGamesTable" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Total</th>
+                <th>Minimum</th>
+                <th>Maximum</th>
+                <th>Average</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <c:out value="${userTimePlayed.totalTimePlayed}"/>
+                </td>
+                <td>
+                    <c:out value="${userTimePlayed.minTimePlayed}"/>
+                </td>
+                <td>
+                    <c:out value="${userTimePlayed.maxTimePlayed}"/>
+                </td>
+                <td>
+                    <c:out value="${userTimePlayed.avgTimePlayed}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </sec:authorize>
+
+    <h1>Gained Points</h1>
+    <h2>Global</h2>
+    <table id="globalPointsTable" class="table table-striped">
         <thead>
         <tr>
             <th>Total</th>
-            <th>M&#237nimo</th>
-            <th>M&#225ximo</th>
-            <th>Promedio</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Average</th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <td>
-                <c:out value="${userTimePlayed.totalTimePlayed}"/>
+                <c:out value="${globalPoints.totalPoints}"/>
             </td>
             <td>
-                <c:out value="${userTimePlayed.minTimePlayed}"/>
+                <c:out value="${globalPoints.minPoints}"/>
             </td>
             <td>
-                <c:out value="${userTimePlayed.maxTimePlayed}"/>
+                <c:out value="${globalPoints.maxPoints}"/>
             </td>
             <td>
-                <c:out value="${userTimePlayed.avgTimePlayed}"/>
+                <c:out value="${globalPoints.avgPoints}"/>
             </td>
         </tr>
         </tbody>
     </table>
+    <sec:authorize access="isAuthenticated()">
+        <h2>Games of <sec:authentication property="name"/></h2>
+        <table id="userPointsTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Total</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+            <th>Average</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <c:out value="${userPoints.totalPoints}"/>
+            </td>
+            <td>
+                <c:out value="${userPoints.minPoints}"/>
+            </td>
+            <td>
+                <c:out value="${userPoints.maxPoints}"/>
+            </td>
+            <td>
+                <c:out value="${userPoints.avgPoints}"/>
+            </td>
+        </tr>
+        </tbody>
     </sec:authorize>
-
-    <h1>Puntos ganados</h1>
-    <h2>Global</h2>
-    <table id="globalPointsTable" class="table table-striped">
-    <thead>
-    <tr>
-        <th>Total</th>
-        <th>M&#237nimo</th>
-        <th>M&#225ximo</th>
-        <th>Promedio</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            <c:out value="${globalPoints.totalPoints}"/>
-        </td>
-        <td>
-            <c:out value="${globalPoints.minPoints}"/>
-        </td>
-        <td>
-            <c:out value="${globalPoints.maxPoints}"/>
-        </td>
-        <td>
-            <c:out value="${globalPoints.avgPoints}"/>
-        </td>
-    </tr>
-    </tbody>
 </sieteislas:layout>

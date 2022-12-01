@@ -24,37 +24,11 @@ public class GameStatisticsService {
         return (Collection<GameStatistics>) gameStatisticsRepository.findAll();
     }
 
-    public Double getMaxTimePlayed() {
-        return gameStatisticsRepository.findMaxTimePlayed();
-    }
-    public Double getAvgTimePlayed() {
-        return gameStatisticsRepository.findAvgTimePlayed();
-    }
-    public Double getMinTimePlayed() {
-        return gameStatisticsRepository.findMinTimePlayed();
-    }
-    public Double getTotalTimePlayed() {
-        return gameStatisticsRepository.findTotalTimePlayed();
-    }
-
-    public Integer getTotalNumberGames() {
-        return gameStatisticsRepository.getTotalNumberGames();
-    }
-    public Integer getMaxNumberGames() {
-        return max(gameStatisticsRepository.getNumberGames());
-    }
-    public Integer getMinNumberGames() {
-        return min(gameStatisticsRepository.getNumberGames());
-    }
-    public Integer getAvgNumberGames() {
-        return (int)gameStatisticsRepository.getNumberGames().stream().mapToDouble(d -> d).average().orElse(0.0);
-    }
-
     public Map<String, Double> getTimePlayedGlobalMap(){
-        Double avgTimePlayed = getAvgTimePlayed();
-        Double maxTimePlayed = getMaxTimePlayed();
-        Double minTimePlayed = getMinTimePlayed();
-        Double totalTimePlayed = getTotalTimePlayed();
+        Double avgTimePlayed = gameStatisticsRepository.findAvgTimePlayed();
+        Double maxTimePlayed = gameStatisticsRepository.findMaxTimePlayed();
+        Double minTimePlayed = gameStatisticsRepository.findMinTimePlayed();
+        Double totalTimePlayed = gameStatisticsRepository.findTotalTimePlayed();
         Map<String, Double> timePlayedMap = new HashMap<String, Double>();
         timePlayedMap.put("avgTimePlayed", avgTimePlayed);
         timePlayedMap.put("maxTimePlayed", maxTimePlayed);
@@ -64,10 +38,10 @@ public class GameStatisticsService {
     }
 
     public Map<String, Integer> getNumberGamesGlobalMap(){
-        Integer totalNumberGames = getTotalNumberGames();
-        Integer minNumberGames = getMinNumberGames();
-        Integer maxNumberGames = getMaxNumberGames();
-        Integer avgNumberGames = getAvgNumberGames();
+        Integer totalNumberGames = gameStatisticsRepository.getTotalNumberGames();
+        Integer minNumberGames = min(gameStatisticsRepository.getNumberGames());
+        Integer maxNumberGames = max(gameStatisticsRepository.getNumberGames());
+        Integer avgNumberGames = (int)gameStatisticsRepository.getNumberGames().stream().mapToDouble(d -> d).average().orElse(0.0);
         Map<String, Integer> globalNumberGamesMap = new HashMap<String, Integer>();
         globalNumberGamesMap.put("totalNumberGames", totalNumberGames);
         globalNumberGamesMap.put("minNumberGames", minNumberGames);
