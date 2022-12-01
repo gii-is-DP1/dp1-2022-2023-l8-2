@@ -23,6 +23,10 @@ public class PlayerService {
     public Player findByUser(User user) {
 		return this.playerRepository.findPlayerByUser(user);
 	}
+    
+    public Player findByUsername(String username) {
+		return this.playerRepository.findPlayerByUsername(username);
+	}
 
     public void save(@Valid Player player) {
 		this.playerRepository.save(player);

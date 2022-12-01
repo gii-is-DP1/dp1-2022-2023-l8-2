@@ -48,6 +48,8 @@ public class GameController {
     @GetMapping("/active")
     public String getActiveGames(Map<String, Object> model, Principal principal) {
         Collection<Game> games = gameService.getActiveGames();
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        model.put("actualPlayer", actualPlayer);
         model.put("games", games);
         return VIEWS_GAMES_LIST;
     }
