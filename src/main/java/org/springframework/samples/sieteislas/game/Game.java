@@ -40,7 +40,7 @@ public class Game extends BaseEntity{
 
     @NotNull
     private Boolean active;
-    
+
     @Min(value=0, message = "roll must be at least 0")
     @Max(value=5, message = "roll must be 5 at maximum")
     private int diceRoll;
@@ -51,10 +51,6 @@ public class Game extends BaseEntity{
 
     @NotNull
     private Double duration;
-    
-    @NotNull
-    @OneToMany(mappedBy = "game", cascade=CascadeType.PERSIST)
-    private List<Card> islands;
     
     private String creatorUsername;
 
@@ -67,7 +63,6 @@ public class Game extends BaseEntity{
     @OneToMany(mappedBy = "game", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Card> deck;
 
-    @NotEmpty
     @Size(min=1, max=4)
     @OneToMany(mappedBy = "game", cascade=CascadeType.PERSIST)
     private List<Player> players;

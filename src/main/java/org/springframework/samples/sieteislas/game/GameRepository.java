@@ -2,6 +2,7 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,12 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
 
     @Query("SELECT count(g) FROM Game g")
     Integer getNumberGames();
+
+    @Modifying
+    @Query("UPDATE Game g SET g.creatorUsername = :username WHERE g.id = :id")
+    void updateCreator(@Param("id") Integer id, @Param("username") String username);
+
+    @Modifying
+    @Query("UPDATE Game g SET g.active = :b WHERE g.id = :id")
+    void toggleActive(@Param("id") Integer id, @Param("b") boolean b);
 }
