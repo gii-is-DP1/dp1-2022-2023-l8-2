@@ -140,7 +140,8 @@ public class GameService {
     }
 
     public boolean isCurrentPlayer(Game game, String name) {
-        return false;
+        String currentPlayerName = game.getPlayers().get(game.getPlayerTurn()).getUser().getUsername();
+        return currentPlayerName.equals(name);
     }
 
     public void kickOfGame(Integer playerId) {

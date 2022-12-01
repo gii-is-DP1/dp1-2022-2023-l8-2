@@ -41,17 +41,14 @@ public class Game extends BaseEntity{
     @NotNull
     private Boolean active;
     
-    @Transient
     @Min(value=1, message = "roll must be at least 1")
     @Max(value=6, message = "roll must be 6 at maximum")
     private int diceRoll;
 
-    @Transient
     @NotNull
     @Min(value=0)
     private int playerTurn;
 
-    @Transient
     @NotNull
     private Double duration;
     

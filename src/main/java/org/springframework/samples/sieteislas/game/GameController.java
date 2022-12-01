@@ -11,6 +11,7 @@ import org.springframework.samples.sieteislas.card.CardService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -135,7 +136,14 @@ public class GameController {
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
         boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
         
+        Player principalPlayer = null;
+        if(isPlayer){
+            User u = this.userService.findUser(principal.getName()).get();
+            principalPlayer = this.playerService.findByUser(u);
+        }
+
         model.put("isPlayer", isPlayer);
+        model.put("principalPlayer", principalPlayer);
         model.put("isCurrentPlayer", isCurrentPlayer);
         model.put("principalName", principal.getName());
         model.put("game", game);
@@ -152,8 +160,7 @@ public class GameController {
     }
 
     @GetMapping("/gameBoard/{gameId}/rollDice")
-    public String diceManager(@PathVariable("gameId") String id, ModelMap model,
-    		Principal principal) {
+    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
     	
     	Game game = gameService.findById(Integer.valueOf(id));
     	
@@ -165,7 +172,6 @@ public class GameController {
     	model.put("username", principal.getName());
     	
         return VIEWS_GAMES_GAMEBOARD;
-
     }
 
 }
