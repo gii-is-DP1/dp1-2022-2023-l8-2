@@ -98,6 +98,7 @@
 					</div>
 				</div>
 				<div class="board-element board-border" >
+
 					<div style="display: inline-block; width: 79%; height: 100%; text-align: center;">
 						<c:choose>
 							<c:when test="${isPlayer}">
@@ -112,12 +113,14 @@
 							</c:otherwise>
 						</c:choose>
 					</div>
-					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">DADO
-						<c:if test = "${game.players.get(playerTurn).equals(username)}">
-							<spring:url value="/gameBoard/{id}/rollDice" var="rollDice">TIRAR DADO
+					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">
+						
+							<spring:url value="/games/gameBoard/{id}/rollDice" var="rollDice">
+
                 			<spring:param name="id" value="${game.id}"/>
             				</spring:url>
-						</c:if>
+            				<a href="${fn:escapeXml(rollDice)}" class="btn btn-default">TIRAR DADO</a>
+						
 					</div>
 				</div>
 			</div>
