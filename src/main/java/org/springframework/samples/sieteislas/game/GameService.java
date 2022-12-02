@@ -7,6 +7,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
@@ -193,13 +194,12 @@ public class GameService {
     public List<Card> possibleChoices(Game game){
     	
     	int diceRoll = game.getDiceRoll();
-    	List<Card> islands = null;
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
     	
-    	return islands.subList(calculateLower(numCards, diceRoll),
-    			calculateHigher(numCards, diceRoll));
+    	return game.getDeck().subList(calculateLower(numCards, diceRoll),
+    			calculateHigher(numCards, diceRoll) + 1);
     }
 
     @Transactional
@@ -212,4 +212,9 @@ public class GameService {
     public void toggleActive(Game game, boolean b) {
         this.gameRepository.toggleActive(game.getId(), b);
     }
+    
+    @Transactional
+	public void setDiceNull(Game game) {
+		gameRepository.setDiceNull(game.getId());
+	}
 }

@@ -169,11 +169,11 @@ public class GameController {
     	gameService.rollDice(game);
     	List<Card> possibleChoices = gameService.possibleChoices(game);
     	
-    	model.put("game", game);
     	model.put("possibleChoices", possibleChoices);
-    	model.put("username", principal.getName());
     	
-        return VIEWS_GAMES_GAMEBOARD;
+    	gameService.setDiceNull(game);
+    	
+        return "redirect:/games/gameBoard/" + id;
     }
 
 }
