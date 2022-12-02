@@ -23,7 +23,12 @@
         </tr>
          <tr>
             <th>Achievements</th>
-            <td><c:out value="${user.player.achievements}"/></td>
+                <td>
+                    <c:forEach items="${user.player.achievements}" var="achievement">
+                        <img src="${achievement.badgeImage}" style="height: 50px">
+                        <c:out value="${achievement.name}"/>
+                    </c:forEach>
+                </td>   
         </tr>
     </table>
 
@@ -41,6 +46,12 @@
 	    </spring:url>
 	        <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete User</a>
     </c:if>
+
+    <table class="table table-striped">
+        <c:forEach items="${user.friends}" var="friend">
+            <c:out value="${friend.username}"></c:out>
+        </c:forEach>
+    </table>
     
 
 </petclinic:layout>

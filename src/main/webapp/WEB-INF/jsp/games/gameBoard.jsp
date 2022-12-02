@@ -96,7 +96,7 @@
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">
 						<h2 color="black">DECK
-							(<c:out value="${fn:length(game.deck)}"></c:out>)
+							(<c:out value="${fn:length(game.deck)-6}"></c:out>)
 						</h2>
 						<img src="/resources/images/cards/upsideDown.png" alt="island">
 					</div>

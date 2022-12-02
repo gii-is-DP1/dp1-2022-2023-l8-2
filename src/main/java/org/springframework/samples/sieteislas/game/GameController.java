@@ -112,7 +112,7 @@ public class GameController {
     @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
-        if(game.getActive()){
+        if(game.getActive()){ //comprobamos si la partida ha comenzado--> active: no ha comenzado, !active: ha comenzado 
             List<Card> doblones = gameService.createDeck(game).stream()
                                             .filter(x->(x.getCardType().getName()).equals("coin"))
                                             .collect(Collectors.toList());

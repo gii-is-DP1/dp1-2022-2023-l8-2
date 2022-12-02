@@ -122,6 +122,6 @@ INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'joscasvaz');
 INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'thokriale');
 INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'thokriale');
 
-INSERT INTO friends(friend_id, user_id) VALUES ('joscasvaz', 'jualopqui1');
-INSERT INTO friends(friend_id, user_id) VALUES ('thokriale', 'jualopqui1');
-INSERT INTO friends(friend_id, user_id) VALUES ('thokriale', 'joscasvaz');
+INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'jualopqui1');
+INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'jualopqui1');
+INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'joscasvaz');

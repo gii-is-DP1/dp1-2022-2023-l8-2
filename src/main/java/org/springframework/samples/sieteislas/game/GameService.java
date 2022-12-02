@@ -89,7 +89,7 @@ public class GameService {
         		card.setCardType(getCardType("rum"));
         	}
             card.setGame(game);
-                cartas.add(card);
+            cartas.add(card);
         }
 
         Collections.shuffle(cartas);
@@ -218,4 +218,5 @@ public class GameService {
     public void toggleActive(Game game, boolean b) {
         this.gameRepository.toggleActive(game.getId(), b);
     }
+    
 }
