@@ -19,12 +19,10 @@
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
 	}
-
 	.row {
 		height: 100%;
 		display: table-row;
 	}
-
 	.row .no-float {
 		display: table-cell;
 		float: none;
@@ -73,11 +71,9 @@
 		width: 50px;
 		height: 50px;
 	}
-
 	.island{
 		background-color: rgba(245, 222, 179, 0.6);
 	}
-
 </style>
 
 <!DOCTYPE html>
