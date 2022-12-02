@@ -152,6 +152,21 @@ public class GameController {
         return VIEWS_GAMES_GAMEBOARD;
     }
 
+    
+    @GetMapping("/gameBoard/{gameId}/rollDice")
+    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    	Game game = gameService.findById(Integer.valueOf(id));
+
+    	gameService.rollDice(game);
+    	List<Card> possibleChoices = gameService.possibleChoices(game);
+    	
+    	model.put("possibleChoices", possibleChoices);
+    	
+    	gameService.setDiceNull(game);
+    	
+        return renderBoard(id, principal, model);
+    }
+
     @GetMapping("/join/{id}")
     public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
     	Game game = this.gameService.findById(Integer.valueOf(id));
@@ -161,19 +176,5 @@ public class GameController {
          return redirect;
     }
 
-    @GetMapping("/gameBoard/{gameId}/rollDice")
-    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	
-    	Game game = gameService.findById(Integer.valueOf(id));
-    	
-    	gameService.rollDice(game);
-    	List<Card> possibleChoices = gameService.possibleChoices(game);
-    	
-    	model.put("possibleChoices", possibleChoices);
-    	
-    	gameService.setDiceNull(game);
-    	
-        return "redirect:/games/gameBoard/" + id;
-    }
 
 }

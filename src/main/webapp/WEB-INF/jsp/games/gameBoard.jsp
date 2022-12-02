@@ -120,7 +120,7 @@
                 			<spring:param name="id" value="${game.id}"/>
             				</spring:url>
             				<a href="${fn:escapeXml(rollDice)}" class="btn btn-default">TIRAR DADO</a>
-						
+							<c:out value="${fn:length(possibleChoices)}"></c:out>
 					</div>
 				</div>
 			</div>
@@ -160,7 +160,6 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
-					
 				</c:forEach>
 			</div>
 		</div>
