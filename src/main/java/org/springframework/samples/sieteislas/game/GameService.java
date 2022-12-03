@@ -2,7 +2,10 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
@@ -45,26 +48,15 @@ public class GameService {
         game.setDuration(0.0);
         game.setDiceRoll(1);
 
-        List<Card> islands = new ArrayList<>();
-        game.setIslands(islands);
-
-        List<Message> chat = new ArrayList<>();
-        game.setChat(chat);
-
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
 
-        List<Card> deck = createDeck(game);
-        game.setDeck(deck);
+        this.gameRepository.save(game);
 
         User user = this.userRepository.findById(creatorName).get();
         Player creator = this.playerRepository.findPlayerByUser(user);
         creator.setGame(game);
-        
-        List<Player> players = List.of(creator);
-        game.setPlayers(players);
-
-        this.gameRepository.save(game);
+        this.playerRepository.save(creator);
 
         return game;
     }
@@ -97,9 +89,14 @@ public class GameService {
         		card.setCardType(getCardType("rum"));
         	}
             card.setGame(game);
-            this.cardRepository.save(card);
-        	cartas.add(card);
+                cartas.add(card);
         }
+
+        Collections.shuffle(cartas);
+        for(Card c : cartas){
+        this.cardRepository.save(c);
+        }
+
         return cartas;
     }
 
@@ -146,6 +143,11 @@ public class GameService {
         return players.stream()
                         .map(x->x.getUser().getUsername())
                         .anyMatch(x-> x.equals(principalName));
+    }
+
+    public boolean isCurrentPlayer(Game game, String name) {
+        String currentPlayerName = game.getPlayers().get(game.getPlayerTurn()).getUser().getUsername();
+        return currentPlayerName.equals(name);
     }
 
     public void kickOfGame(Integer playerId) {
@@ -197,7 +199,7 @@ public class GameService {
     public List<Card> possibleChoices(Game game){
     	
     	int diceRoll = game.getDiceRoll();
-    	List<Card> islands = game.getIslands();
+    	List<Card> islands = null;
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
@@ -206,6 +208,14 @@ public class GameService {
     			calculateHigher(numCards, diceRoll));
     }
 
+    @Transactional
+    public void selectNewCreator(Game game) {
+        Player p = game.getPlayers().get(0);
+        this.gameRepository.updateCreator(game.getId(), p.getUser().getUsername());
+    }
 
-
+    @Transactional
+    public void toggleActive(Game game, boolean b) {
+        this.gameRepository.toggleActive(game.getId(), b);
+    }
 }

@@ -16,7 +16,7 @@
         </c:forEach>
     </div>
     <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
-        <div class="form-group has-feedback">
+        <div class="form-group">
             <sieteislas:inputField label="Game name" name="gameName"/>
         </div>
         <div class="form-group">
