@@ -48,6 +48,7 @@ public class GameService {
         game.setPlayerTurn(0);
         game.setDuration(0.0);
         game.setDiceRoll(1);
+        game.setHasRolledDice(false);
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
@@ -175,7 +176,6 @@ public class GameService {
     }
     
     public void rollDice(Game game) {
-    	
     	Double rand = Math.random() * 5;
     	Long num = Math.round(rand);
     	
@@ -184,28 +184,22 @@ public class GameService {
     }
     
     private int calculateHigher(Integer numCards, int diceRoll) {
-    	
     	int res = numCards + diceRoll;
-    	
     	return (5 < res) ? 5 : res;
     }
     
     private int calculateLower(Integer numCards, int diceRoll) {
-    	
     	int res = diceRoll - numCards;
-    	
     	return (res < 0) ? 0 : res;
     }
     
     public List<Card> possibleChoices(Game game){
-    	
     	int diceRoll = game.getDiceRoll();
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
     	
-    	return game.getDeck().subList(calculateLower(numCards, diceRoll),
-    			calculateHigher(numCards, diceRoll) + 1);
+    	return game.getDeck().subList(calculateLower(numCards, diceRoll), calculateHigher(numCards, diceRoll) + 1);
     }
 
     @Transactional
@@ -220,7 +214,7 @@ public class GameService {
     }
     
     @Transactional
-	public void setDiceNull(Game game) {
-		gameRepository.setDiceNull(game.getId());
+	public void toggleHasRolledDice(Game game) {
+		gameRepository.toggleHasRolledDice(game.getId(), !game.getHasRolledDice());
 	}
 }

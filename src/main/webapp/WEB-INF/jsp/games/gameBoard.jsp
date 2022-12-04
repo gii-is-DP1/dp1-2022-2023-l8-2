@@ -52,10 +52,12 @@
 		border-radius: 10px;
 		margin: 2px
 	}
-	.current-player-border{
+	.current-player{
+		background-color: rgba(210, 105, 30, 0.811); 
+		height: 20%;
 		border-style: solid;
 		border-width: 5px;
-		border-color: rgb(11, 44, 207);
+		border-color: chocolate;
 		border-radius: 10px;
 		margin: 2px
 	}
@@ -68,8 +70,11 @@
 		margin-left: 3px;
 	}
 	.profileImage{
-		width: 50px;
-		height: 50px;
+		width: 80px;
+		height: 80px;
+		margin-right: 5%;
+		border-radius: 5%;
+		border: 5px solid #555;
 	}
 	.island{
 		background-color: rgba(245, 222, 179, 0.6);
@@ -87,7 +92,20 @@
 						<div class="board-border island" style="width: 15%; display: inline-block;">
 							<h2 color="black">ISLAND ${loop.index + 1}</h2>
 							<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
+							<c:choose>
+								<c:when test="${game.hasRolledDice && possibleChoices.contains(card)}">
+									<div>
+										puedes elegirla :)
+									</div>
+								</c:when>
+								<c:otherwise>
+									<div>
+										No puedes elegirla >:(
+									</div>
+								</c:otherwise>
+							</c:choose>
 						</div>
+						
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">
@@ -120,7 +138,8 @@
                 			<spring:param name="id" value="${game.id}"/>
             				</spring:url>
             				<a href="${fn:escapeXml(rollDice)}" class="btn btn-default">TIRAR DADO</a>
-							<c:out value="${fn:length(possibleChoices)}"></c:out>
+							<c:out value="${game.diceRoll}"></c:out>
+							<img src="/resources/images/dado/dado${game.diceRoll + 1}.png" alt="dice" style="width: 50px; height: 50px">
 					</div>
 				</div>
 			</div>
@@ -144,19 +163,25 @@
 				<h2 color="black" class="island board-border">PLAYERS</h2>
 				<c:forEach items="${game.players}" var="player">
 					<c:choose>
-						<c:when test="${isCurrentPlayer}">
-							<div class="board-element current-player-border">
-								<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
-								<c:out value="${player.user.username}"></c:out>
-								<c:out value="${fn:length(player.cards)}"></c:out>
-								<c:out value="current"></c:out>
+						<c:when test="${isCurrentPlayer && player.equals(principalPlayer)}">
+							<div class="current-player">
+								<div>
+									<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
+									<img src="/resources/images/cards/upsideDown.png" alt="island" style="height: 80px; width: auto">
+									<c:out value="${fn:length(player.cards)} cards"></c:out>
+									<img src="/resources/images/ancla.png" alt="current player" style="width: auto; height: 100%; max-height: 40px; float: right; margin-top: 7%;">
+								</div>
+								<c:out value="${player.user.username}" ></c:out>
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="board-element board-border">
-								<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
+								<div>
+									<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">
+									<img src="/resources/images/cards/upsideDown.png" alt="island" style="height: 80px; width: auto">
+									<c:out value="${fn:length(player.cards)} cards"></c:out>
+								</div>
 								<c:out value="${player.user.username}"></c:out>
-								<c:out value="${fn:length(player.cards)}"></c:out>
 							</div>
 						</c:otherwise>
 					</c:choose>

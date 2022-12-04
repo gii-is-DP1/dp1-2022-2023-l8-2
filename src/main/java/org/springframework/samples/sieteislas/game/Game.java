@@ -41,6 +41,9 @@ public class Game extends BaseEntity{
     @NotNull
     private Boolean active;
 
+    @NotNull
+    private Boolean hasRolledDice;
+
     @Min(value=-1, message = "roll must be at least -1")
     @Max(value=5, message = "roll must be 5 at maximum")
     private int diceRoll;

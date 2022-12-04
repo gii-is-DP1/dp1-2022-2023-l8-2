@@ -162,7 +162,7 @@ public class GameController {
     	
     	model.put("possibleChoices", possibleChoices);
     	
-    	gameService.setDiceNull(game);
+    	//gameService.toggleHasRolledDice(game);
     	
         return renderBoard(id, principal, model);
     }
