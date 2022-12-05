@@ -48,6 +48,8 @@ public class Game extends BaseEntity{
     @Max(value=5, message = "roll must be 5 at maximum")
     private int diceRoll;
 
+    private int numCardsToPay;
+
     @NotNull
     @Min(value=0)
     private int playerTurn;

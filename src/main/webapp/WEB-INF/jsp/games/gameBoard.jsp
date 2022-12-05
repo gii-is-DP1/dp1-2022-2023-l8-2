@@ -6,28 +6,27 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <style>
-	html,body,.container {
+	html,body,.container{
     height:100%;
 	}
-	.container-fluid {
+	.container-fluid{
 		display:table;
 		width: 100%;
 		margin-top: -50px;
 		padding: 50px 0 0 0; /*set left/right padding according to needs*/
 		box-sizing: border-box;
 		background-image: url('/resources/images/board/welcome3.png');
-		background-repeat: no-repeat;
 		background-size: 100% 100%;
 	}
-	.row {
+	.row{
 		height: 100%;
 		display: table-row;
 	}
-	.row .no-float {
+	.row .no-float{
 		display: table-cell;
 		float: none;
 	}
-	.board {
+	.board{
 		background-image: url('/resources/images/board/board8.png');
   		background-repeat: no-repeat;
 		background-size: 100% 100%;
@@ -57,7 +56,7 @@
 		height: 20%;
 		border-style: solid;
 		border-width: 5px;
-		border-color: chocolate;
+		border-color: rgb(247, 173, 0);
 		border-radius: 10px;
 		margin: 2px
 	}
@@ -79,6 +78,14 @@
 	.island{
 		background-color: rgba(245, 222, 179, 0.6);
 	}
+	.possible-island{
+		background-color: rgba(65, 136, 3, 0.81);
+		border-style: solid;
+		border-width: 5px;
+		border-color: rgb(7, 215, 0);
+		border-radius: 10px;
+		margin: 2px
+	}
 </style>
 
 <!DOCTYPE html>
@@ -89,23 +96,26 @@
 			<div class="col-md-9 ">
 				<div class="board board-border">.
 					<c:forEach items="${game.deck}" var="card" varStatus="loop" end="5">
-						<div class="board-border island" style="width: 15%; display: inline-block;">
-							<h2 color="black">ISLAND ${loop.index + 1}</h2>
-							<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
-							<c:choose>
-								<c:when test="${game.hasRolledDice && possibleChoices.contains(card)}">
-									<div>
-										puedes elegirla :)
-									</div>
-								</c:when>
-								<c:otherwise>
-									<div>
-										No puedes elegirla >:(
-									</div>
-								</c:otherwise>
-							</c:choose>
-						</div>
-						
+						<c:choose>
+							<c:when test="${isCurrentPlayer && game.hasRolledDice && possibleChoices.contains(card)}">
+								<div class="possible-island" style="width: 15%; display: inline-block;">
+									<h2 color="black" style="text-align: center;">ISLAND ${loop.index + 1}</h2>
+									<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
+									
+									<spring:url value="/games/gameBoard/{gameId}/chooseCard/{cardId}" var="chooseIsland">
+                						<spring:param name="gameId" value="${game.id}"/>
+										<spring:param name="cardId" value="${card.id}"/>
+            						</spring:url>
+									<a href="${fn:escapeXml(chooseIsland)}" class="btn btn-default">CHOOSE</a>
+								</div>
+							</c:when>
+							<c:otherwise>
+								<div class="board-border island" style="width: 15%; display: inline-block;">
+									<h2 color="black" style="text-align: center;">ISLAND ${loop.index + 1}</h2>
+									<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
+								</div>
+							</c:otherwise>					
+						</c:choose>
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">
@@ -120,9 +130,20 @@
 					<div style="display: inline-block; width: 79%; height: 100%; text-align: center;">
 						<c:choose>
 							<c:when test="${isPlayer}">
+								<c:if test="${game.numCardsToPay >= 1 && isCurrentPlayer}">
+									<b>YOU HAVE TO DISCARD ${game.numCardsToPay} CARDS:</b>
+								</c:if>
+								<br>
 								<c:forEach items="${principalPlayer.cards}" var="card">
 									<div class="board-border-white" style="display: inline-block;">
 										<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="height: 100px; width: auto">
+										<c:if test="${game.numCardsToPay >= 1 && isCurrentPlayer}">
+											<spring:url value="/games/gameBoard/{gameId}/chooseCard/{cardId}" var="chooseIsland">
+												<spring:param name="gameId" value="${game.id}"/>
+												<spring:param name="cardId" value="${card.id}"/>
+											</spring:url>
+											<a href="" class="btn btn-default">Discard</a>
+										</c:if>
 									</div>
 								</c:forEach>
 							</c:when>
@@ -131,16 +152,15 @@
 							</c:otherwise>
 						</c:choose>
 					</div>
-					<div class="board-border" style="display: inline-block; float: right; width: 20%; height: 100%;">
-						
+					<div style="display: inline-block; float: right;">
+						<c:if test="${isCurrentPlayer && !game.hasRolledDice}">
 							<spring:url value="/games/gameBoard/{id}/rollDice" var="rollDice">
-
-                			<spring:param name="id" value="${game.id}"/>
-            				</spring:url>
-            				<a href="${fn:escapeXml(rollDice)}" class="btn btn-default">TIRAR DADO</a>
-							<c:out value="${game.diceRoll}"></c:out>
-							<img src="/resources/images/dado/dado${game.diceRoll + 1}.png" alt="dice" style="width: 50px; height: 50px">
-					</div>
+								<spring:param name="id" value="${game.id}"/>
+							</spring:url>
+							<a href="${fn:escapeXml(rollDice)}" class="btn btn-default">ROLL DICE</a>
+						</c:if>
+						<img src="/resources/images/dado/dado${game.diceRoll + 1}.png" alt="dice" style="width: 80px; height: 80px">
+				</div>
 				</div>
 			</div>
 			<div class="col-md-3 ">
@@ -160,7 +180,7 @@
 					</div>
 					
 				</div>
-				<h2 color="black" class="island board-border">PLAYERS</h2>
+				<h2 color="black" class="island board-border" style="text-align: center;">PLAYERS</h2>
 				<c:forEach items="${game.players}" var="player">
 					<c:choose>
 						<c:when test="${isCurrentPlayer && player.equals(principalPlayer)}">

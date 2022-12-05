@@ -32,11 +32,11 @@ INSERT INTO achievements(id, name, threshold, description, image, metric_id) VAL
 INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES 
 (2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
-INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration) VALUES (1, 'My first game', TRUE, 'pabberima', 0, FALSE, 0, 0);
-INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration) VALUES (2, 'Sala DPanitas', TRUE,'thokriale', 0, FALSE, 0, 0);
-INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration) VALUES (3, 'fansPKMN', TRUE,'joscasvaz', 0, FALSE, 0, 0);
-INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq', 0, FALSE, 0, 0);
-INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration) VALUES (5, 'Betis KK', TRUE,'jualopqui1', 0, TRUE, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (1, 'My first game', TRUE, 'pabberima', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (2, 'Sala DPanitas', TRUE,'thokriale', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (3, 'fansPKMN', TRUE,'joscasvaz', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (5, 'Betis KK', TRUE,'jualopqui1', 0, FALSE, 0, 0, 0);
 
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (1, 'pabberima', 1808.63, 2021, 07);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (2, 'thokriale', 1676.09, 2021, 08);

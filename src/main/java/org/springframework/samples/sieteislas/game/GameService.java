@@ -49,6 +49,7 @@ public class GameService {
         game.setDuration(0.0);
         game.setDiceRoll(1);
         game.setHasRolledDice(false);
+        game.setNumCardsToPay(0);
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
@@ -158,16 +159,6 @@ public class GameService {
         this.playerRepository.save(p);
     }
 
-    public void nextPlayer(Game game){
-        int currentPlayer = game.getPlayerTurn();
-        int numPlayers = game.getPlayers().size();
-        //TODO: calc next player: num mod numPlayers
-        int nextPlayer = (currentPlayer+1) % numPlayers;
-        
-        game.setPlayerTurn(nextPlayer);
-        this.gameRepository.save(game);
-    }
-
     public void joinGame(Game game, String name) {
     	User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
@@ -214,7 +205,37 @@ public class GameService {
     }
     
     @Transactional
-	public void toggleHasRolledDice(Game game) {
-		gameRepository.toggleHasRolledDice(game.getId(), !game.getHasRolledDice());
+	public void toggleHasRolledDice(Game game, boolean b) {
+		gameRepository.toggleHasRolledDice(game.getId(), b);
 	}
+
+    @Transactional
+    public int setNumCardsToPay(Game game, Card card) {
+        int chosenIsland = game.getDeck().indexOf(card)+1;//Islands are numbered 1 to 6, hence the +1.
+        int rolledIsland = game.getDiceRoll()+1;
+        this.gameRepository.setNumCardsToPay(game.getId(), Math.abs(rolledIsland-chosenIsland));
+        return Math.abs(rolledIsland-chosenIsland);
+    }
+
+    @Transactional
+    public void decrementNumCardsToPay(Game game) {
+        int decrementedValue = game.getNumCardsToPay();
+        this.gameRepository.setNumCardsToPay(game.getId(), decrementedValue-1);
+    }
+
+    @Transactional
+    public void passTurn(Game game) {
+		gameRepository.toggleHasRolledDice(game.getId(), false);
+        this.gameRepository.setNumCardsToPay(game.getId(), 0);
+        calcNextPlayer(game);
+    }
+
+    @Transactional
+    public void calcNextPlayer(Game game){
+        int currentPlayer = game.getPlayerTurn();
+        int numPlayers = game.getPlayers().size();
+        int nextPlayer = (currentPlayer+1) % numPlayers;
+        
+        this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
+    }
 }

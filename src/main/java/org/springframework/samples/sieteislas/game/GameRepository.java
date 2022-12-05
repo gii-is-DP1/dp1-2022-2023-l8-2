@@ -28,4 +28,12 @@ public interface GameRepository extends CrudRepository<Game, Integer>{
     @Modifying
     @Query("UPDATE Game g SET g.hasRolledDice = :b WHERE g.id = :id")
 	void toggleHasRolledDice(@Param("id") Integer id, @Param("b") boolean b);
+
+    @Modifying
+    @Query("UPDATE Game g SET g.numCardsToPay = :num WHERE g.id = :id")
+    void setNumCardsToPay(@Param("id") Integer id, @Param("num") int num);
+
+    @Modifying
+    @Query("UPDATE Game g SET g.playerTurn = :nextPlayer WHERE g.id = :id")
+    void setPlayerTurn(@Param("id") Integer id, @Param("nextPlayer") int nextPlayer);
 }
