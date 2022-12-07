@@ -86,6 +86,13 @@
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Statistics</span>
 					<ul class="dropdown-menu">
+                        <li>
+                            <div class="navbar-login">
+                                <p class="text-left">
+                                    <a href="<c:url value="/statistics/playerRanking/" />">Player Ranking</a>
+                                </p>
+                            </div>
+                        </li>
 						<li>
 							<div class="navbar-login">
 								<p class="text-left">
@@ -100,6 +107,7 @@
                                 </p>
                             </div>
                         </li>
+
 					</ul>
 				</sieteislas:menuItem>
 

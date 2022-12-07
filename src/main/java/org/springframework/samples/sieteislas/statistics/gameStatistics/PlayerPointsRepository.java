@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @Repository
@@ -53,4 +54,18 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT count(p) FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser GROUP BY p.gameStatistics.month, p.gameStatistics.year")
     public Collection<Integer> getGroupedNumberGamesByUser(@Param("currentUser") String currentUser);
 
+    @Query("SELECT p.gameStatistics.id FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    List<Integer> findGameIdsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT p.gameStatistics.gameCreatorName FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    List<String> findGameCreatorsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT p.player FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    List<String> findGamePlayersUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT p.gameStatistics.duration FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    List<Double> findGameDurationsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT p.points FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
+    List<Integer> findGamePointsUser(@Param("currentUser") String currentUser);
 }

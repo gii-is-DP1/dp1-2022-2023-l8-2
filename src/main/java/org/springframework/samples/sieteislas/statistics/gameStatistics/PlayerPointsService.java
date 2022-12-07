@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.max;
 import static java.util.Collections.min;
@@ -84,5 +85,20 @@ public class PlayerPointsService {
         pointsUserMap.put("maxPoints", maxPoints);
         pointsUserMap.put("avgPoints", avgPoints);
         return pointsUserMap;
+    }
+
+    public Map<String, List<String>> getPreviousGamesUser(String currentUser){
+        List<String> gameId = playerPointsRepository.findGameIdsUser(currentUser).stream().map(Object::toString).collect(Collectors.toList());
+        List<String> gameCreator = playerPointsRepository.findGameCreatorsUser(currentUser);
+        //List<String> gamePlayers = playerPointsRepository.findGamePlayersUser(currentUser);
+        List<String> gameDuration = playerPointsRepository.findGameDurationsUser(currentUser).stream().map(Object::toString).collect(Collectors.toList());
+        List<String> gamePoints = playerPointsRepository.findGamePointsUser(currentUser).stream().map(Object::toString).collect(Collectors.toList());
+        Map<String, List<String>> previousGamesUser = new HashMap<>();
+        previousGamesUser.put("gameId", gameId);
+        previousGamesUser.put("gameCreator", gameCreator);
+        //previousGamesUser.put("gamePlayers", gamePlayers);
+        previousGamesUser.put("gameDuration", gameDuration);
+        previousGamesUser.put("gamePoints", gamePoints);
+        return previousGamesUser;
     }
 }
