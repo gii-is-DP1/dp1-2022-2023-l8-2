@@ -138,11 +138,11 @@
 									<div class="board-border-white" style="display: inline-block;">
 										<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="height: 100px; width: auto">
 										<c:if test="${game.numCardsToPay >= 1 && isCurrentPlayer}">
-											<spring:url value="/games/gameBoard/{gameId}/chooseCard/{cardId}" var="chooseIsland">
+											<spring:url value="/games/gameBoard/{gameId}/discard/{cardId}" var="discardUrl">
 												<spring:param name="gameId" value="${game.id}"/>
 												<spring:param name="cardId" value="${card.id}"/>
 											</spring:url>
-											<a href="" class="btn btn-default">Discard</a>
+											<a href="${fn:escapeXml(discardUrl)}" class="btn btn-default">Discard</a>
 										</c:if>
 									</div>
 								</c:forEach>

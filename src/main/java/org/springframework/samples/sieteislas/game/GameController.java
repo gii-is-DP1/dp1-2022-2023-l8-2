@@ -146,12 +146,9 @@ public class GameController {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
         boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
-        
-        Player principalPlayer = null;
-        if(isPlayer){
-            User u = this.userService.findUser(principal.getName()).get();
-            principalPlayer = this.playerService.findByUser(u);
-        }
+
+        User u = this.userService.findUser(principal.getName()).get();
+        Player principalPlayer = this.playerService.findByUser(u);
 
         model.put("isPlayer", isPlayer);
         model.put("principalPlayer", principalPlayer);
@@ -164,14 +161,12 @@ public class GameController {
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
     	Game game = gameService.findById(Integer.valueOf(id));
-
-    	gameService.rollDice(game);
+        this.gameService.toggleHasRolledDice(game, true);
+    	this.gameService.rollDice(game); 
+        
     	List<Card> possibleChoices = gameService.possibleChoices(game);
-    	
-    	model.put("possibleChoices", possibleChoices);
-    	
-    	gameService.toggleHasRolledDice(game, true);
-    	
+	
+    	model.put("possibleChoices", possibleChoices); 	
         return renderBoard(id, principal, model);
     }
 
@@ -184,8 +179,8 @@ public class GameController {
         int num = this.gameService.setNumCardsToPay(game, card);
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
-        if(num < 0){
-            return passTurn(game);
+        if(num <= 0){
+            this.gameService.passTurn(game);
         }
 
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
@@ -196,21 +191,16 @@ public class GameController {
     public String discardCard(@PathVariable("gameId") String id, @PathVariable("cardId") String cardId, ModelMap model, Principal principal){
     	Game game = gameService.findById(Integer.valueOf(id));
         Card card = cardService.findById(Integer.valueOf(cardId));
-        int num = game.getNumCardsToPay() - 1;
+
         this.cardService.delete(card);
-        this.gameService.decrementNumCardsToPay(game);
 
-        String redirect = String.format("redirect:/games/gameBoard/%s", id);
-        if(num >= 0){
-            redirect = passTurn(game);
+        int leftToPay = this.gameService.decrementNumCardsToPay(game);
+
+        if(leftToPay <= 0){
+            this.gameService.passTurn(game);
         }
-        
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
 
-    private String passTurn(Game game) {
-        this.gameService.passTurn(game);
-        String redirect = String.format("redirect:/games/gameBoard/%s", game.getId());
-        return redirect;
-    }
 }

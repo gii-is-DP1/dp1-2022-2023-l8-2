@@ -204,28 +204,33 @@ public class GameService {
         this.gameRepository.toggleActive(game.getId(), b);
     }
     
-    @Transactional
-	public void toggleHasRolledDice(Game game, boolean b) {
-		gameRepository.toggleHasRolledDice(game.getId(), b);
+	public void toggleHasRolledDice(Game game, Boolean b) {
+		game.setHasRolledDice(b);
+    	gameRepository.save(game);
 	}
 
     @Transactional
     public int setNumCardsToPay(Game game, Card card) {
         int chosenIsland = game.getDeck().indexOf(card)+1;//Islands are numbered 1 to 6, hence the +1.
         int rolledIsland = game.getDiceRoll()+1;
-        this.gameRepository.setNumCardsToPay(game.getId(), Math.abs(rolledIsland-chosenIsland));
+        int toPay = Math.abs(rolledIsland-chosenIsland);
+        game.setNumCardsToPay(toPay);
+    	gameRepository.save(game);
+        
         return Math.abs(rolledIsland-chosenIsland);
     }
 
     @Transactional
-    public void decrementNumCardsToPay(Game game) {
-        int decrementedValue = game.getNumCardsToPay();
-        this.gameRepository.setNumCardsToPay(game.getId(), decrementedValue-1);
+    public int decrementNumCardsToPay(Game game) {
+        int decrementedValue = game.getNumCardsToPay()-1;
+        game.setNumCardsToPay(decrementedValue);
+        gameRepository.save(game);
+        return decrementedValue;
     }
 
     @Transactional
     public void passTurn(Game game) {
-		gameRepository.toggleHasRolledDice(game.getId(), false);
+		toggleHasRolledDice(game, false);
         this.gameRepository.setNumCardsToPay(game.getId(), 0);
         calcNextPlayer(game);
     }
