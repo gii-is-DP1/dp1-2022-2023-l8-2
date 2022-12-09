@@ -134,14 +134,14 @@
 					<div>
 						
 					</div>
-					<div>Aqui van los mensajes</div>
-					<div>Aqui van los mensajes</div>
-					<div>Aqui van los mensajes</div>
+				<c:forEach items="${game.chat}" var="message">
+				    <c:out value="${message.body}"></c:out>
+				</c:forEach>
 					<div>
-						<form>
-							<input type="text" class="message-input">
+						<form:form modelAttribute="game">
+							<form:input path="chat" type="text" class="message-input"></form:input>
 							<button type="submit" class="btn btn-default">Submit</button>
-						</form>
+						</form:form>
 					</div>
 					
 				</div>
