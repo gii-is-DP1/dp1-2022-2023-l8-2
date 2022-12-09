@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
+import org.springframework.samples.sieteislas.message.Message;
+import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
@@ -34,15 +36,17 @@ public class GameController {
     private PlayerService playerService;
     private UserService userService;
     private CardService cardService;
+    private MessageService messageService;
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService, UserService userService,
-                            GameStatisticsService gameStatisticService, CardService cardService){
+                            GameStatisticsService gameStatisticService, CardService cardService, MessageService messageService){
         this.gameService = gameService;
         this.playerService = playerService;
         this.userService = userService;
         this.gameStatisticService = gameStatisticService;
         this.cardService = cardService;
+        this.messageService = messageService;
     }
 
     //GET ALL ACTIVE GAMES
@@ -57,8 +61,10 @@ public class GameController {
 
     //CREATING A NEW GAME
     @GetMapping("/new")
-    public String initCreateGameForm( ModelMap model){
+    public String initCreateGameForm( ModelMap model, Principal principal){
         Game game = new Game();
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        model.put("actualPlayer", actualPlayer);
         model.put("game", game);
         return VIEWS_CREATE_GAME_FORM;
     }
@@ -151,7 +157,23 @@ public class GameController {
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }
-
+    
+    /*
+    @PostMapping("/gameBoard/{gameId}/comment")
+    public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        Message message = new Message();
+        
+        message.setGame(game);
+        message.setPlayer(actualPlayer);
+        message.setBody(comment);
+        message.save();
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
+    }
+    */
+    
     @GetMapping("/join/{id}")
     public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
     	Game game = this.gameService.findById(Integer.valueOf(id));
