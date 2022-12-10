@@ -3,6 +3,7 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -60,12 +61,20 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT p.gameStatistics.gameCreatorName FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
     List<String> findGameCreatorsUser(@Param("currentUser") String currentUser);
 
-    @Query("SELECT p.player FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
-    List<String> findGamePlayersUser(@Param("currentUser") String currentUser);
-
     @Query("SELECT p.gameStatistics.duration FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
     List<Double> findGameDurationsUser(@Param("currentUser") String currentUser);
 
     @Query("SELECT p.points FROM PlayerPointsMap p WHERE p.player.user.username LIKE :currentUser")
     List<Integer> findGamePointsUser(@Param("currentUser") String currentUser);
+
+    @Query("SELECT sum(p.points) FROM PlayerPointsMap p GROUP BY p.player ORDER BY sum(p.points) DESC")
+    List<Integer> findPointsRanked();
+
+    @Query("SELECT p.player FROM PlayerPointsMap p GROUP BY p.player ORDER BY sum(p.points) DESC")
+    List<Player> findUsersRankedByPoints();
+
+    @Query("SELECT p FROM PlayerPointsMap p")
+    List<PlayerPointsMap> findAll();
+
+
 }

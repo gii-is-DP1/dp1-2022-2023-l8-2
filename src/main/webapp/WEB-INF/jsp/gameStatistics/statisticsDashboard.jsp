@@ -9,8 +9,7 @@
 
 <sieteislas:layout pageName="dashboard">
     <h1 style="text-align: center;">DASHBOARD</h1>
-    <h1>Number of Games</h1>
-    <h2>Global</h2>
+    <h2 style="text-align: center;">NUMBER OF GAMES - GLOBAL</h2>
     <table id="globalNumberGamesTable" class="table table-striped">
         <thead>
         <tr>
@@ -38,7 +37,7 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-        <h2>Games of <sec:authentication property="name"/></h2>
+        <h2 style="text-align: center;">NUMBER OF GAMES - <sec:authentication property="name"/></h2>
         <table id="userNumberGamesTable" class="table table-striped">
             <thead>
             <tr>
@@ -66,9 +65,7 @@
             </tbody>
         </table>
     </sec:authorize>
-
-    <h1>Duration of the Games (in sec)</h1>
-    <h2>Global</h2>
+    <h2 style="text-align: center;">DURATION OF GAMES - GLOBAL</h2>
     <table id="globalDurationGamesTable" class="table table-striped">
         <thead>
         <tr>
@@ -96,7 +93,7 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-        <h2>Games of <sec:authentication property="name"/></h2>
+        <h2 style="text-align: center;">DURATION OF GAMES - <sec:authentication property="name"/></h2>
         <table id="userDurationGamesTable" class="table table-striped">
             <thead>
             <tr>
@@ -125,8 +122,7 @@
         </table>
     </sec:authorize>
 
-    <h1>Gained Points</h1>
-    <h2>Global</h2>
+    <h2 style="text-align: center;">GAINED POINTS - GLOBAL</h2>
     <table id="globalPointsTable" class="table table-striped">
         <thead>
         <tr>
@@ -154,7 +150,7 @@
         </tbody>
     </table>
     <sec:authorize access="isAuthenticated()">
-        <h2>Games of <sec:authentication property="name"/></h2>
+        <h2 style="text-align: center;">GAINED POINTS - <sec:authentication property="name"/></h2>
         <table id="userPointsTable" class="table table-striped">
         <thead>
         <tr>

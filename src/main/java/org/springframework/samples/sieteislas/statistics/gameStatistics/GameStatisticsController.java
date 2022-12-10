@@ -1,16 +1,9 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
-import java.awt.*;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.sieteislas.game.Game;
-import org.springframework.samples.sieteislas.game.GameService;
-import org.springframework.samples.sieteislas.player.Player;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class GameStatisticsController {
 
 
-    private String GAMESTATISTICS_LISTING = "/gameStatistics/previousGamesListing";
+    private String GAMESTATISTICS_LISTING_GLOBAL = "/gameStatistics/previousGamesListingGlobal";
+    private String GAMESTATISTICS_LISTING_USER = "/gameStatistics/previousGamesListingUser";
     private String DASHBOARD = "/gameStatistics/statisticsDashboard";
-    private String PLAYERRANKING_LISTING = "/gameStatistics/playerRanking";
+    private String PLAYERRANKING_LISTING = "/gameStatistics/playerRankingListing";
     private final GameStatisticsService gameStatisticsService;
     private final PlayerPointsService playerPointsService;
 
@@ -36,15 +30,24 @@ public class GameStatisticsController {
     }
 
     @GetMapping("/previousGames")
-    public String getAllGameStatistics(Map<String, Object> model) {
-        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+    public String getAllPreviousGamesGlobal(Map<String, Object> model) {
         Collection<GameStatistics> prevGames = gameStatisticsService.getAllGameStatistics();
         Collection<List<String>> playerPointsMaps = playerPointsService.getAllPlayerPointsMaps(prevGames);
         model.put("gameStatistics", prevGames);
         model.put("playerPointsMaps", playerPointsMaps);
-        if (!currentUser.equals("anonymousUser"))
+        return GAMESTATISTICS_LISTING_GLOBAL;
+    }
+
+    @GetMapping("/previousGames/user")
+    public String getAllPreviousGamesUser(Map<String, Object> model) {
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!currentUser.equals("anonymousUser")) {
+            Collection<List<String>> playerPointsMaps = playerPointsService.getAllPlayerPointsMaps(gameStatisticsService.getAllGameStatistics());
+            playerPointsMaps.removeIf(e -> !e.contains(currentUser));
+            model.put("playerPointsMaps", playerPointsMaps);
             model.put("previousGamesUser", playerPointsService.getPreviousGamesUser(currentUser));
-        return GAMESTATISTICS_LISTING;
+        }
+        return GAMESTATISTICS_LISTING_USER;
     }
 
     @GetMapping("/dashboard")
@@ -61,9 +64,10 @@ public class GameStatisticsController {
         return DASHBOARD;
     }
 
-//    @GetMapping("/playerRanking")
-//    public String getPlayerRanking(Map<String, Object> model) {
-//        model.put("playerRanking", gameStatisticsService.getPlayerRankingMap());
-//        return PLAYERRANKING_LISTING;
-//    }
+    @GetMapping("/playerRanking")
+    public String getPlayerRanking(Map<String, Object> model) {
+        model.put("playerRankingWins", playerPointsService.getPlayerRankingWins());
+        model.put("playerRankingPoints", playerPointsService.getPlayerRankingPoints());
+        return PLAYERRANKING_LISTING;
+    }
 }

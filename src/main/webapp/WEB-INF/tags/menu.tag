@@ -1,8 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sieteislas" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, games, achievements or error"%>
@@ -93,13 +92,25 @@
                                 </p>
                             </div>
                         </li>
-						<li>
+                        <sec:authorize access="isAuthenticated()">
+                        <li class="divider"></li>
+                        <li>
+                            <div class="navbar-login">
+                                <p class="text-left">
+                                    <a href="<c:url value="/statistics/previousGames/user" />">Your Previous Games</a>
+                                </p>
+                            </div>
+                        </li>
+                        </sec:authorize>
+                        <li class="divider"></li>
+                        <li>
 							<div class="navbar-login">
 								<p class="text-left">
-									<a href="<c:url value="/statistics/previousGames/" />">Previous Games</a>
+									<a href="<c:url value="/statistics/previousGames/" />">All Previous Games</a>
 								</p>
 							</div>
 						</li>
+                        <li class="divider"></li>
                         <li>
                             <div class="navbar-login">
                                 <p class="text-left">

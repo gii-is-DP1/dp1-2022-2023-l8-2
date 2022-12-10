@@ -2,11 +2,8 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.player.Player;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -17,10 +14,33 @@ import static java.util.Collections.min;
 public class PlayerPointsService {
 
     private final PlayerPointsRepository playerPointsRepository;
+    private final PlayerRepository playerRepository;
 
     @Autowired
-    public PlayerPointsService(PlayerPointsRepository playerPointsRepository) {
+    public PlayerPointsService(PlayerPointsRepository playerPointsRepository, PlayerRepository playerRepository) {
         this.playerPointsRepository = playerPointsRepository;
+        this.playerRepository = playerRepository;
+    }
+
+
+    public Integer getWins(Player player) {
+        List<PlayerPointsMap> allPlayerPointsMaps = this.playerPointsRepository.findAll();
+        List<GameStatistics> gamesOfPlayer = allPlayerPointsMaps.stream()
+                    .filter(x -> x.getPlayer().equals(player))
+                    .map(x -> x.getGameStatistics())
+                    .collect(Collectors.toList());
+        List<PlayerPointsMap> playerPointsMapsOfPlayer = allPlayerPointsMaps.stream()
+                    .filter(x -> gamesOfPlayer.contains(x.getGameStatistics()))
+                    .collect(Collectors.toList());
+        Map<GameStatistics, List<PlayerPointsMap>> gamesMap = playerPointsMapsOfPlayer.stream()
+                    .collect(Collectors.groupingBy(PlayerPointsMap::getGameStatistics));
+        List<Player> winners = new ArrayList<>();
+        for (Map.Entry<GameStatistics, List<PlayerPointsMap>> entry: gamesMap.entrySet()){
+            Player winner = entry.getValue().stream().max(Comparator.comparing(PlayerPointsMap::getPoints)).map(x -> x.getPlayer()).get();
+            winners.add(winner);
+        }
+        Integer wins = (int) winners.stream().filter(x -> x.equals(player)).count();
+        return wins;
     }
 
     public Collection<List<String>> getAllPlayerPointsMaps(Collection<GameStatistics> gameStatistics) {
@@ -90,15 +110,34 @@ public class PlayerPointsService {
     public Map<String, List<String>> getPreviousGamesUser(String currentUser){
         List<String> gameId = playerPointsRepository.findGameIdsUser(currentUser).stream().map(Object::toString).collect(Collectors.toList());
         List<String> gameCreator = playerPointsRepository.findGameCreatorsUser(currentUser);
-        //List<String> gamePlayers = playerPointsRepository.findGamePlayersUser(currentUser);
         List<String> gameDuration = playerPointsRepository.findGameDurationsUser(currentUser).stream().map(Object::toString).collect(Collectors.toList());
         List<String> gamePoints = playerPointsRepository.findGamePointsUser(currentUser).stream().map(Object::toString).collect(Collectors.toList());
         Map<String, List<String>> previousGamesUser = new HashMap<>();
         previousGamesUser.put("gameId", gameId);
         previousGamesUser.put("gameCreator", gameCreator);
-        //previousGamesUser.put("gamePlayers", gamePlayers);
         previousGamesUser.put("gameDuration", gameDuration);
         previousGamesUser.put("gamePoints", gamePoints);
         return previousGamesUser;
     }
+
+    public Map<String, List<String>> getPlayerRankingPoints(){
+        List<String> points = playerPointsRepository.findPointsRanked().stream().map(Object::toString).collect(Collectors.toList());
+        List<String> pointsUsernames = playerPointsRepository.findUsersRankedByPoints().stream().map(Object::toString).collect(Collectors.toList());
+        Map<String, List<String>> playerRanking = new HashMap<>();
+        playerRanking.put("points", points);
+        playerRanking.put("pointsUsernames", pointsUsernames);
+        return playerRanking;
+    }
+
+    public List<Map.Entry<Player, Integer>> getPlayerRankingWins(){
+        Iterable<Player> players = playerRepository.findAll();
+        Map<Player, Integer> playerWinsMap = new HashMap<>();
+        for (Player player : players){
+            playerWinsMap.put(player, getWins(player));
+        }
+        List<Map.Entry<Player, Integer>> list = new ArrayList<>(playerWinsMap.entrySet());
+        list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+        return list;
+    }
+
 }

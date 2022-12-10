@@ -50,9 +50,4 @@ public class GameStatisticsService {
         return globalNumberGamesMap;
     }
 
-    public Map<String, String> getPlayerRankingMap(){
-        Map<String, String> playerRankingMap = new HashMap<String, String>();
-        return playerRankingMap;
-    }
-
 }

@@ -8,16 +8,14 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-<sieteislas:layout pageName="previousGames">
-    <h1 style="text-align: center;">Previous Games</h1>
-    <h2>Global</h2>
-    <div style="height: 300px; overflow: auto">
+<sieteislas:layout pageName="previousGamesGlobal">
+    <h1 style="text-align: center;">PREVIOUS GAMES (GLOBALLY)</h1>
     <table id="previousGamesGlobalTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Game Id</th>
-                <th>Game Creator Name</th>
-                <th>Game Players Names</th>
+                <th>Game Creator</th>
+                <th>Players</th>
                 <th>Duration (in sec)</th>
             </tr>
         </thead>
@@ -42,40 +40,4 @@
                 </c:forEach>
         </tbody>
     </table>
-    </div>
-    <sec:authorize access="isAuthenticated()">
-    <h2>Games of <sec:authentication property="name"/></h2>
-    <table id="previousGamesUserTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th>Game Id</th>
-                <th>Game Creator Name</th>
-                <th>Game Players Names</th>
-                <th>Duration (in sec)</th>
-                <th>Gained Points</th>
-            </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${previousGamesUser['gameId']}" varStatus="loop">
-            <tr>
-                <td>
-                    <c:out value="${previousGamesUser['gameId'][loop.index]}" />
-                </td>
-                <td>
-                    <c:out value="${previousGamesUser['gameCreator'][loop.index]}" />
-                </td>
-                <td>
-                    <c:out value="${previousGamesUser['gameCreator'][loop.index]}" />
-                </td>
-                <td>
-                    <c:out value="${previousGamesUser['gameDuration'][loop.index]}" />
-                </td>
-                <td>
-                    <c:out value="${previousGamesUser['gamePoints'][loop.index]}" />
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-    </sec:authorize>
 </sieteislas:layout>
