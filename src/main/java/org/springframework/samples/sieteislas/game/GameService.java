@@ -8,6 +8,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
@@ -47,6 +48,8 @@ public class GameService {
         game.setPlayerTurn(0);
         game.setDuration(0.0);
         game.setDiceRoll(1);
+        game.setHasRolledDice(false);
+        game.setNumCardsToPay(0);
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
@@ -89,7 +92,8 @@ public class GameService {
         		card.setCardType(getCardType("rum"));
         	}
             card.setGame(game);
-                cartas.add(card);
+            cartas.add(card);
+
         }
 
         Collections.shuffle(cartas);
@@ -145,25 +149,19 @@ public class GameService {
                         .anyMatch(x-> x.equals(principalName));
     }
 
-    public boolean isCurrentPlayer(Game game, String name) {
+    public String getCurrentPlayerName(Game game, String name) {
         String currentPlayerName = game.getPlayers().get(game.getPlayerTurn()).getUser().getUsername();
-        return currentPlayerName.equals(name);
+        return currentPlayerName;
+    }
+
+    public boolean isCurrentPlayer(String currentPlayerName, String principalName){
+        return currentPlayerName.equals(principalName);
     }
 
     public void kickOfGame(Integer playerId) {
         Player p = this.playerRepository.findById(playerId).get();
         p.setGame(null);
         this.playerRepository.save(p);
-    }
-
-    public void nextPlayer(Game game){
-        int currentPlayer = game.getPlayerTurn();
-        int numPlayers = game.getPlayers().size();
-        //TODO: calc next player: num mod numPlayers
-        int nextPlayer = (currentPlayer+1) % numPlayers;
-        
-        game.setPlayerTurn(nextPlayer);
-        this.gameRepository.save(game);
     }
 
     public void joinGame(Game game, String name) {
@@ -174,7 +172,6 @@ public class GameService {
     }
     
     public void rollDice(Game game) {
-    	
     	Double rand = Math.random() * 5;
     	Long num = Math.round(rand);
     	
@@ -183,29 +180,22 @@ public class GameService {
     }
     
     private int calculateHigher(Integer numCards, int diceRoll) {
-    	
     	int res = numCards + diceRoll;
-    	
     	return (5 < res) ? 5 : res;
     }
     
     private int calculateLower(Integer numCards, int diceRoll) {
-    	
     	int res = diceRoll - numCards;
-    	
     	return (res < 0) ? 0 : res;
     }
     
     public List<Card> possibleChoices(Game game){
-    	
     	int diceRoll = game.getDiceRoll();
-    	List<Card> islands = null;
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
     	
-    	return islands.subList(calculateLower(numCards, diceRoll),
-    			calculateHigher(numCards, diceRoll));
+    	return game.getDeck().subList(calculateLower(numCards, diceRoll), calculateHigher(numCards, diceRoll) + 1);
     }
 
     @Transactional
@@ -217,5 +207,45 @@ public class GameService {
     @Transactional
     public void toggleActive(Game game, boolean b) {
         this.gameRepository.toggleActive(game.getId(), b);
+    }
+    
+	public void toggleHasRolledDice(Game game, Boolean b) {
+		game.setHasRolledDice(b);
+    	gameRepository.save(game);
+	}
+
+    @Transactional
+    public int setNumCardsToPay(Game game, Card card) {
+        int chosenIsland = game.getDeck().indexOf(card)+1;//Islands are numbered 1 to 6, hence the +1.
+        int rolledIsland = game.getDiceRoll()+1;
+        int toPay = Math.abs(rolledIsland-chosenIsland);
+        game.setNumCardsToPay(toPay);
+    	gameRepository.save(game);
+        
+        return Math.abs(rolledIsland-chosenIsland);
+    }
+
+    @Transactional
+    public int decrementNumCardsToPay(Game game) {
+        int decrementedValue = game.getNumCardsToPay()-1;
+        game.setNumCardsToPay(decrementedValue);
+        gameRepository.save(game);
+        return decrementedValue;
+    }
+
+    @Transactional
+    public void passTurn(Game game) {
+		toggleHasRolledDice(game, false);
+        this.gameRepository.setNumCardsToPay(game.getId(), 0);
+        calcNextPlayer(game);
+    }
+
+    @Transactional
+    public void calcNextPlayer(Game game){
+        int currentPlayer = game.getPlayerTurn();
+        int numPlayers = game.getPlayers().size();
+        int nextPlayer = (currentPlayer+1) % numPlayers;
+        
+        this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
     }
 }
