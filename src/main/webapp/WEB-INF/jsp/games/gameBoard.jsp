@@ -116,6 +116,12 @@
 								</div>
 							</c:otherwise>					
 						</c:choose>
+
+						<div class="board-border island" style="width: 15%; display: inline-block;">
+							<h2 color="black">ISLAND ${loop.index + 1}</h2>
+							<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
+						</div>
+            
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">
@@ -168,14 +174,14 @@
 					<div>
 						
 					</div>
-					<div>Aqui van los mensajes</div>
-					<div>Aqui van los mensajes</div>
-					<div>Aqui van los mensajes</div>
+				<c:forEach items="${game.chat}" var="message">
+				    <c:out value="${message.body}"></c:out>
+				</c:forEach>
 					<div>
-						<form>
-							<input type="text" class="message-input">
+						<form:form modelAttribute="game">
+							<form:input path="chat" type="text" class="message-input"></form:input>
 							<button type="submit" class="btn btn-default">Submit</button>
-						</form>
+						</form:form>
 					</div>
 					
 				</div>

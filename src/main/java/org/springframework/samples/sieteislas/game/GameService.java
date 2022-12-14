@@ -93,6 +93,7 @@ public class GameService {
         	}
             card.setGame(game);
             cartas.add(card);
+
         }
 
         Collections.shuffle(cartas);
