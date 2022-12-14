@@ -119,14 +119,13 @@
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">
-						<h2 color="black">DECK
-							(<c:out value="${fn:length(game.deck)-6}"></c:out>)
+						<h2 color="black">
+							DECK (<c:out value="${fn:length(game.deck)-6}"></c:out>)
 						</h2>
 						<img src="/resources/images/cards/upsideDown.png" alt="island">
 					</div>
 				</div>
 				<div class="board-element board-border" >
-
 					<div style="display: inline-block; width: 79%; height: 100%; text-align: center;">
 						<c:choose>
 							<c:when test="${isPlayer}">
@@ -183,7 +182,7 @@
 				<h2 color="black" class="island board-border" style="text-align: center;">PLAYERS</h2>
 				<c:forEach items="${game.players}" var="player">
 					<c:choose>
-						<c:when test="${isCurrentPlayer && player.equals(principalPlayer)}">
+						<c:when test="${ player.user.username.equals(currentPlayerName) }">
 							<div class="current-player">
 								<div>
 									<img src="${player.user.profileImage}" alt="foto_perfil" class="profileImage">

@@ -145,7 +145,9 @@ public class GameController {
     public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
-        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
+        
+        String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName()); 
+        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
 
         User u = this.userService.findUser(principal.getName()).get();
         Player principalPlayer = this.playerService.findByUser(u);
@@ -153,6 +155,7 @@ public class GameController {
         model.put("isPlayer", isPlayer);
         model.put("principalPlayer", principalPlayer);
         model.put("isCurrentPlayer", isCurrentPlayer);
+        model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;

@@ -148,9 +148,13 @@ public class GameService {
                         .anyMatch(x-> x.equals(principalName));
     }
 
-    public boolean isCurrentPlayer(Game game, String name) {
+    public String getCurrentPlayerName(Game game, String name) {
         String currentPlayerName = game.getPlayers().get(game.getPlayerTurn()).getUser().getUsername();
-        return currentPlayerName.equals(name);
+        return currentPlayerName;
+    }
+
+    public boolean isCurrentPlayer(String currentPlayerName, String principalName){
+        return currentPlayerName.equals(principalName);
     }
 
     public void kickOfGame(Integer playerId) {
