@@ -2,6 +2,8 @@ package org.springframework.samples.sieteislas.card;
 
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,12 @@ public class CardService {
 
     public void save(Card card) {
         this.cardRepository.save(card);
+    }
+
+    @Transactional
+    public void delete(Card card) {
+        card.setPlayer(null);
+        this.cardRepository.delete(card);
     }
 
 }
