@@ -21,6 +21,7 @@ import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.samples.sieteislas.player.Player;
 
 @Getter
 @Setter
@@ -61,7 +62,7 @@ public class GameStatistics extends BaseEntity{
     }
 
     @Transient
-    public String winner(){ /* String hasta que implementemos la entidad Player */
+    public Player winner(){ /* String hasta que implementemos la entidad Player */
         return null;
     }
 

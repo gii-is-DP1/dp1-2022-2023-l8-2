@@ -37,12 +37,18 @@ INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (3, 'fansPKMN', TRUE,'joscasvaz', 0, FALSE, 0, 0, 0);
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq', 0, FALSE, 0, 0, 0);
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (5, 'Betis KK', TRUE,'jualopqui1', 0, FALSE, 0, 0, 0);
+-- insertions into games below are necessary for statistics but need to be changed
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (6, 'Game 6', FALSE, 'pabberima', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (7, 'Game 7', FALSE,'thokriale', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (8, 'Game 8', FALSE,'joscasvaz', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (9, 'Game 9', FALSE,'maravimaq', 0, FALSE, 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, duration, num_cards_to_pay) VALUES (10, 'Game 10', FALSE,'jualopqui1', 0, FALSE, 0, 0, 0);
 
-INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (1, 'pabberima', 1808.63, 2021, 07);
-INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (2, 'thokriale', 1676.09, 2021, 08);
-INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (3, 'joscasvaz', 1798.58, 2021, 08);
-INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (4, 'maravimaq', 1738.24, 2021, 09);
-INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (5, 'jualopqui1', 1420.69, 2021, 09);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (6, 'pabberima', 1808.63, 2021, 07);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (7, 'thokriale', 1676.09, 2021, 08);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (8, 'joscasvaz', 1798.58, 2021, 08);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (9, 'maravimaq', 1738.24, 2021, 09);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (10, 'jualopqui1', 1420.69, 2021, 09);
 
 INSERT INTO players(id, user, game_id) VALUES (1, 'pabberima', 1);
 INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', 2);
@@ -76,7 +82,7 @@ INSERT INTO messages (id, game_id, body, date, player) VALUES (6, 2, 'mensaje6',
 INSERT INTO messages (id, game_id, body, date, player) VALUES (7, 3, 'mensaje7', '20210918 18:34:09', 2);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (8, 4, 'mensaje8', '20210918 18:34:09', 2);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (9, 4, 'mensaje9', '20210918 18:34:09', 3);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (10,4, 'mensaje', '20210918 18:34:09', 1);
+INSERT INTO messages (id, game_id, body, date, player) VALUES (10,4, 'mensaje10', '20210918 18:34:09', 1);
 
 INSERT INTO card_types(id, name, image) VALUES (1, 'coin', '/resources/images/cards/doblon.png');
 INSERT INTO card_types(id, name, image) VALUES (2, 'coup', '/resources/images/cards/copa.png');
