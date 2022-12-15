@@ -167,7 +167,6 @@ public class GameController {
         return VIEWS_GAMES_GAMEBOARD;
     }
     
-    =======
     /*
     @PostMapping("/gameBoard/{gameId}/comment")
     public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
