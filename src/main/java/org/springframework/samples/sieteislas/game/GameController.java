@@ -2,10 +2,18 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.card.Card;
+import org.springframework.samples.sieteislas.card.CardService;
+import org.springframework.samples.sieteislas.message.Message;
+import org.springframework.samples.sieteislas.message.MessageService;
+import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,28 +35,36 @@ public class GameController {
     private GameStatisticsService gameStatisticService;
     private PlayerService playerService;
     private UserService userService;
+    private CardService cardService;
+    private MessageService messageService;
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService, UserService userService,
-                            GameStatisticsService gameStatisticService){
+                            GameStatisticsService gameStatisticService, CardService cardService, MessageService messageService){
         this.gameService = gameService;
         this.playerService = playerService;
         this.userService = userService;
         this.gameStatisticService = gameStatisticService;
+        this.cardService = cardService;
+        this.messageService = messageService;
     }
 
     //GET ALL ACTIVE GAMES
     @GetMapping("/active")
-    public String getActiveGames(Map<String, Object> model) {
+    public String getActiveGames(Map<String, Object> model, Principal principal) {
         Collection<Game> games = gameService.getActiveGames();
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        model.put("actualPlayer", actualPlayer);
         model.put("games", games);
         return VIEWS_GAMES_LIST;
     }
 
     //CREATING A NEW GAME
     @GetMapping("/new")
-    public String initCreateGameForm( ModelMap model){
+    public String initCreateGameForm( ModelMap model, Principal principal){
         Game game = new Game();
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        model.put("actualPlayer", actualPlayer);
         model.put("game", game);
         return VIEWS_CREATE_GAME_FORM;
     }
@@ -78,6 +94,9 @@ public class GameController {
                 this.gameService.delete(game);
             } else{
                 this.gameService.exitGame(game, principal.getName());
+                if(game.getCreatorUsername().equals(principal.getName())){
+                    this.gameService.selectNewCreator(game);
+                }
             }  
         }
         return "redirect:/"; 
@@ -96,25 +115,87 @@ public class GameController {
         }        
     }
 
-    @GetMapping("/gameBoard/{gameId}")
+    @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
+        if(game.getActive()){
+            List<Card> doblones = gameService.createDeck(game).stream()
+                                            .filter(x->(x.getCardType().getName()).equals("coin"))
+                                            .collect(Collectors.toList());
+            //Repartimos 3 doblones a cada jugador
+            for(Player player: game.getPlayers()) { 
+                for(int i=0; i < 3; i++){
+                    Card doblon = doblones.stream() 
+                                            .filter(x-> x.getPlayer() == null)
+                                            .findFirst().get();
+                    this.gameService.moveCardToPlayer(doblon, player);
+                    this.cardService.save(doblon);
+                }
+            }
+            this.gameService.toggleActive(game, false);
+        }
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}")
+    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
+        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
+        
+        Player principalPlayer = null;
+        if(isPlayer){
+            User u = this.userService.findUser(principal.getName()).get();
+            principalPlayer = this.playerService.findByUser(u);
+        }
+
+        model.put("isPlayer", isPlayer);
+        model.put("principalPlayer", principalPlayer);
+        model.put("isCurrentPlayer", isCurrentPlayer);
+        model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }
-
-    @GetMapping("/gameBoard")
-    public String getGameBoard(ModelMap model){
-        return VIEWS_GAMES_GAMEBOARD;
+    
+    /*
+    @PostMapping("/gameBoard/{gameId}/comment")
+    public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        Message message = new Message();
+        
+        message.setGame(game);
+        message.setPlayer(actualPlayer);
+        message.setBody(comment);
+        message.save();
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
     }
+    */
     
     @GetMapping("/join/{id}")
-    public String joinLobby(@PathVariable("id") String id, Principal principal) {
+    public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
     	Game game = this.gameService.findById(Integer.valueOf(id));
     	this.gameService.joinGame(game, principal.getName());
 
     	 String redirect = String.format("redirect:/games/lobby/%s", id);
          return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}/rollDice")
+    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    	
+    	Game game = gameService.findById(Integer.valueOf(id));
+    	
+    	gameService.rollDice(game);
+    	List<Card> possibleChoices = gameService.possibleChoices(game);
+    	
+    	model.put("game", game);
+    	model.put("possibleChoices", possibleChoices);
+    	model.put("username", principal.getName());
+    	
+        return VIEWS_GAMES_GAMEBOARD;
     }
 
 }

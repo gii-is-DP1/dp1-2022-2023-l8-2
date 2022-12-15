@@ -32,16 +32,17 @@ INSERT INTO achievements(id, name, threshold, description, image, metric_id) VAL
 INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES 
 (2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
-INSERT INTO games(id, game_name, active, creator_username) VALUES (1, 'My first game', TRUE, 'pabberima');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (2, 'Sala DPanitas', TRUE,'thokriale');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (3, 'fansPKMN', TRUE,'joscasvaz');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (5, 'Betis KK', TRUE,'jualopqui1');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (6, 'Game 6', FALSE, 'pabberima');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (7, 'Game 7', FALSE,'thokriale');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (8, 'Game 8', FALSE,'joscasvaz');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (9, 'Game 9', FALSE,'maravimaq');
-INSERT INTO games(id, game_name, active, creator_username) VALUES (10, 'Game 10', FALSE,'jualopqui1');
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (1, 'My first game', TRUE, 'pabberima', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (2, 'Sala DPanitas', TRUE,'thokriale', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (3, 'fansPKMN', TRUE,'joscasvaz', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (5, 'Betis KK', TRUE,'jualopqui1', 0, 0, 0);
+-- insertions into games need to change
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (6, 'Game 6', FALSE, 'pabberima', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (7, 'Game 7', FALSE,'thokriale', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (8, 'Game 8', FALSE,'joscasvaz', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (9, 'Game 9', FALSE,'maravimaq', 0, 0, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, player_turn, duration) VALUES (10, 'Game 10', FALSE,'jualopqui1', 0, 0, 0);
 
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (6, 'pabberima', 1808.63, 2021, 07);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (7, 'thokriale', 1676.09, 2021, 08);
@@ -96,9 +97,9 @@ INSERT INTO card_types(id, name, image) VALUES (10, 'sword', '/resources/images/
 INSERT INTO card_types(id, name, image) VALUES (11, 'emptyIsland', '/resources/images/cards/isla.png');
 INSERT INTO card_types(id, name, image) VALUES (12, 'upsideDown', '/resources/images/cards/reverso.png');
 
-INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (1, 1, 1, 1);
-INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (2, 2, 1, 2);
-INSERT INTO cards(id, card_type_id, game_id, player_id) VALUES (3, 3, 1, 3);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (1, 1, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (2, 2, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (3, 3, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (4, 4, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (5, 5, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (6, 6, 1);
@@ -110,7 +111,7 @@ INSERT INTO cards(id, card_type_id, game_id) VALUES (11, 11, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (12, 12, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (13, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (14, 1, 1);
-INSERT INTO cards(id, card_type_id, game_id) VALUES (15, 2, 1);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (15, 1, 5);
 
 INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (4, 100000, 349759.11, 678, 678, 1);
 INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (1, 96, 18708.63, 2, 1, 2);

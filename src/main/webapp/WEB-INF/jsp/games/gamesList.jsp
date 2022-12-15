@@ -6,7 +6,10 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="owners">
-    <h2> Current Games </h2>
+<div style="text-align:center"> 
+    <a href="/games/new" class="btn btn-default">CREATE NEW GAME!</a>   
+</div> 
+<h2> Current Games </h2>
 
     <table id="gamesTable" class="table table-striped">
         <thead>
@@ -32,7 +35,9 @@
                     </c:forEach>
                 </td>  
                 <td>
-                    
+                     <c:choose>
+                        <c:when test="${not actualPlayer.game.id.equals(game.id)}">
+                        
                     <c:choose>
                         <c:when test="${4 > fn:length(game.players)}">
                             <spring:url value="/games/join/{gameId}" var="joinGameUrl">
@@ -47,6 +52,16 @@
                         </c:otherwise>
                     </c:choose>
                  
+                  </c:when>
+                        <c:otherwise>
+                            <spring:url value="/games/join/{gameId}" var="joinGameUrl">
+                                <spring:param name="gameId" value="${game.id}"/>
+                            </spring:url>
+                            <a href="${fn:escapeXml(joinGameUrl)}">
+                                <p class="btn btn-primary">RETURN TO LOBBY</p>
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
                 </td>            
             </tr>
         </c:forEach>
