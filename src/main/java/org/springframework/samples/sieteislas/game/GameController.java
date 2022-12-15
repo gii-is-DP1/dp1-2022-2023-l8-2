@@ -70,7 +70,7 @@ public class GameController {
     }
 
     @PostMapping("/new")
-    public String processCreationForm(Principal principal, @ModelAttribute("game") Game game, ModelMap model){
+    public String processCreationForm(Principal principal, @ModelAttribute("game") Game game, ModelMap model) {
         game = this.gameService.setUpNewGame(game, principal.getName());
 
         String redirect = String.format("redirect:/games/lobby/%s", game.getId());
@@ -78,15 +78,24 @@ public class GameController {
     }
 
     @GetMapping("/lobby/{id}")
-    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
+    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_LOBBY;
     }
 
+    @GetMapping("/join/{id}")
+    public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
+    	Game game = this.gameService.findById(Integer.valueOf(id));
+    	this.gameService.joinGame(game, principal.getName());
+
+    	 String redirect = String.format("redirect:/games/lobby/%s", id);
+         return redirect;
+    }
+
     @GetMapping("/lobby/{id}/exit")
-    public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
+    public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         Boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
         if(isPlayer){
@@ -103,7 +112,7 @@ public class GameController {
     }
 
     @GetMapping("/lobby/{id}/kick/{playerId}")
-    public String kickFromLobby(@PathVariable("id") String id, @PathVariable("playerId") String playerId){
+    public String kickFromLobby(@PathVariable("id") String id, @PathVariable("playerId") String playerId) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         if(game.getPlayers().size()<2){ //Esta comprobacion para tenerla controlada en teoria nunca podriamos kickearnos a nosotros mismos.
             this.gameService.delete(game);
@@ -116,9 +125,9 @@ public class GameController {
     }
 
     @GetMapping("/start/{gameId}")
-    public String startGame(@PathVariable("gameId") String id, ModelMap model){
+    public String startGame(@PathVariable("gameId") String id, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
-        if(game.getActive()){
+        if(game.getActive()){ //comprobamos si la partida ha comenzado--> active: no ha comenzado, !active: ha comenzado 
             List<Card> doblones = gameService.createDeck(game).stream()
                                             .filter(x->(x.getCardType().getName()).equals("coin"))
                                             .collect(Collectors.toList());
@@ -139,20 +148,20 @@ public class GameController {
     }
 
     @GetMapping("/gameBoard/{gameId}")
-    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model){
+    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
-        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
         
-        Player principalPlayer = null;
-        if(isPlayer){
-            User u = this.userService.findUser(principal.getName()).get();
-            principalPlayer = this.playerService.findByUser(u);
-        }
+        String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName()); 
+        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
+
+        User u = this.userService.findUser(principal.getName()).get();
+        Player principalPlayer = this.playerService.findByUser(u);
 
         model.put("isPlayer", isPlayer);
         model.put("principalPlayer", principalPlayer);
         model.put("isCurrentPlayer", isCurrentPlayer);
+        model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
@@ -174,28 +183,49 @@ public class GameController {
     }
     */
     
-    @GetMapping("/join/{id}")
-    public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
-    	Game game = this.gameService.findById(Integer.valueOf(id));
-    	this.gameService.joinGame(game, principal.getName());
-
-    	 String redirect = String.format("redirect:/games/lobby/%s", id);
-         return redirect;
-    }
-
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	
     	Game game = gameService.findById(Integer.valueOf(id));
-    	
-    	gameService.rollDice(game);
+        this.gameService.toggleHasRolledDice(game, true);
+    	this.gameService.rollDice(game); 
+        
     	List<Card> possibleChoices = gameService.possibleChoices(game);
-    	
-    	model.put("game", game);
-    	model.put("possibleChoices", possibleChoices);
-    	model.put("username", principal.getName());
-    	
-        return VIEWS_GAMES_GAMEBOARD;
+	
+    	model.put("possibleChoices", possibleChoices); 	
+        return renderBoard(id, principal, model);
+    }
+
+    @GetMapping("/gameBoard/{gameId}/chooseCard/{cardId}")
+    public String manageChosenIsland(@PathVariable("gameId") String id, @PathVariable("cardId") String cardId, ModelMap model, Principal principal) {
+    	Game game = gameService.findById(Integer.valueOf(id));
+        Player currentPlayer = game.getPlayers().get(game.getPlayerTurn());
+        Card card = cardService.findById(Integer.valueOf(cardId));
+        
+        int num = this.gameService.setNumCardsToPay(game, card);
+        this.gameService.moveCardToPlayer(card, currentPlayer);
+
+        if(num <= 0){
+            this.gameService.passTurn(game);
+        }
+
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}/discard/{cardId}")
+    public String discardCard(@PathVariable("gameId") String id, @PathVariable("cardId") String cardId, ModelMap model, Principal principal){
+    	Game game = gameService.findById(Integer.valueOf(id));
+        Card card = cardService.findById(Integer.valueOf(cardId));
+
+        this.cardService.delete(card);
+
+        int leftToPay = this.gameService.decrementNumCardsToPay(game);
+
+        if(leftToPay <= 0){
+            this.gameService.passTurn(game);
+        }
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
     }
 
 }
