@@ -81,8 +81,16 @@ public class GameController {
     }
 
     @GetMapping("/lobby/{id}")
-    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
+    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
+
+        response.addHeader("Refresh", "2");
+        //Si no esta activo significa que la partida ya ha empezado y redirigimos.
+        if(!game.getActive()) {
+            String redirect = String.format("redirect:/games/gameBoard/%s", id);
+            return redirect;
+        }
+
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_LOBBY;
