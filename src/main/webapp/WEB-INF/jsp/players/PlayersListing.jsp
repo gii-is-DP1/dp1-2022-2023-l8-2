@@ -12,10 +12,8 @@
     <table id="playersTable" class="table table-striped">
         <thead>
             <tr>
-                <th>Username</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Achievements</th>
+                <th></th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -23,16 +21,13 @@
             <c:forEach items="${players}" var="player">
                 <tr>
                     <td>
+                        <img src="${player.user.profileImage}" alt="profileImage" style="height: 50px; width: 50px;" />
+                    </td>
+                    <td>
                         <c:out value="${player.user.username}" />
                     </td>
                     <td>
-                        <c:out value="${player.user.firstName}" />
-                    </td>
-                    <td>
-                        <c:out value="${player.user.lastName}" />
-                    </td>
-                    <td>
-                        <c:out value="${player.achievements}" />
+                        <a class="btn btn-success">FRIEND REQUEST</a>
                     </td>
                 </tr>
             </c:forEach>

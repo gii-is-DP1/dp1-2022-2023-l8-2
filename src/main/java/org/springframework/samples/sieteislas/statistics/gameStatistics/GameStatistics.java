@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.samples.sieteislas.game.Game;
@@ -24,6 +26,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name="game_statistics")
 public class GameStatistics extends BaseEntity{
@@ -41,6 +44,7 @@ public class GameStatistics extends BaseEntity{
     private Double duration; /* In seconds */
 
     @OneToMany(mappedBy="gameStatistics", cascade=CascadeType.ALL)
+    @NotAudited
     private List<PlayerPointsMap> playerPoints;
 
     @NotNull
@@ -50,25 +54,6 @@ public class GameStatistics extends BaseEntity{
     @NotNull
     @Column(name="year")
     private Integer year;
-
-
-/*###################################################################################################################################################### */
-           //                                        TO DO
-/*###################################################################################################################################################### */
-    @Transient
-    public Integer totalPoints(){
-        return null;
-    }
-
-    @Transient
-    public String winner(){ /* String hasta que implementemos la entidad Player */
-        return null;
-    }
-
-    @Transient
-    public Integer points(){
-        return null;
-    }
 
     public static GameStatistics createDefault(Game game2) {
         GameStatistics statistics = new GameStatistics();

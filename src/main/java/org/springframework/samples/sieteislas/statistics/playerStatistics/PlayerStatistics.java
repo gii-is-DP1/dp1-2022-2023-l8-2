@@ -8,6 +8,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.Audited;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.model.BaseEntity;
 import org.springframework.samples.sieteislas.player.Player;
@@ -19,6 +20,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name="playerStatistics")
 public class PlayerStatistics extends BaseEntity{
