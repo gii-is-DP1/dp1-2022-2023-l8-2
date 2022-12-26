@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.achievement.AchievementRepository;
 import org.springframework.samples.sieteislas.user.User;
@@ -31,8 +33,8 @@ public class PlayerService {
     public void save(@Valid Player player) {
 		this.playerRepository.save(player);
 	}
-    public Collection<Player> getAllPlayers() {
-        return (Collection<Player>) playerRepository.findAll();
+    public Page<Player> getAllPlayers(Pageable pageable) {
+        return playerRepository.findAllPlayers(pageable);
     }
 
     public void findById(Integer playerId) {
