@@ -70,11 +70,6 @@
 	        <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete User</a>
     </c:if>
 
-    <table class="table table-striped">
-        <c:forEach items="${user.friends}" var="friend">
-            <c:out value="${friend.username}"></c:out>
-        </c:forEach>
-    </table>
     
 
 </petclinic:layout>

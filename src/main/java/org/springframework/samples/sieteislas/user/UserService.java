@@ -17,7 +17,9 @@ package org.springframework.samples.sieteislas.user;
 
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -62,5 +64,11 @@ public class UserService {
 				.map(Authorities::getAuthority)
 				.anyMatch(a -> a.equals("admin"));
 	}
+
+    public List<User> notPlaying(List<User> friends) {
+        return friends.stream()
+						.filter(x-> x.getPlayer().getGame()==null)
+						.collect(Collectors.toList());
+    }
 
 }

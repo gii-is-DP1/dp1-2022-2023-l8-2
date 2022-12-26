@@ -20,6 +20,14 @@
     
     <br>
     <h2>PLAYERS (<c:out value="${fn:length(game.players)}"/>/4)</h2>
+    <c:if test="${4 > fn:length(game.players)}">
+        <spring:url value="/games/lobby/invitation/{gameId}" var="lobbyInvitationUrl">
+            <spring:param name="gameId" value="${game.id}"/>
+        </spring:url>
+        <a href="${fn:escapeXml(lobbyInvitationUrl)}" class="glyphicon glyphicon-user glyphicon-plus">
+            <p style="color: darkgoldenrod;" class="glyphicon glyphicon-plus"></p>
+        </a>
+    </c:if>
     <div style="display:inline-flex; position:relative; left: 5%; width: 100%;">
         <c:forEach items="${game.players}" var="player">
             <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin: 10px; text-align: center; width: 20%; height: 20%;">

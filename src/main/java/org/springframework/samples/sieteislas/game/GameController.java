@@ -33,6 +33,7 @@ public class GameController {
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
     private static final String VIEWS_GAMES_LIST = "games/gamesList";
     private static final String VIEWS_GAMES_GAMEBOARD = "games/gameBoard";
+    private static final String VIEWS_GAMES_INVITE = "games/invitation";
 
     private GameService gameService;
     private GameStatisticsService gameStatisticService;
@@ -133,6 +134,15 @@ public class GameController {
             String redirect = String.format("redirect:/games/lobby/%s", id);
             return redirect;
         }        
+    }
+
+    @GetMapping("/lobby/invitation/{gameId}")
+    public String invitePlayerListing(@PathVariable("gameId") String gameId, ModelMap model, Principal principal){
+        User user = this.userService.findUser(principal.getName()).get();
+        List<User> notPlaying = this.userService.notPlaying(user.getFriends()); //Solo devolvemos los usuarios que no estén jugando en otra partida ya.
+        model.put("friends", notPlaying);
+        model.put("gameId", gameId);
+        return VIEWS_GAMES_INVITE;
     }
 
     @GetMapping("/start/{gameId}")

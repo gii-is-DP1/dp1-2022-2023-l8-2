@@ -132,7 +132,6 @@ public class UserController {
 			model.put("errors", result.getAllErrors());
 			return VIEWS_UPDATE_USER_PROFILE;
 		} else{
-
 			User userToUpdate = this.userService.findUser(username).get();
 			BeanUtils.copyProperties(user, userToUpdate, "username","player","password","enabled","authorities"); 
 			this.userService.saveUser(userToUpdate);
