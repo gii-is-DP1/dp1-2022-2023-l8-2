@@ -116,6 +116,7 @@
 								</div>
 							</c:otherwise>					
 						</c:choose>           
+
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">

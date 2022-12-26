@@ -34,11 +34,11 @@ public class Player extends BaseEntity{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user", referencedColumnName = "username")
 	private User user;
-	
+
 	@OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
 	@NotAudited
 	private List<Card>	cards;
-	
+
 	@OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
 	private PlayerStatistics statistics;
 
@@ -55,10 +55,13 @@ public class Player extends BaseEntity{
 	private List<Message> messages;
 
 	@ManyToMany
-	@JoinTable(name="player_achievements", 
+	@JoinTable(name="player_achievements",
 				joinColumns = @JoinColumn(name="player_id"),
 				inverseJoinColumns = @JoinColumn(name="achievement_id"))
 	private List<Achievement> achievements;
 
+    public String toString(){
+        return user.getUsername();
+    }
 
 }

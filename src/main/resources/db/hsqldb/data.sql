@@ -37,6 +37,12 @@ INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (3, 'fansPKMN', TRUE,'joscasvaz', 0, FALSE, 0, '20221218 10:34:09', null, 0);
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (4, 'VivaElSevillaFC', TRUE,'maravimaq', 0, FALSE, 0, '20221218 10:34:09', null, 0);
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (5, 'Betis KK', TRUE,'jualopqui1', 0, FALSE, 0, '20221218 10:34:09', null, 0);
+-- insertions into games below are necessary for statistics but need to be changed
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (6, 'Game 6', FALSE, 'pabberima', 0, FALSE, 0, '20221218 10:34:09', null, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (7, 'Game 7', FALSE,'thokriale', 0, FALSE, 0, '20221218 10:34:09', null, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (8, 'Game 8', FALSE,'joscasvaz', 0, FALSE, 0, '20221218 10:34:09', null, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (9, 'Game 9', FALSE,'maravimaq', 0, FALSE, 0, '20221218 10:34:09', null, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (10, 'Game 10', FALSE,'jualopqui1', 0, FALSE, 0, '20221218 10:34:09', null, 0);
 
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (1, 'pabberima', 1808.63, 2021, 07);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (2, 'thokriale', 1676.09, 2021, 08);
@@ -65,7 +71,6 @@ INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (1
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (11, 5, 120, 3);
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (12, 5, 65, 2);
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (13, 5, 80, 1);
-
 
 INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20221218 10:34:09', 1);
 INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20221218 18:34:09', 2);
