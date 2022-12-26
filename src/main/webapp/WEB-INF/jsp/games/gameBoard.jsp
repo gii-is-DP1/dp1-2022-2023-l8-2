@@ -115,7 +115,8 @@
 									<img src="/resources/images/cards/${card.cardType.name}.png" alt="island" style="width: 150px;">
 								</div>
 							</c:otherwise>					
-						</c:choose>            
+						</c:choose>           
+
 					</c:forEach>
 					<br>
 					<div class="board-border island" style="width: 15%; display: inline-block;">

@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.sieteislas.player.Player;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +14,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name = "users")
 public class User{
@@ -30,15 +34,19 @@ public class User{
 	private String profileImage;
 	
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+	@NotAudited
 	private Player player;
 
 	@NotBlank
 	@Column(name = "password")
+	@NotAudited
 	String password;
 	
+	@NotAudited
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@NotAudited
 	private Set<Authorities> authorities;
 
   
