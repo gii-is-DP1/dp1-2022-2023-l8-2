@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
@@ -44,16 +45,17 @@ public class PlayerPointsService {
     }
 
     public Collection<List<String>> getAllPlayerPointsMaps(Collection<GameStatistics> gameStatistics) {
-        Collection<List<String>> players = new ArrayList<>();
-        for (GameStatistics gm: gameStatistics) {
-            List<String> playerNested = new ArrayList<>();
-            for (Player pl: gm.getGame().getPlayers()){
-                playerNested.add(pl.getUser().getUsername());
+        Collection<List<String>> allUsernames = new ArrayList<>();
+        for (GameStatistics gm : gameStatistics) {
+            List<String> usernames = new ArrayList<>();
+            for (PlayerPointsMap ppm : gm.getPlayerPoints()) {
+                usernames.add(ppm.getPlayer().getUser().getUsername());
             }
-            players.add(playerNested);
+            allUsernames.add(usernames);
         }
-        return players;
+        return allUsernames;
     }
+
 
     public Map<String, Double> getTimePlayedUserMap(String currentUser){
         Double avgTimePlayedUser = playerPointsRepository.findAvgTimePlayedByUser(currentUser);
