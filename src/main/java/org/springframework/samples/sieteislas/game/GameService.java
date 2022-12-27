@@ -2,17 +2,24 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
 import org.springframework.samples.sieteislas.card.CardTypeRepository;
-import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
@@ -200,6 +207,88 @@ public class GameService {
     	
     	return game.getDeck().subList(calculateLower(numCards, diceRoll),
     			calculateHigher(numCards, diceRoll) + 1);
+    }
+    
+    Predicate<Card> isCoin = c -> c.getCardType().getId().equals(1);
+    
+    Function<List<Card>,Integer> numCoins = l -> (int) l.stream()
+    		.filter(isCoin)
+    		.count();
+    
+    Function<List<Card>,Integer> points = l -> {
+    	
+    	Integer nC = numCoins.apply(l);
+    	List<Integer> pointsPerNumOfSets = List.of(0,1,3,7,13,21,30,40,50,60);
+    	
+    	Integer numOfSets = l.stream()
+    			.filter(isCoin.negate())
+    			.map(c->c.getCardType().getName())
+    			.collect(Collectors.toSet())
+    			.size();
+    	
+    	return nC + pointsPerNumOfSets.get(numOfSets);
+    };
+    
+    
+    public Map<Player,Integer> scoreboard(Game g) {
+    	
+    	Map<Player,Integer> scoreboard = new HashMap<>();
+    	
+    	for(Player p:g.getPlayers()) {
+    		
+    		Integer pts = points.apply(p.getCards());
+    		scoreboard.put(p, pts);
+    	}
+    	
+    	return scoreboard;
+    }
+    
+    public Player resolveDraw(List<Player> possibleWinners) {
+    	
+    	Player winner = null;
+    	
+    	Integer maxCoins = Collections.max(possibleWinners.stream()
+				.map(p->numCoins.apply(p.getCards()))
+				.toList());
+		
+		possibleWinners = possibleWinners.stream()
+				.filter(p->numCoins.apply(p.getCards()).equals(maxCoins))
+				.toList();
+		
+		if(possibleWinners.size() == 1)
+			winner = possibleWinners.get(0);
+		
+		else {
+			
+			Integer random = (int) Math.round(Math.random() *
+					possibleWinners.size());
+			winner = possibleWinners.get(random);
+		}
+		
+		return winner;
+    }
+    
+    public Player winner(Game g) {
+    	
+    	Player winner = null;
+    	
+    	Map<Player,Integer> scoreboard = scoreboard(g);
+    	
+    	Integer biggestMark = scoreboard.values().stream()
+    			.max(Comparator.naturalOrder())
+    			.get();
+    	
+    	List<Player> possibleWinners = scoreboard.entrySet().stream()
+    			.filter(x->x.getValue().equals(biggestMark))
+    			.map(Map.Entry::getKey)
+    			.toList();
+    	
+    	if(possibleWinners.size() == 1)
+    		winner = possibleWinners.get(0);
+    	else
+    		winner = resolveDraw(possibleWinners);
+    	
+    	return winner;
     }
 
     @Transactional
