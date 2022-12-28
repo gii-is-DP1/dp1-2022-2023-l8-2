@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
@@ -26,17 +23,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameService {
     private final GameRepository gameRepository;
-    private final GameStatisticsRepository gameStatisticsRepository;
+    private final GameInvitationRepository gameInvitationRepository;
     private final PlayerRepository playerRepository;
     private final UserRepository userRepository;
     private final CardTypeRepository cardTypeRepository;
     private final CardRepository cardRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, GameStatisticsRepository gameStatisticsRepository, PlayerRepository playerRepository, 
+    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, PlayerRepository playerRepository, 
         UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
         this.gameRepository = gameRepository;
-        this.gameStatisticsRepository = gameStatisticsRepository;
+        this.gameInvitationRepository = gameInvitationRepository;
         this.playerRepository = playerRepository;
         this.userRepository = userRepository;
         this.cardTypeRepository = cardTypeRepository;
@@ -67,7 +64,6 @@ public class GameService {
 
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
-    	
         for (int i=0; i < 66; i++) {
         	Card card = new Card();
         	card.setGame(game);
@@ -94,7 +90,6 @@ public class GameService {
         	}
             card.setGame(game);
             cartas.add(card);
-
         }
 
         Collections.shuffle(cartas);
@@ -128,7 +123,6 @@ public class GameService {
     }
 
     public void exitGame(Game game, String name) {
-
         User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(null);
@@ -249,4 +243,34 @@ public class GameService {
         
         this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
     }
+
+    public void invitePlayerToGame(String hostUsername, String invitedUsername, String gameId) {
+        User host = this.userRepository.findById(hostUsername).get();
+        User guest = this.userRepository.findById(invitedUsername).get();
+        Game game = this.gameRepository.findById(Integer.valueOf(gameId)).get();
+        
+        GameInvitation invitation = new GameInvitation();
+        invitation.setGame(game);
+        invitation.setHost(host);
+        invitation.setGuest(guest);
+
+        this.gameInvitationRepository.save(invitation);
+    }
+
+    public void declineGameInvitation(String invitationId){
+        GameInvitation invitation = this.gameInvitationRepository.findById(Integer.valueOf(invitationId)).get();
+        this.gameInvitationRepository.delete(invitation);
+    }
+
+    public void acceptGameInvitation(String invitationId) {
+        GameInvitation invitation = this.gameInvitationRepository.findById(Integer.valueOf(invitationId)).get();
+        Player guest = invitation.getGuest().getPlayer();
+        Game game = invitation.getGame();
+
+        guest.setGame(game);
+
+        this.gameInvitationRepository.delete(invitation);
+    }
+
+
 }

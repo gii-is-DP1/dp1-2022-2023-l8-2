@@ -15,8 +15,10 @@
  */
 package org.springframework.samples.sieteislas.user;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -111,9 +113,12 @@ public class UserController {
 		User user = this.userService.findUser(username).get();
 		Boolean isAdmin = userService.isAdmin(principal.getName());
 
+		List<FriendRequest> friendRequests = this.userService.getAllRequestsReceived(user);
+
 		model.put("principalName", principal.getName());
 		model.put("user", user);
 		model.put("isAdmin", isAdmin);
+		model.put("friendRequests", friendRequests);
 
 		return VIEWS_USER_PROFILE;
 	}
@@ -142,11 +147,40 @@ public class UserController {
 	
 	@GetMapping(value="/users/delete/{username}")
 	public String deleteUser(@PathVariable("username") String username) {
-		
 		userService.deleteByUsername(username);
-		
 		return "redirect:/";
 	}
-	
+
+	@GetMapping(value = "/users/friends/sendRequest/{username}")
+	public String sendFriendRequest(@PathVariable("username") String username, Principal principal){
+		User recipient = this.userService.findUser(username).get();
+		User sender = this.userService.findUser(principal.getName()).get();
+		this.userService.sendFriendRequest(sender, recipient);
+		return "redirect:/players/";
+	}
+
+	@GetMapping(value = "/users/friends/denyRequest/{requestId}")
+	public String denyFriendRequest(@PathVariable("requestId") String requestId, Principal principal){
+		this.userService.deleteRequest(requestId);
+		String redirect = String.format("redirect:/users/profile/%s", principal.getName());
+		return redirect;
+	}
+
+	@GetMapping(value = "/users/friends/acceptRequest/{requestId}")
+	public String acceptFriendRequest(@PathVariable("requestId") String requestId, Principal principal){
+		this.userService.acceptRequest(requestId);
+		String redirect = String.format("redirect:/users/profile/%s", principal.getName());
+		return redirect;
+	}
+
+	@GetMapping(value="/users/friends/remove/{friendUsername}")
+	public String removeFriend(@PathVariable("friendUsername") String friendUsername, Principal principal){
+		User friend = this.userService.findUser(friendUsername).get();
+		User user = this.userService.findUser(principal.getName()).get();
+		this.userService.removeFriend(user, friend);
+
+		String redirect = String.format("redirect:/users/profile/%s", principal.getName());
+		return redirect;
+	}
 
 }

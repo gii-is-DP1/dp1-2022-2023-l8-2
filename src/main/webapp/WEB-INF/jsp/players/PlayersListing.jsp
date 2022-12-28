@@ -27,7 +27,12 @@
                         <c:out value="${player.user.username}" />
                     </td>
                     <td>
-                        <a class="btn btn-success">FRIEND REQUEST</a>
+                        <c:if test="${!friendOrSentRequest.contains(player.user.username) && !principalName.equals(player.user.username)}">
+                            <spring:url value="/users/friends/sendRequest/{username}" var="friendRequestUrl">
+                                <spring:param name="username" value="${player.user.username}"/>
+                            </spring:url>
+                            <a href="${fn:escapeXml(friendRequestUrl)}" class="btn btn-success">Send Friend Request</a>
+                        </c:if>
                     </td>
                 </tr>
             </c:forEach>

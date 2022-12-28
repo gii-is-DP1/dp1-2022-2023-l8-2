@@ -15,15 +15,11 @@
  */
 package org.springframework.samples.sieteislas.user;
 
-
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +33,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
 	private UserRepository userRepository;
+	private FriendRequestRepositoy friendRequestRepository;
 
 	@Autowired
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, FriendRequestRepositoy friendRequestRepository) {
 		this.userRepository = userRepository;
+		this.friendRequestRepository = friendRequestRepository;
 	}
 
 	@Transactional
@@ -69,6 +67,60 @@ public class UserService {
         return friends.stream()
 						.filter(x-> x.getPlayer().getGame()==null)
 						.collect(Collectors.toList());
+    }
+
+
+	public void sendFriendRequest(User sender, User recipient) {
+		FriendRequest fr = new FriendRequest();
+		fr.setSender(sender);
+		fr.setRecipient(recipient);
+		this.friendRequestRepository.save(fr);
+    }
+
+    public List<FriendRequest> getAllRequestsSent(User user) {
+        return this.friendRequestRepository.getAllFriendRequestsSentByUser(user);
+    }
+
+    public List<FriendRequest> getAllRequestsReceived(User user) {
+        return this.friendRequestRepository.getAllFriendRequestsReceivedByUser(user);
+    }
+
+	public List<String> friendOrHasBeenSentARequest(User user) {
+		List<FriendRequest> requestsSent = getAllRequestsSent(user);
+		List<User> sentTo = requestsSent.stream()
+										.map(x->x.getRecipient())
+										.collect(Collectors.toList());
+		List<User> friends = user.getFriends();
+		friends.addAll(sentTo);
+		List<String> friendsOrHasBeenSentARequest = friends.stream()
+															.map(u-> u.getUsername())
+															.collect(Collectors.toList());
+		return friendsOrHasBeenSentARequest;
+    }
+	
+    public void deleteRequest(String requestId) {
+        FriendRequest request = this.friendRequestRepository.findById(Integer.valueOf(requestId)).get();
+		this.friendRequestRepository.delete(request);
+    }
+
+    public void acceptRequest(String requestId) {
+        FriendRequest request = this.friendRequestRepository.findById(Integer.valueOf(requestId)).get();
+        addFriend(request.getSender(), request.getRecipient());
+        addFriend(request.getRecipient(), request.getSender());
+
+        this.friendRequestRepository.delete(request);
+    }
+
+	public void addFriend(User sender, User recipient) {
+		sender.getFriends().add(recipient);
+		this.userRepository.save(sender);
+    }
+
+	public void removeFriend(User user, User friend) {
+		user.getFriends().remove(friend);
+		friend.getFriends().remove(user);
+		this.userRepository.save(user);
+		this.userRepository.save(friend);
     }
 
 }

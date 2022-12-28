@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
@@ -145,6 +143,29 @@ public class GameController {
         return VIEWS_GAMES_INVITE;
     }
 
+    @GetMapping("/lobby/invitation/{gameId}/invite/{invitedUsername}")
+    public String invitePlayerToGame(@PathVariable("gameId") String gameId, @PathVariable("invitedUsername") String invitedUsername, Principal principal){
+        this.gameService.invitePlayerToGame(principal.getName(), invitedUsername, gameId);
+
+        String redirect = String.format("/lobby/invitation/{gameId}", gameId);
+        return redirect; 
+    }
+
+    @GetMapping("/lobby/invitation/{gameId}/invite/{invitedUsername}")
+    public String acceptInvitation(@PathVariable("gameId") String gameId, @PathVariable("invitedUsername") String invitedUsername, Principal principal){
+        this.gameService.acceptGameInvitation(invitedUsername);
+
+        String redirect = String.format("redirect:/games/lobby/%s", gameId);
+         return redirect;
+    }
+
+    @GetMapping("/lobby/invitation/decline/{invitationId}")
+    public String declineInvitation(@PathVariable("invitationId") String invitationId){
+        this.gameService.declineGameInvitation(invitationId);
+
+        return "redirect:/games/active";
+    }
+
     @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
@@ -165,7 +186,7 @@ public class GameController {
             this.gameService.toggleActive(game, false);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
-        return redirect;
+        return redirect; 
     }
 
     @GetMapping("/gameBoard/{gameId}")
@@ -225,10 +246,10 @@ public class GameController {
         Player currentPlayer = game.getPlayers().get(game.getPlayerTurn());
         Card card = cardService.findById(Integer.valueOf(cardId));
         
-        int num = this.gameService.setNumCardsToPay(game, card);
+        int cardsToPay = this.gameService.setNumCardsToPay(game, card);
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
-        if(num <= 0){
+        if(cardsToPay <= 0){
             this.gameService.passTurn(game);
         }
 
