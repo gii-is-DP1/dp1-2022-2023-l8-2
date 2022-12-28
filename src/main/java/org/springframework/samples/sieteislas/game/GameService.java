@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.game;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,7 +47,7 @@ public class GameService {
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
-        game.setDuration(0.0);
+        game.setStart(LocalDateTime.now());
         game.setDiceRoll(1);
         game.setHasRolledDice(false);
         game.setNumCardsToPay(0);

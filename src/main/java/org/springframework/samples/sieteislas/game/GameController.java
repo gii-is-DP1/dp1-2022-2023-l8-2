@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
@@ -78,8 +81,16 @@ public class GameController {
     }
 
     @GetMapping("/lobby/{id}")
-    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
+    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
+
+        response.addHeader("Refresh", "2");
+        //Si no esta activo significa que la partida ya ha empezado y redirigimos.
+        if(!game.getActive()) {
+            String redirect = String.format("redirect:/games/gameBoard/%s", id);
+            return redirect;
+        }
+
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_LOBBY;
@@ -148,12 +159,14 @@ public class GameController {
     }
 
     @GetMapping("/gameBoard/{gameId}")
-    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model) {
+    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
         
         String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName()); 
         boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
+
+        if(!isCurrentPlayer) response.addHeader("Refresh", "2");
 
         User u = this.userService.findUser(principal.getName()).get();
         Player principalPlayer = this.playerService.findByUser(u);
@@ -184,15 +197,16 @@ public class GameController {
     */
     
     @GetMapping("/gameBoard/{gameId}/rollDice")
-    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal, HttpServletResponse response) {
     	Game game = gameService.findById(Integer.valueOf(id));
         this.gameService.toggleHasRolledDice(game, true);
     	this.gameService.rollDice(game); 
         
     	List<Card> possibleChoices = gameService.possibleChoices(game);
 	
-    	model.put("possibleChoices", possibleChoices); 	
-        return renderBoard(id, principal, model);
+    	model.put("possibleChoices", possibleChoices); 
+        
+        return renderBoard(id, principal, model, response);
     }
 
     @GetMapping("/gameBoard/{gameId}/chooseCard/{cardId}")
