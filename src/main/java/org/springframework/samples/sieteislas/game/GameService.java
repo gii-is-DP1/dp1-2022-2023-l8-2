@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -243,7 +241,7 @@ public class GameService {
     	return scoreboard;
     }
     
-    public Player resolveDraw(List<Player> possibleWinners) {
+    private Player resolveDraw(List<Player> possibleWinners) {
     	
     	Player winner = null;
     	
@@ -289,6 +287,24 @@ public class GameService {
     		winner = resolveDraw(possibleWinners);
     	
     	return winner;
+    }
+    
+    public void gameEnd(Game g) {
+    	
+    	Map<Player,Integer> scoreboard = scoreboard(g);
+    	Player winner = winner(g);
+    	
+    	GameStatistics stats = new GameStatistics();
+    	
+    	stats.setWinner(winner);
+    	stats.setPoints(scoreboard.get(winner));
+    	
+    	Integer totalPoints = scoreboard.values().stream()
+    			.reduce(0, Integer::sum);
+    	
+    	stats.setTotalPoints(totalPoints);
+    	
+    	gameStatisticsRepository.save(stats);
     }
 
     @Transactional

@@ -175,5 +175,13 @@ public class GameController {
     	
         return "redirect:/games/gameBoard/" + id;
     }
+    
+    @GetMapping("/gameBoard/{gameId}/end")
+    public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    	
+    	Game game = gameService.findById(Integer.valueOf(id));
+    	
+        return "redirect:/games/gameBoard/" + id + "/end";
+    }
 
 }
