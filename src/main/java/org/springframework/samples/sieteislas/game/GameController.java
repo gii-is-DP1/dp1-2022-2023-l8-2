@@ -281,5 +281,13 @@ public class GameController {
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
+    
+    @GetMapping("/gameBoard/{gameId}/end")
+    public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    	
+    	Game game = gameService.findById(Integer.valueOf(id));
+    	
+        return "redirect:/games/gameBoard/" + id + "/end";
+    }
 
 }

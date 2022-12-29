@@ -1,7 +1,5 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
-import java.beans.Transient;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -13,14 +11,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
 import javax.validation.constraints.Size;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.model.BaseEntity;
+import org.springframework.samples.sieteislas.player.Player;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.samples.sieteislas.player.Player;
@@ -55,7 +57,16 @@ public class GameStatistics extends BaseEntity{
     @NotNull
     @Column(name="year")
     private Integer year;
+    
+    @Column(name="total_points")
+    public Integer totalPoints;
 
+    @Column(name="winner")
+    public Player winner;
+
+    @Column(name="points")
+    public Integer points;
+    
     public static GameStatistics createDefault(Game game2) {
         GameStatistics statistics = new GameStatistics();
         statistics.setGame(game2);
