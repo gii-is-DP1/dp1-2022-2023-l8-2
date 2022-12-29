@@ -29,7 +29,7 @@ INSERT INTO metrics(id, name) VALUES (3, 'points');
 
 INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES
 (1, 'viciado', 10.0, 'Si juegas 10 partidas o mas, consideramos que ya estas enganchado.', 'https://bit.ly/certifiedGamer', 1);
-INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES 
+INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES
 (2, 'triunfador', 20.0, 'Si ganas 20 o mas partidas es que eres todo un triunfador.', 'https://bit.ly/proGamer', 1);
 
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (1, 'My first game', TRUE, 'pabberima', 0, FALSE, 0, '20221218 10:34:09', null, 0);
@@ -45,7 +45,7 @@ INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled
 
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (6, 'pabberima', 1808.63, 2021, 07);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (7, 'thokriale', 1676.09, 2021, 08);
-INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (8, 'joscasvaz', 1798.58, 2021, 08);
+INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (8, 'joscasvaz', 1798.58, 2021, 09);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (9, 'maravimaq', 1738.24, 2021, 09);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (10, 'jualopqui1', 1420.69, 2021, 09);
 
@@ -129,3 +129,5 @@ INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'thokriale');
 INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'jualopqui1');
 INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'jualopqui1');
 INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'joscasvaz');
+
+SET FOREIGN_KEY_CHECKS=0;
