@@ -28,6 +28,7 @@ public class GameController {
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
     private static final String VIEWS_GAMES_LIST = "games/gamesList";
     private static final String VIEWS_GAMES_GAMEBOARD = "games/gameBoard";
+    private static final String VIEWS_GAMES_END = "games/gameEnd";
 
     private GameService gameService;
     private GameStatisticsService gameStatisticService;
@@ -176,12 +177,12 @@ public class GameController {
         return "redirect:/games/gameBoard/" + id;
     }
     
-    @GetMapping("/gameBoard/{gameId}/end")
+    @GetMapping("/gameEnd/{gameId}")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
     	
     	Game game = gameService.findById(Integer.valueOf(id));
     	
-        return "redirect:/games/gameBoard/" + id + "/end";
+        return VIEWS_GAMES_END;
     }
 
 }

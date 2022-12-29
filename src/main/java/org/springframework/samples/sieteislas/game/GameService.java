@@ -296,13 +296,13 @@ public class GameService {
     	
     	GameStatistics stats = new GameStatistics();
     	
-    	stats.setWinner(winner);
-    	stats.setPoints(scoreboard.get(winner));
+    	/*stats.setWinner(winner);
+    	stats.setPoints(scoreboard.get(winner));*/
     	
     	Integer totalPoints = scoreboard.values().stream()
     			.reduce(0, Integer::sum);
     	
-    	stats.setTotalPoints(totalPoints);
+    	//stats.setTotalPoints(totalPoints);
     	
     	gameStatisticsRepository.save(stats);
     }
