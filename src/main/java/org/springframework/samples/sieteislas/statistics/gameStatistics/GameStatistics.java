@@ -47,14 +47,14 @@ public class GameStatistics extends BaseEntity{
     @Column(name="year")
     private Integer year;
     
-    @Column(name="total_points")
+    /*@Column(name="total_points")
     public Integer totalPoints;
 
     @Column(name="winner")
     public Player winner;
 
     @Column(name="points")
-    public Integer points;
+    public Integer points;*/
 
     public static GameStatistics createDefault(Game game2) {
         GameStatistics statistics = new GameStatistics();
