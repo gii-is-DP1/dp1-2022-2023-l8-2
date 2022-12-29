@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
@@ -25,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/games")
@@ -33,6 +32,7 @@ public class GameController {
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
     private static final String VIEWS_GAMES_LIST = "games/gamesList";
     private static final String VIEWS_GAMES_GAMEBOARD = "games/gameBoard";
+    private static final String VIEWS_GAMES_INVITE = "games/invitation";
 
     private GameService gameService;
     private GameStatisticsService gameStatisticService;
@@ -57,6 +57,10 @@ public class GameController {
     public String getActiveGames(Map<String, Object> model, Principal principal) {
         Collection<Game> games = gameService.getActiveGames();
         Player actualPlayer = this.playerService.findByUsername(principal.getName());
+
+        List<GameInvitation> invitations = this.gameService.getInvitationsOfUser(principal.getName());
+
+        model.put("invitations", invitations);
         model.put("actualPlayer", actualPlayer);
         model.put("games", games);
         return VIEWS_GAMES_LIST;
@@ -135,6 +139,42 @@ public class GameController {
         }        
     }
 
+    @GetMapping("/lobby/invitation/{gameId}")
+    public String invitePlayerListing(@PathVariable("gameId") String gameId, ModelMap model, Principal principal){
+        User user = this.userService.findUser(principal.getName()).get();
+        List<User> notPlaying = this.userService.notPlaying(user.getFriends()); //Solo devolvemos los usuarios que no estén jugando en otra partida ya.
+        model.put("friends", notPlaying);
+        model.put("gameId", gameId);
+        return VIEWS_GAMES_INVITE;
+    }
+
+    @GetMapping("/lobby/invitation/{gameId}/invite/{invitedUsername}")
+    public String invitePlayerToGame(@PathVariable("gameId") String gameId, @PathVariable("invitedUsername") String invitedUsername, Principal principal){
+        this.gameService.invitePlayerToGame(principal.getName(), invitedUsername, gameId);
+
+        String redirect = String.format("redirect:/games/lobby/invitation/{gameId}", gameId);
+        return redirect; 
+    }
+
+    @GetMapping("/lobby/invitation/accept/{invitationId}")
+    public String acceptInvitation(@PathVariable("invitationId") String invitationId, RedirectAttributes redirAttrs){
+        try{
+            Integer gameId = this.gameService.acceptGameInvitation(invitationId);
+            String redirect = String.format("redirect:/games/lobby/%s", gameId);
+            return redirect;
+        } catch (FullGameException ex){
+            redirAttrs.addFlashAttribute("gameFullMessage", "You were unable to join! The game is now full!");
+            return "redirect:/games/active";
+        }       
+    }
+
+    @GetMapping("/lobby/invitation/decline/{invitationId}")
+    public String declineInvitation(@PathVariable("invitationId") String invitationId){
+        this.gameService.declineGameInvitation(invitationId);
+
+        return "redirect:/games/active";
+    }
+
     @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
@@ -155,7 +195,7 @@ public class GameController {
             this.gameService.toggleActive(game, false);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
-        return redirect;
+        return redirect; 
     }
 
     @GetMapping("/gameBoard/{gameId}")
@@ -215,10 +255,10 @@ public class GameController {
         Player currentPlayer = game.getPlayers().get(game.getPlayerTurn());
         Card card = cardService.findById(Integer.valueOf(cardId));
         
-        int num = this.gameService.setNumCardsToPay(game, card);
+        int cardsToPay = this.gameService.setNumCardsToPay(game, card);
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
-        if(num <= 0){
+        if(cardsToPay <= 0){
             this.gameService.passTurn(game);
         }
 

@@ -50,7 +50,7 @@ INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) V
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (10, 'jualopqui1', 1420.69, 2021, 09);
 
 INSERT INTO players(id, user, game_id) VALUES (1, 'pabberima', 1);
-INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', 2);
+INSERT INTO players(id, user, game_id) VALUES (2, 'thokriale', null);
 INSERT INTO players(id, user, game_id) VALUES (3, 'joscasvaz', 5);
 INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 1);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);

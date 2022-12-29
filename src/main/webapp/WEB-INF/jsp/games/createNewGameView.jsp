@@ -22,22 +22,21 @@
                 <div class="form-group">
                     <sieteislas:inputField label="Game name" name="gameName"/>
                 </div>
-            </form:form>
-            
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" type="submit">Add Game</button>
                     </div>
                 </div>
-            </c:when>
-	        <c:otherwise>
-	            <div style="text-align:center"> 
-	                <spring:url value="/games/active" var="returnListUrl">
-                    </spring:url>
-                        <a href="${fn:escapeXml(returnListUrl)}">
-                            <p class="btn btn-danger">You can not create a new game if you are already playing or in lobby!</p>
-                        </a>
-			    </div>
+            </form:form>
+        </c:when>
+	    <c:otherwise>
+            <div style="text-align:center"> 
+                <spring:url value="/games/active" var="returnListUrl">
+                </spring:url>
+                    <a href="${fn:escapeXml(returnListUrl)}">
+                        <p class="btn btn-danger">You can not create a new game if you are already playing or in lobby!</p>
+                    </a>
+            </div>
         </c:otherwise>
     </c:choose>
     
