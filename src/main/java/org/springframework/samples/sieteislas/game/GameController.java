@@ -56,6 +56,10 @@ public class GameController {
     public String getActiveGames(Map<String, Object> model, Principal principal) {
         Collection<Game> games = gameService.getActiveGames();
         Player actualPlayer = this.playerService.findByUsername(principal.getName());
+
+        List<GameInvitation> invitations = this.gameService.getInvitationsOfUser(principal.getName());
+
+        model.put("invitations", invitations);
         model.put("actualPlayer", actualPlayer);
         model.put("games", games);
         return VIEWS_GAMES_LIST;
@@ -147,16 +151,16 @@ public class GameController {
     public String invitePlayerToGame(@PathVariable("gameId") String gameId, @PathVariable("invitedUsername") String invitedUsername, Principal principal){
         this.gameService.invitePlayerToGame(principal.getName(), invitedUsername, gameId);
 
-        String redirect = String.format("/lobby/invitation/{gameId}", gameId);
+        String redirect = String.format("redirect:/games/lobby/invitation/{gameId}", gameId);
         return redirect; 
     }
 
-    @GetMapping("/lobby/invitation/{gameId}/invite/{invitedUsername}")
-    public String acceptInvitation(@PathVariable("gameId") String gameId, @PathVariable("invitedUsername") String invitedUsername, Principal principal){
-        this.gameService.acceptGameInvitation(invitedUsername);
+    @GetMapping("/lobby/invitation/accept/{invitationId}")
+    public String acceptInvitation(@PathVariable("invitationId") String invitationId){
+        Integer gameId = this.gameService.acceptGameInvitation(invitationId);
 
         String redirect = String.format("redirect:/games/lobby/%s", gameId);
-         return redirect;
+        return redirect;
     }
 
     @GetMapping("/lobby/invitation/decline/{invitationId}")

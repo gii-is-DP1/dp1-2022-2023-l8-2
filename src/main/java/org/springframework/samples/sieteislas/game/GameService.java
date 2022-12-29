@@ -262,7 +262,7 @@ public class GameService {
         this.gameInvitationRepository.delete(invitation);
     }
 
-    public void acceptGameInvitation(String invitationId) {
+    public Integer acceptGameInvitation(String invitationId) {
         GameInvitation invitation = this.gameInvitationRepository.findById(Integer.valueOf(invitationId)).get();
         Player guest = invitation.getGuest().getPlayer();
         Game game = invitation.getGame();
@@ -270,6 +270,8 @@ public class GameService {
         guest.setGame(game);
 
         this.gameInvitationRepository.delete(invitation);
+
+        return game.getId();
     }
 
 

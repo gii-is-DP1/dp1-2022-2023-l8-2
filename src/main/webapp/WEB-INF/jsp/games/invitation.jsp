@@ -13,8 +13,9 @@
                     <div style="text-align: center;">
                         <img src="${friend.profileImage}" style="height: 50px; width: 50px;">
                         <c:out value="${friend.username}"/>
-                        <spring:url value="/games/lobby/invitation/{gameId}" var="inviteUrl">
+                        <spring:url value="/games/lobby/invitation/{gameId}/invite/{invitedUsername}" var="inviteUrl">
                             <spring:param name="gameId" value="${gameId}"/>
+                            <spring:param name="invitedUsername" value="${friend.username}"/>
                         </spring:url>
                         <a href="${fn:escapeXml(inviteUrl)}" style="color: rgb(29, 202, 29); width: 30px; height: auto;" class="glyphicon glyphicon-plus"></a>
                     </div>
