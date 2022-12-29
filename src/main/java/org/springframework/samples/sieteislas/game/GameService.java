@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
@@ -114,8 +116,8 @@ public class GameService {
         this.gameRepository.save(game);
     }
 
-    public Collection<Game> getActiveGames() {
-        return  gameRepository.getActiveGames(true);
+    public Page<Game> getActiveGames(Pageable pageable) {
+        return  gameRepository.getActiveGames(true, pageable);
     }
 
     public Game findById(Integer id) {
