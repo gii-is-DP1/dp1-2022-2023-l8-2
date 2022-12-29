@@ -11,15 +11,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import javax.validation.constraints.Size;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.model.BaseEntity;
 import org.springframework.samples.sieteislas.player.Player;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.samples.sieteislas.player.Player;
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name="game_statistics")
 public class GameStatistics extends BaseEntity{
@@ -37,6 +47,7 @@ public class GameStatistics extends BaseEntity{
     private Double duration; /* In seconds */
 
     @OneToMany(mappedBy="gameStatistics", cascade=CascadeType.ALL)
+    @NotAudited
     private List<PlayerPointsMap> playerPoints;
 
     @NotNull
@@ -47,15 +58,15 @@ public class GameStatistics extends BaseEntity{
     @Column(name="year")
     private Integer year;
     
-    /*@Column(name="total_points")
+    @Column(name="total_points")
     public Integer totalPoints;
 
     @Column(name="winner")
     public Player winner;
 
     @Column(name="points")
-    public Integer points;*/
-
+    public Integer points;
+    
     public static GameStatistics createDefault(Game game2) {
         GameStatistics statistics = new GameStatistics();
         statistics.setGame(game2);

@@ -12,4 +12,16 @@ public class MessageService {
     public MessageService(MessageRepository messageRepository){
         this.messageRepository = messageRepository;
     }
+    
+    public void save(Message message) {
+        this.messageRepository.save(message);
+    }
+    
+    public Message getMessageById(Integer id) {
+        return messageRepository.findById(id).get();
+    }
+
+    public void deleteMessageById(Integer id){
+        messageRepository.deleteById(id);
+    }
 }

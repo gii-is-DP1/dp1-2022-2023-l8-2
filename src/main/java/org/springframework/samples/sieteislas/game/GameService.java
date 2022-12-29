@@ -1,8 +1,10 @@
 package org.springframework.samples.sieteislas.game;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
@@ -29,17 +30,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameService {
     private final GameRepository gameRepository;
-    private final GameStatisticsRepository gameStatisticsRepository;
+    private final GameInvitationRepository gameInvitationRepository;
     private final PlayerRepository playerRepository;
     private final UserRepository userRepository;
     private final CardTypeRepository cardTypeRepository;
     private final CardRepository cardRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, GameStatisticsRepository gameStatisticsRepository, PlayerRepository playerRepository, 
+    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, PlayerRepository playerRepository, 
         UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
         this.gameRepository = gameRepository;
-        this.gameStatisticsRepository = gameStatisticsRepository;
+        this.gameInvitationRepository = gameInvitationRepository;
         this.playerRepository = playerRepository;
         this.userRepository = userRepository;
         this.cardTypeRepository = cardTypeRepository;
@@ -50,8 +51,10 @@ public class GameService {
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
-        game.setDuration(0.0);
+        game.setStart(LocalDateTime.now());
         game.setDiceRoll(1);
+        game.setHasRolledDice(false);
+        game.setNumCardsToPay(0);
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
@@ -68,7 +71,6 @@ public class GameService {
 
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
-    	
         for (int i=0; i < 66; i++) {
         	Card card = new Card();
         	card.setGame(game);
@@ -94,9 +96,14 @@ public class GameService {
         		card.setCardType(getCardType("rum"));
         	}
             card.setGame(game);
-            this.cardRepository.save(card);
-        	cartas.add(card);
+            cartas.add(card);
         }
+
+        Collections.shuffle(cartas);
+        for(Card c : cartas){
+        this.cardRepository.save(c);
+        }
+
         return cartas;
     }
 
@@ -123,7 +130,6 @@ public class GameService {
     }
 
     public void exitGame(Game game, String name) {
-
         User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(null);
@@ -145,25 +151,19 @@ public class GameService {
                         .anyMatch(x-> x.equals(principalName));
     }
 
-    public boolean isCurrentPlayer(Game game, String name) {
+    public String getCurrentPlayerName(Game game, String name) {
         String currentPlayerName = game.getPlayers().get(game.getPlayerTurn()).getUser().getUsername();
-        return currentPlayerName.equals(name);
+        return currentPlayerName;
+    }
+
+    public boolean isCurrentPlayer(String currentPlayerName, String principalName){
+        return currentPlayerName.equals(principalName);
     }
 
     public void kickOfGame(Integer playerId) {
         Player p = this.playerRepository.findById(playerId).get();
         p.setGame(null);
         this.playerRepository.save(p);
-    }
-
-    public void nextPlayer(Game game){
-        int currentPlayer = game.getPlayerTurn();
-        int numPlayers = game.getPlayers().size();
-        //TODO: calc next player: num mod numPlayers
-        int nextPlayer = (currentPlayer+1) % numPlayers;
-        
-        game.setPlayerTurn(nextPlayer);
-        this.gameRepository.save(game);
     }
 
     public void joinGame(Game game, String name) {
@@ -174,7 +174,6 @@ public class GameService {
     }
     
     public void rollDice(Game game) {
-    	
     	Double rand = Math.random() * 5;
     	Long num = Math.round(rand);
     	
@@ -183,28 +182,22 @@ public class GameService {
     }
     
     private int calculateHigher(Integer numCards, int diceRoll) {
-    	
     	int res = numCards + diceRoll;
-    	
     	return (5 < res) ? 5 : res;
     }
     
     private int calculateLower(Integer numCards, int diceRoll) {
-    	
     	int res = diceRoll - numCards;
-    	
     	return (res < 0) ? 0 : res;
     }
     
     public List<Card> possibleChoices(Game game){
-    	
     	int diceRoll = game.getDiceRoll();
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
     	
-    	return game.getDeck().subList(calculateLower(numCards, diceRoll),
-    			calculateHigher(numCards, diceRoll) + 1);
+    	return game.getDeck().subList(calculateLower(numCards, diceRoll), calculateHigher(numCards, diceRoll) + 1);
     }
     
     Predicate<Card> isCoin = c -> c.getCardType().getId().equals(1);
@@ -318,8 +311,83 @@ public class GameService {
         this.gameRepository.toggleActive(game.getId(), b);
     }
     
-    @Transactional
-	public void setDiceNull(Game game) {
-		gameRepository.setDiceNull(game.getId());
+	public void toggleHasRolledDice(Game game, Boolean b) {
+		game.setHasRolledDice(b);
+    	gameRepository.save(game);
 	}
+
+    @Transactional
+    public int setNumCardsToPay(Game game, Card card) {
+        int chosenIsland = game.getDeck().indexOf(card)+1;//Islands are numbered 1 to 6, hence the +1.
+        int rolledIsland = game.getDiceRoll()+1;
+        int toPay = Math.abs(rolledIsland-chosenIsland);
+        game.setNumCardsToPay(toPay);
+    	gameRepository.save(game);
+        
+        return Math.abs(rolledIsland-chosenIsland);
+    }
+
+    @Transactional
+    public int decrementNumCardsToPay(Game game) {
+        int decrementedValue = game.getNumCardsToPay()-1;
+        game.setNumCardsToPay(decrementedValue);
+        gameRepository.save(game);
+        return decrementedValue;
+    }
+
+    @Transactional
+    public void passTurn(Game game) {
+		toggleHasRolledDice(game, false);
+        this.gameRepository.setNumCardsToPay(game.getId(), 0);
+        calcNextPlayer(game);
+    }
+
+    @Transactional
+    public void calcNextPlayer(Game game){
+        int currentPlayer = game.getPlayerTurn();
+        int numPlayers = game.getPlayers().size();
+        int nextPlayer = (currentPlayer+1) % numPlayers;
+        
+        this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
+    }
+
+    public void invitePlayerToGame(String hostUsername, String invitedUsername, String gameId) {
+        User host = this.userRepository.findById(hostUsername).get();
+        User guest = this.userRepository.findById(invitedUsername).get();
+        Game game = this.gameRepository.findById(Integer.valueOf(gameId)).get();
+        
+        GameInvitation invitation = new GameInvitation();
+        invitation.setGame(game);
+        invitation.setHost(host);
+        invitation.setGuest(guest);
+
+        this.gameInvitationRepository.save(invitation);
+    }
+
+    public void declineGameInvitation(String invitationId){
+        GameInvitation invitation = this.gameInvitationRepository.findById(Integer.valueOf(invitationId)).get();
+        this.gameInvitationRepository.delete(invitation);
+    }
+
+    public Integer acceptGameInvitation(String invitationId) throws FullGameException{
+        GameInvitation invitation = this.gameInvitationRepository.findById(Integer.valueOf(invitationId)).get();
+        Game game = invitation.getGame();
+        if(game.getPlayers().size()>=4){
+            throw new FullGameException();
+        } else{
+            Player guest = invitation.getGuest().getPlayer();
+            guest.setGame(game);
+
+            this.gameInvitationRepository.delete(invitation);
+
+            return game.getId();
+        }
+        
+    }
+
+    public List<GameInvitation> getInvitationsOfUser(String name) {
+        return this.gameInvitationRepository.findAllByUser(name);
+    }
+
+
 }
