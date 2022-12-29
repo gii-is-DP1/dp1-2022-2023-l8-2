@@ -5,9 +5,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
+import org.springframework.samples.sieteislas.message.Message;
+import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/games")
@@ -28,21 +32,24 @@ public class GameController {
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
     private static final String VIEWS_GAMES_LIST = "games/gamesList";
     private static final String VIEWS_GAMES_GAMEBOARD = "games/gameBoard";
+    private static final String VIEWS_GAMES_INVITE = "games/invitation";
 
     private GameService gameService;
     private GameStatisticsService gameStatisticService;
     private PlayerService playerService;
     private UserService userService;
     private CardService cardService;
+    private MessageService messageService;
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService, UserService userService,
-                            GameStatisticsService gameStatisticService, CardService cardService){
+                            GameStatisticsService gameStatisticService, CardService cardService, MessageService messageService){
         this.gameService = gameService;
         this.playerService = playerService;
         this.userService = userService;
         this.gameStatisticService = gameStatisticService;
         this.cardService = cardService;
+        this.messageService = messageService;
     }
 
     //GET ALL ACTIVE GAMES
@@ -50,6 +57,10 @@ public class GameController {
     public String getActiveGames(Map<String, Object> model, Principal principal) {
         Collection<Game> games = gameService.getActiveGames();
         Player actualPlayer = this.playerService.findByUsername(principal.getName());
+
+        List<GameInvitation> invitations = this.gameService.getInvitationsOfUser(principal.getName());
+
+        model.put("invitations", invitations);
         model.put("actualPlayer", actualPlayer);
         model.put("games", games);
         return VIEWS_GAMES_LIST;
@@ -57,14 +68,16 @@ public class GameController {
 
     //CREATING A NEW GAME
     @GetMapping("/new")
-    public String initCreateGameForm( ModelMap model){
+    public String initCreateGameForm( ModelMap model, Principal principal){
         Game game = new Game();
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        model.put("actualPlayer", actualPlayer);
         model.put("game", game);
         return VIEWS_CREATE_GAME_FORM;
     }
 
     @PostMapping("/new")
-    public String processCreationForm(Principal principal, @ModelAttribute("game") Game game, ModelMap model){
+    public String processCreationForm(Principal principal, @ModelAttribute("game") Game game, ModelMap model) {
         game = this.gameService.setUpNewGame(game, principal.getName());
 
         String redirect = String.format("redirect:/games/lobby/%s", game.getId());
@@ -72,15 +85,32 @@ public class GameController {
     }
 
     @GetMapping("/lobby/{id}")
-    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
+    public String getGameLobby(@PathVariable("id") String id, Principal principal, ModelMap model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
+
+        response.addHeader("Refresh", "2");
+        //Si no esta activo significa que la partida ya ha empezado y redirigimos.
+        if(!game.getActive()) {
+            String redirect = String.format("redirect:/games/gameBoard/%s", id);
+            return redirect;
+        }
+
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_LOBBY;
     }
 
+    @GetMapping("/join/{id}")
+    public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
+    	Game game = this.gameService.findById(Integer.valueOf(id));
+    	this.gameService.joinGame(game, principal.getName());
+
+    	 String redirect = String.format("redirect:/games/lobby/%s", id);
+         return redirect;
+    }
+
     @GetMapping("/lobby/{id}/exit")
-    public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model){
+    public String exitFromLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         Boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
         if(isPlayer){
@@ -97,7 +127,7 @@ public class GameController {
     }
 
     @GetMapping("/lobby/{id}/kick/{playerId}")
-    public String kickFromLobby(@PathVariable("id") String id, @PathVariable("playerId") String playerId){
+    public String kickFromLobby(@PathVariable("id") String id, @PathVariable("playerId") String playerId) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         if(game.getPlayers().size()<2){ //Esta comprobacion para tenerla controlada en teoria nunca podriamos kickearnos a nosotros mismos.
             this.gameService.delete(game);
@@ -109,10 +139,46 @@ public class GameController {
         }        
     }
 
+    @GetMapping("/lobby/invitation/{gameId}")
+    public String invitePlayerListing(@PathVariable("gameId") String gameId, ModelMap model, Principal principal){
+        User user = this.userService.findUser(principal.getName()).get();
+        List<User> notPlaying = this.userService.notPlaying(user.getFriends()); //Solo devolvemos los usuarios que no estén jugando en otra partida ya.
+        model.put("friends", notPlaying);
+        model.put("gameId", gameId);
+        return VIEWS_GAMES_INVITE;
+    }
+
+    @GetMapping("/lobby/invitation/{gameId}/invite/{invitedUsername}")
+    public String invitePlayerToGame(@PathVariable("gameId") String gameId, @PathVariable("invitedUsername") String invitedUsername, Principal principal){
+        this.gameService.invitePlayerToGame(principal.getName(), invitedUsername, gameId);
+
+        String redirect = String.format("redirect:/games/lobby/invitation/{gameId}", gameId);
+        return redirect; 
+    }
+
+    @GetMapping("/lobby/invitation/accept/{invitationId}")
+    public String acceptInvitation(@PathVariable("invitationId") String invitationId, RedirectAttributes redirAttrs){
+        try{
+            Integer gameId = this.gameService.acceptGameInvitation(invitationId);
+            String redirect = String.format("redirect:/games/lobby/%s", gameId);
+            return redirect;
+        } catch (FullGameException ex){
+            redirAttrs.addFlashAttribute("gameFullMessage", "You were unable to join! The game is now full!");
+            return "redirect:/games/active";
+        }       
+    }
+
+    @GetMapping("/lobby/invitation/decline/{invitationId}")
+    public String declineInvitation(@PathVariable("invitationId") String invitationId){
+        this.gameService.declineGameInvitation(invitationId);
+
+        return "redirect:/games/active";
+    }
+
     @GetMapping("/start/{gameId}")
-    public String startGame(@PathVariable("gameId") String id, ModelMap model){
+    public String startGame(@PathVariable("gameId") String id, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
-        if(game.getActive()){
+        if(game.getActive()){ //comprobamos si la partida ha comenzado--> active: no ha comenzado, !active: ha comenzado 
             List<Card> doblones = gameService.createDeck(game).stream()
                                             .filter(x->(x.getCardType().getName()).equals("coin"))
                                             .collect(Collectors.toList());
@@ -129,51 +195,91 @@ public class GameController {
             this.gameService.toggleActive(game, false);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
-        return redirect;
+        return redirect; 
     }
 
     @GetMapping("/gameBoard/{gameId}")
-    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model){
+    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
-        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(game, principal.getName()); 
         
-        Player principalPlayer = null;
-        if(isPlayer){
-            User u = this.userService.findUser(principal.getName()).get();
-            principalPlayer = this.playerService.findByUser(u);
-        }
+        String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName()); 
+        boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
+
+        if(!isCurrentPlayer) response.addHeader("Refresh", "2");
+
+        User u = this.userService.findUser(principal.getName()).get();
+        Player principalPlayer = this.playerService.findByUser(u);
 
         model.put("isPlayer", isPlayer);
         model.put("principalPlayer", principalPlayer);
         model.put("isCurrentPlayer", isCurrentPlayer);
+        model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
         return VIEWS_GAMES_GAMEBOARD;
     }
-
-    @GetMapping("/join/{id}")
-    public String joinLobby(@PathVariable("id") String id, Principal principal, ModelMap model) {
-    	Game game = this.gameService.findById(Integer.valueOf(id));
-    	this.gameService.joinGame(game, principal.getName());
-
-    	 String redirect = String.format("redirect:/games/lobby/%s", id);
-         return redirect;
+    
+    /*
+    @PostMapping("/gameBoard/{gameId}/comment")
+    public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id));
+        Player actualPlayer = this.playerService.findByUsername(principal.getName());
+        Message message = new Message();
+        
+        message.setGame(game);
+        message.setPlayer(actualPlayer);
+        message.setBody(comment);
+        message.save();
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
+    }
+    */
+    
+    @GetMapping("/gameBoard/{gameId}/rollDice")
+    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal, HttpServletResponse response) {
+    	Game game = gameService.findById(Integer.valueOf(id));
+        this.gameService.toggleHasRolledDice(game, true);
+    	this.gameService.rollDice(game); 
+        
+    	List<Card> possibleChoices = gameService.possibleChoices(game);
+	
+    	model.put("possibleChoices", possibleChoices); 
+        
+        return renderBoard(id, principal, model, response);
     }
 
-    @GetMapping("/gameBoard/{gameId}/rollDice")
-    public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	
+    @GetMapping("/gameBoard/{gameId}/chooseCard/{cardId}")
+    public String manageChosenIsland(@PathVariable("gameId") String id, @PathVariable("cardId") String cardId, ModelMap model, Principal principal) {
     	Game game = gameService.findById(Integer.valueOf(id));
-    	
-    	gameService.rollDice(game);
-    	List<Card> possibleChoices = gameService.possibleChoices(game);
-    	
-    	model.put("possibleChoices", possibleChoices);
-    	
-    	gameService.setDiceNull(game);
-    	
-        return "redirect:/games/gameBoard/" + id;
+        Player currentPlayer = game.getPlayers().get(game.getPlayerTurn());
+        Card card = cardService.findById(Integer.valueOf(cardId));
+        
+        int cardsToPay = this.gameService.setNumCardsToPay(game, card);
+        this.gameService.moveCardToPlayer(card, currentPlayer);
+
+        if(cardsToPay <= 0){
+            this.gameService.passTurn(game);
+        }
+
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}/discard/{cardId}")
+    public String discardCard(@PathVariable("gameId") String id, @PathVariable("cardId") String cardId, ModelMap model, Principal principal){
+    	Game game = gameService.findById(Integer.valueOf(id));
+        Card card = cardService.findById(Integer.valueOf(cardId));
+
+        this.cardService.delete(card);
+
+        int leftToPay = this.gameService.decrementNumCardsToPay(game);
+
+        if(leftToPay <= 0){
+            this.gameService.passTurn(game);
+        }
+        String redirect = String.format("redirect:/games/gameBoard/%s", id);
+        return redirect;
     }
     
     @GetMapping("/gameBoard/{gameId}/end")

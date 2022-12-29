@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.sieteislas.model.NamedEntity;
 import org.springframework.samples.sieteislas.player.Player;
 
@@ -18,6 +21,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Audited
 @Entity
 @Table(name = "achievements")
 public class Achievement extends NamedEntity {
@@ -33,9 +37,10 @@ public class Achievement extends NamedEntity {
     @Column(name = "threshold")
     @NotNull
     private Double threshold;
-
+	
     @ManyToOne
     @JoinColumn(name = "metric_id")
+    @NotAudited
 	private Metric metric;
 
     @ManyToMany(mappedBy="achievements")

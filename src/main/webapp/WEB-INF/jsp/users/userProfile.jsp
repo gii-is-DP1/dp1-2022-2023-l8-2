@@ -4,28 +4,80 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
+
+
 <petclinic:layout pageName="user profile">
 
     <h2>${user.firstName} Profile</h2>
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <td><b><c:out value="${user.firstName} ${user.lastName}"/></b></td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td><c:out value="${user.username}"/></td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td><img src="${user.profileImage}" style="width: 80px; height:auto"/></td>
+            </tr>
+            <tr>
+                <th>Achievements</th>
+                    <td>
+                        <c:choose>
+                            <c:when test="${fn:length(user.player.achievements) < 1}">
+                                <p>NO ACHIEVEMENTS!</p>
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach items="${user.player.achievements}" var="achievement">
+                                    <div class="achievement-profile">
+                                        <div>
+                                            <img src="${achievement.badgeImage}" style="height: 50px; width: 50px;">
+                                            <c:out value="${achievement.name}"/>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>   
+            </tr>
+        </table>
+    </div>
+    <div>
+        <p>FRIENDS</p>
+        <c:forEach items="${user.friends}" var="friend">
+                <div style="text-align: center;">
+                    <img src="${friend.profileImage}" style="height: 50px; width: 50px;">
+                    <c:out value="${friend.username}"/>
 
-    <table class="table table-striped">
-        <tr>
-            <th>Name</th>
-            <td><b><c:out value="${user.firstName} ${user.lastName}"/></b></td>
-        </tr>
-        <tr>
-            <th>Username</th>
-            <td><c:out value="${user.username}"/></td>
-        </tr>
-        <tr>
-            <th>Image</th>
-            <td><img src="${user.profileImage}" style="width: 80px; height:auto"/></td>
-        </tr>
-         <tr>
-            <th>Achievements</th>
-            <td><c:out value="${user.player.achievements}"/></td>
-        </tr>
-    </table>
+                    <spring:url value="/users/friends/remove/{friendUsername}" var="removeFriendUrl">
+                        <spring:param name="friendUsername" value="${friend.username}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(removeFriendUrl)}" class="btn btn-danger">Remove Friend</a>
+                </div>
+        </c:forEach>
+    </div>
+    <div>
+        <p>FRIEND REQUESTS</p>
+        <c:forEach items="${friendRequests}" var="request">
+                <div style="text-align: center;">
+                    <img src="${request.sender.profileImage}" style="height: 50px; width: 50px;">
+                    <c:out value="${request.sender.username}"/>
+
+                    <spring:url value="/users/friends/acceptRequest/{requestId}" var="acceptRequestUrl">
+                        <spring:param name="requestId" value="${request.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(acceptRequestUrl)}" class="btn btn-success">Accept request</a>
+                    
+                    <spring:url value="/users/friends/denyRequest/{requestId}" var="denyRequestUrl">
+                        <spring:param name="requestId" value="${request.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(denyRequestUrl)}" class="btn btn-danger">Deny request</a>
+                </div>
+        </c:forEach>
+    </div>
 
     
     <c:if test="${user.username.equals(principalName) || isAdmin}">
@@ -41,6 +93,7 @@
 	    </spring:url>
 	        <a href="${fn:escapeXml(deleteUrl)}" class="btn btn-default">Delete User</a>
     </c:if>
+
     
 
 </petclinic:layout>

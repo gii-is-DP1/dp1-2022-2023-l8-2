@@ -17,24 +17,18 @@
             <a href="${fn:escapeXml(lobbyExitUrl)}" class="glyphicon glyphicon-log-out" style="font-size: 200%; color: darkgoldenrod"></a>
         </p>    
     </div>
-    <div style="position:absolute; left:45%; bottom: 5%;">
-        <c:choose>
-            <c:when test="${fn:length(game.players) > 1}">
-                <c:if test="${principalName.equals(game.creatorUsername)}">    
-                    <spring:url value="/games/start/{gameId}" var="startGameUrl">
-                        <spring:param name="gameId" value="${game.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(startGameUrl)}" class="btn btn-success">Start Game!</a>
-                </c:if>
-            </c:when>
-            <c:otherwise>
-                <a href="" class="btn btn-danger">There must be at least 2 players to start the game!</a>
-            </c:otherwise>
-        </c:choose>
-    </div>
+    
     <br>
     <h2>PLAYERS (<c:out value="${fn:length(game.players)}"/>/4)</h2>
-    <div style="display:inline-flex; position:absolute; left: 5%; width: 100%;">
+    <c:if test="${4 > fn:length(game.players)}">
+        <spring:url value="/games/lobby/invitation/{gameId}" var="lobbyInvitationUrl">
+            <spring:param name="gameId" value="${game.id}"/>
+        </spring:url>
+        <a href="${fn:escapeXml(lobbyInvitationUrl)}" class="glyphicon glyphicon-user glyphicon-plus">
+            <p style="color: darkgoldenrod;" class="glyphicon glyphicon-plus"></p>
+        </a>
+    </c:if>
+    <div style="display:inline-flex; position:relative; left: 5%; width: 100%;">
         <c:forEach items="${game.players}" var="player">
             <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin: 10px; text-align: center; width: 20%; height: 20%;">
                 <div style="width: 100%; height: 100%;">
@@ -55,10 +49,25 @@
                     </c:if>
                     <c:if test="${player.user.username.equals(game.creatorUsername)}">
                         <p class="glyphicon glyphicon-king" style="color: rgb(112, 107, 107); font-size: 150%;"></p>
-                    </c:if>
-               
+                    </c:if>            
             </div>
-        </c:forEach>
+        </c:forEach>    
+    </div>
+    
+    <div style="position:relative; left:45%; bottom: 5%;">
+        <c:choose>
+            <c:when test="${fn:length(game.players) > 1}">
+                <c:if test="${principalName.equals(game.creatorUsername)}">    
+                    <spring:url value="/games/start/{gameId}" var="startGameUrl">
+                        <spring:param name="gameId" value="${game.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(startGameUrl)}" class="btn btn-success">Start Game!</a>
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <a href="" class="btn btn-danger">There must be at least 2 players to start the game!</a>
+            </c:otherwise>
+        </c:choose>
     </div>
         
 </sieteislas:layout>

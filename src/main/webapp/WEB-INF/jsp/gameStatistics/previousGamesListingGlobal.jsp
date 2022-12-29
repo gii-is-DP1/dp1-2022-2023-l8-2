@@ -5,16 +5,17 @@
 <%@ taglib prefix="sieteislas" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<sieteislas:layout pageName="gameStatistics">
-    <h2>Games</h2>
 
-    <table id="gamesStatisticsTable" class="table table-striped">
+<sieteislas:layout pageName="previousGamesGlobal">
+    <h1 style="text-align: center;">PREVIOUS GAMES (GLOBALLY)</h1>
+    <table id="previousGamesGlobalTable" class="table table-striped">
         <thead>
             <tr>
                 <th>Game Id</th>
-                <th>Game Creator Name</th>
-                <th>Game Players Names</th>
+                <th>Game Creator</th>
+                <th>Players</th>
                 <th>Duration (in sec)</th>
             </tr>
         </thead>
@@ -28,7 +29,9 @@
                         <c:out value="${game_statistic.gameCreatorName}" />
                     </td>
                     <td>
-                        <c:out value="${playerPointsMaps[loop.index]} "/>
+                    <c:forEach items="${playerPointsMaps[loop.index]}" var="item" varStatus="status">
+                        ${item}<c:if test="${!status.last}">, </c:if>
+                    </c:forEach>
                     </td>
                     <td>
                         <c:out value="${game_statistic.duration}" />

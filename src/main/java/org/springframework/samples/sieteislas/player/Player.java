@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.message.Message;
@@ -26,15 +28,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "players")
 public class Player extends BaseEntity{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user", referencedColumnName = "username")
 	private User user;
-	
+
 	@OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
+	@NotAudited
 	private List<Card>	cards;
-	
+
 	@OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
 	private PlayerStatistics statistics;
 
@@ -43,16 +47,21 @@ public class Player extends BaseEntity{
 	private Game game;
 
 	@OneToMany(mappedBy = "player")
+	@NotAudited
 	private List<PlayerPointsMap> playerPointsMap;
 
 	@OneToMany(mappedBy = "player")
+	@NotAudited
 	private List<Message> messages;
 
 	@ManyToMany
-	@JoinTable(name="player_achievements", 
+	@JoinTable(name="player_achievements",
 				joinColumns = @JoinColumn(name="player_id"),
 				inverseJoinColumns = @JoinColumn(name="achievement_id"))
 	private List<Achievement> achievements;
 
+    public String toString(){
+        return user.getUsername();
+    }
 
 }
