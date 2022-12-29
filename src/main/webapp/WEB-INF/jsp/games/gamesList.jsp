@@ -7,6 +7,7 @@
 
 <petclinic:layout pageName="owners">
 <div style="text-align:center"> 
+    <h1 style="background-color: red;"><c:out value="${gameFullMessage}"></c:out></h1>
     <a href="/games/new" class="btn btn-default">CREATE NEW GAME!</a>   
 </div> 
 <h2> Current Games </h2>
@@ -67,4 +68,23 @@
         </c:forEach>
         </tbody>
     </table>
+    <div style="text-align: center;">
+        <p>GAME INVITATIONS</p>
+        <c:forEach items="${invitations}" var="invitation">
+                <div style="text-align: center;">
+                    <img src="${invitation.host.profileImage}" style="height: 50px; width: 50px;">
+                    <c:out value="${invitation.host.username}"/>
+
+                    <spring:url value="/games/lobby/invitation/accept/{invitationId}" var="acceptInvitationUrl">
+                        <spring:param name="invitationId" value="${invitation.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(acceptInvitationUrl)}" class="btn btn-success">Join Game!</a>
+                    
+                    <spring:url value="/games/lobby/invitation/decline/{invitationId}" var="declineInvitationUrl">
+                        <spring:param name="invitationId" value="${invitation.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(declineInvitationUrl)}" class="btn btn-danger">Decline invitation</a>
+                </div>
+        </c:forEach>
+    </div>
 </petclinic:layout>

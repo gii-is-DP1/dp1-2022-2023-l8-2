@@ -262,16 +262,24 @@ public class GameService {
         this.gameInvitationRepository.delete(invitation);
     }
 
-    public Integer acceptGameInvitation(String invitationId) {
+    public Integer acceptGameInvitation(String invitationId) throws FullGameException{
         GameInvitation invitation = this.gameInvitationRepository.findById(Integer.valueOf(invitationId)).get();
-        Player guest = invitation.getGuest().getPlayer();
         Game game = invitation.getGame();
+        if(game.getPlayers().size()>=4){
+            throw new FullGameException();
+        } else{
+            Player guest = invitation.getGuest().getPlayer();
+            guest.setGame(game);
 
-        guest.setGame(game);
+            this.gameInvitationRepository.delete(invitation);
 
-        this.gameInvitationRepository.delete(invitation);
+            return game.getId();
+        }
+        
+    }
 
-        return game.getId();
+    public List<GameInvitation> getInvitationsOfUser(String name) {
+        return this.gameInvitationRepository.findAllByUser(name);
     }
 
 

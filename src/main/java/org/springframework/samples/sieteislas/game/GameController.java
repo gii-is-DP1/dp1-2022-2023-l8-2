@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/games")
@@ -156,11 +157,15 @@ public class GameController {
     }
 
     @GetMapping("/lobby/invitation/accept/{invitationId}")
-    public String acceptInvitation(@PathVariable("invitationId") String invitationId){
-        Integer gameId = this.gameService.acceptGameInvitation(invitationId);
-
-        String redirect = String.format("redirect:/games/lobby/%s", gameId);
-        return redirect;
+    public String acceptInvitation(@PathVariable("invitationId") String invitationId, RedirectAttributes redirAttrs){
+        try{
+            Integer gameId = this.gameService.acceptGameInvitation(invitationId);
+            String redirect = String.format("redirect:/games/lobby/%s", gameId);
+            return redirect;
+        } catch (FullGameException ex){
+            redirAttrs.addFlashAttribute("gameFullMessage", "You were unable to join! The game is now full!");
+            return "redirect:/games/active";
+        }       
     }
 
     @GetMapping("/lobby/invitation/decline/{invitationId}")
