@@ -24,7 +24,7 @@ INSERT INTO users(username,first_name,last_name,password,enabled, profile_image)
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
 INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
-INSERT INTO metrics(id, name) VALUES (2, 'victories');
+INSERT INTO metrics(id, name) VALUES (2, 'gamesWon');
 INSERT INTO metrics(id, name) VALUES (3, 'points');
 
 INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES
