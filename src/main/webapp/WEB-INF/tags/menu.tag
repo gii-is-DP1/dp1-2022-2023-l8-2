@@ -29,7 +29,7 @@
 					<span>Home</span>
 				</sieteislas:menuItem>
 
-				<sieteislas:menuItem active="${name eq 'games'}" url="/games/active"
+				<sieteislas:menuItem active="${name eq 'games'}" url="/games/active/0"
 					title="find games">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find games</span>
@@ -43,7 +43,7 @@
 						<li>
 							<div class="navbar-login">
 								<p class="text-left">
-									<a href="<c:url value="/players/" />">Players Listing</a>
+									<a href="<c:url value="/players/0" />">Players Listing</a>
 								</p>
 							</div>
 						</li>

@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
 import org.springframework.samples.sieteislas.message.Message;
@@ -53,16 +56,20 @@ public class GameController {
     }
 
     //GET ALL ACTIVE GAMES
-    @GetMapping("/active")
-    public String getActiveGames(Map<String, Object> model, Principal principal) {
-        Collection<Game> games = gameService.getActiveGames();
+    @GetMapping("/active/{page}")
+    public String getActiveGames(@PathVariable("page") Integer page, Map<String, Object> model, Principal principal) {
+        Pageable paging = PageRequest.of(page, 5);
+        Page<Game>  gamesPage = gameService.getActiveGames(paging);
         Player actualPlayer = this.playerService.findByUsername(principal.getName());
 
         List<GameInvitation> invitations = this.gameService.getInvitationsOfUser(principal.getName());
 
+        model.put("page", page);
+        model.put("hasPrevious", gamesPage.hasPrevious());
+        model.put("hasNext", gamesPage.hasNext());
         model.put("invitations", invitations);
         model.put("actualPlayer", actualPlayer);
-        model.put("games", games);
+        model.put("games", gamesPage.getContent());
         return VIEWS_GAMES_LIST;
     }
 

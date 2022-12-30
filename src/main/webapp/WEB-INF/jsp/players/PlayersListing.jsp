@@ -38,4 +38,19 @@
             </c:forEach>
         </tbody>
     </table>
+    <div style="text-align: center;">
+        <c:if test="${hasPrevious}">
+            <spring:url value="/players/{page}" var="previousUrl">
+                <spring:param name="page" value="${page-1}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(previousUrl)}" class="glyphicon glyphicon-chevron-left">Previous</a>
+        </c:if>
+        <c:if test="${hasNext}">
+            <spring:url value="/players/{page}" var="NextUrl">
+                <spring:param name="page" value="${page+1}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(NextUrl)}" class="glyphicon glyphicon-chevron-right">Next</a>
+        </c:if>
+    </div>
+    
 </sieteislas:layout>

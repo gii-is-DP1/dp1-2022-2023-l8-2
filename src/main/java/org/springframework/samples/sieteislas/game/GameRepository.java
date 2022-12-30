@@ -2,6 +2,8 @@ package org.springframework.samples.sieteislas.game;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface GameRepository extends CrudRepository<Game, Integer>{
 
 	@Query("SELECT g FROM Game g WHERE g.active LIKE :active")
-	List<Game> getActiveGames(@Param("active") Boolean active);
+	Page<Game> getActiveGames(@Param("active") Boolean active, Pageable pageable);
 
     @Query("SELECT count(g) FROM Game g")
     Integer getNumberGames();
