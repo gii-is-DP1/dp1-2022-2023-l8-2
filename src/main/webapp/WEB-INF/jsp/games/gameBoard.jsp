@@ -5,6 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <style>
 	html,body,.container{
     height:100%;
@@ -169,12 +170,13 @@
 					<div>
 						
 					</div>
-				<c:forEach items="${game.chat}" var="message">
-				    <c:out value="${message.body}"></c:out>
+				<c:forEach items="${game.chat}" var="msg">
+				    <c:out value="${msg.body}"></c:out>
 				</c:forEach>
 					<div>
-						<form:form modelAttribute="game">
-							<form:input path="chat" type="text" class="message-input"></form:input>
+					<%--@elvariable id="message" type="org.springframework.samples.sieteislas.message.Message"--%>
+						<form:form modelAttribute="message">
+							<form:input path="body" type="text" class="message-input"></form:input>
 							<button type="submit" class="btn btn-default">Submit</button>
 						</form:form>
 					</div>

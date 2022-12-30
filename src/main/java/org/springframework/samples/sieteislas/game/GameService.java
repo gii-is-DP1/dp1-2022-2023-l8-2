@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.game;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
 import org.springframework.samples.sieteislas.card.CardTypeRepository;
 import org.springframework.samples.sieteislas.message.Message;
+import org.springframework.samples.sieteislas.message.MessageRepository;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
@@ -31,16 +33,18 @@ public class GameService {
     private final UserRepository userRepository;
     private final CardTypeRepository cardTypeRepository;
     private final CardRepository cardRepository;
+    private final MessageRepository messageRepository;
 
     @Autowired
     public GameService(GameRepository gameRepository, GameStatisticsRepository gameStatisticsRepository, PlayerRepository playerRepository, 
-        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
+        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository, MessageRepository messageRepository){
         this.gameRepository = gameRepository;
         this.gameStatisticsRepository = gameStatisticsRepository;
         this.playerRepository = playerRepository;
         this.userRepository = userRepository;
         this.cardTypeRepository = cardTypeRepository;
         this.cardRepository = cardRepository;
+        this.messageRepository = messageRepository;
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
@@ -64,6 +68,17 @@ public class GameService {
 
         return game;
     }
+    
+   /* public Message comment(Game game, Message message, Principal principal) {
+    	message.setGame(game);
+    	Player p = this.playerRepository.findPlayerByUsername(principal.getName());
+    	message.setPlayer(p);	
+    	this.messageRepository.save(message);
+    	
+        game.getChat().add(message);
+        this.gameRepository.save(game);
+    	return message;
+    }*/
 
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();

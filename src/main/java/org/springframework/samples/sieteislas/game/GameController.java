@@ -180,21 +180,25 @@ public class GameController {
         return VIEWS_GAMES_GAMEBOARD;
     }
     
-    /*
-    @PostMapping("/gameBoard/{gameId}/comment")
-    public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
+    
+    @PostMapping("/gameBoard/{gameId}/message")
+    public String postInChat(@PathVariable("gameId") String id, Principal principal, @ModelAttribute("message") Message message, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
-        Player actualPlayer = this.playerService.findByUsername(principal.getName());
-        Message message = new Message();
         
         message.setGame(game);
-        message.setPlayer(actualPlayer);
-        message.setBody(comment);
-        message.save();
+        
+    	Player p = this.playerService.findByUsername(principal.getName());
+    	message.setPlayer(p);	
+    	this.messageService.save(message);
+    	
+        game.getChat().add(message);
+        this.gameService.save(game);
+        model.addAttribute("message", message);
+       
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
-    */
+    
     
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal, HttpServletResponse response) {
