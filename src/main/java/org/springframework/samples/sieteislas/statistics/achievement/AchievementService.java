@@ -2,11 +2,8 @@ package org.springframework.samples.sieteislas.statistics.achievement;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
-import org.apache.tomcat.util.http.fileupload.util.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.statistics.playerStatistics.PlayerStatistics;
