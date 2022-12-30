@@ -297,7 +297,7 @@ public class GameService {
     	
     	//stats.setTotalPoints(totalPoints);
     	
-    	gameStatisticsRepository.save(stats);
+    	//gameStatisticsRepository.save(stats);
     }
 
     @Transactional
