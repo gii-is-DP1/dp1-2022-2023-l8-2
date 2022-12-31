@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
-import org.springframework.samples.sieteislas.statistics.playerStatistics.PlayerStatistics;
-import org.springframework.samples.sieteislas.statistics.playerStatistics.PlayerStatisticsRepository;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,8 +16,7 @@ public class AchievementService {
     private AchievementRepository achievementRepository;
 
     @Autowired
-    public AchievementService(AchievementRepository achievementRepository,
-    		PlayerStatisticsRepository playerStatsRepository) {
+    public AchievementService(AchievementRepository achievementRepository) {
         this.achievementRepository = achievementRepository;
     }
 
@@ -36,11 +35,9 @@ public class AchievementService {
         achievementRepository.save(achievement);
     }
     
-    public void refreshAchievements(List<Player> players) {
+    /*public void refreshAchievements(Game g) {
     	
-    	List<PlayerStatistics> stats = players.stream()
-    			.map(Player::getStatistics)
-    			.toList();
+    	GameStatistics gs = g.getStatistics();
     	
     	List<Achievement> allAchievements = new ArrayList<>();   	
     	achievementRepository.findAll().iterator()
@@ -75,6 +72,6 @@ public class AchievementService {
     			}
     		}
     	}
-    }
+    }*/
     
 }
