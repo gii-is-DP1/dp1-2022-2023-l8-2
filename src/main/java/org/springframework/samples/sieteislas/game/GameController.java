@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -183,12 +184,13 @@ public class GameController {
     }
     
     
-    @PostMapping(value = "/gameBoard/{gameId}/message")
+    @PostMapping(value = "/gameBoard/{gameId}")
     public String postInChat(@PathVariable("gameId") String id, Principal principal, 
     		@ModelAttribute("message") Message message, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id)); 
         
         message.setGame(game);
+        message.setDate(LocalDateTime.now());
         
     	Player p = this.playerService.findByUsername(principal.getName());
     	message.setPlayer(p);	
@@ -196,7 +198,7 @@ public class GameController {
     	
         game.getChat().add(message);
         this.gameService.save(game);
-        model.addAttribute("message", message);
+        model.addAttribute("message", new Message());
        
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;

@@ -170,9 +170,9 @@
 					<div>
 						
 					</div>
-				<c:forEach items="${game.chat}" var="msg">
-				    <c:out value="${msg.body}"></c:out>
-				</c:forEach>
+						<c:forEach items="${game.chat}" var="msg">
+							<c:out value="${msg.body}"></c:out>
+						</c:forEach>
 					<div>
 					
 						<form:form modelAttribute="message">  
