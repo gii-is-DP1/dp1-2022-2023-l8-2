@@ -143,7 +143,7 @@ public class PlayerPointsService {
         return list;
     }
 
-    public Map<String, List<String>> getPlayersPointsEndGame(Integer gameId){
+    public Map<String, List<String>> getPlayersPointsEndGame(Integer gameId) {
         List<String> points = playerPointsRepository.findPointsEndGameRanked(gameId).stream().map(Object::toString).collect(Collectors.toList());
         List<String> usernames = playerPointsRepository.findUsernameEndGameRankedByPoints(gameId);
         Map<String, List<String>> playerPointsEndGame = new HashMap<>();

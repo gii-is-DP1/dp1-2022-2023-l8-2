@@ -112,5 +112,13 @@ public class TestPlayerPointsService {
         assertEquals(actual.get(2).getValue(), 0);
     }
 
+    @Test
+    void testGetPlayersPointsEndGame() {
+        Map<String, List<String>> expected = new HashMap<>();
+        expected.put("points", List.of("150", "90", "50"));
+        expected.put("usernames", List.of("testplayer2", "testplayer1", "testplayer3"));
+        Map<String, List<String>> actual = pps.getPlayersPointsEndGame(2);
+        assertEquals(expected, actual);
+    }
 
 }
