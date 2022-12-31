@@ -36,14 +36,14 @@
 	.board-element{
 		background-color: rgba(241, 202, 139, 0.811); 
 		height: 20%;
-	
 	}
 	.board-border{
 		border-style: solid;
 		border-width: 5px;
 		border-color: wheat;
 		border-radius: 10px;
-		margin: 2px
+		margin: 2px;
+		word-wrap: break-word; 
 	}
 	.board-border-white{
 		border-style: solid;
@@ -62,7 +62,7 @@
 		margin: 2px
 	}
 	.message-input{
-		width: 75%; 
+		width: 95%; 
 		border-style: solid; 
 		border-width: 1px; 
 		border-color: wheat; 
@@ -85,7 +85,10 @@
 		border-width: 5px;
 		border-color: rgb(7, 215, 0);
 		border-radius: 10px;
-		margin: 2px
+		margin: 2px;
+	}
+	.div{
+	    word-wrap: break-word;
 	}
 </style>
 
@@ -166,13 +169,17 @@
 			</div>
 			<div class="col-md-3 ">
 				<div class="board-element board-border">
-					<div></div>
-					<div>
-						
-					</div>
+                    <div style="height:160px; overflow:auto; overflow-wrap: break-word;">
+                    <table id="playersTable">
 						<c:forEach items="${game.chat}" var="msg">
-							<c:out value="${msg.body}"></c:out>
+						    <tr>
+                                <td> <b><c:out value='${msg.player}: '/> </b></td> 
+                                <td width="5%">&nbsp;</td>
+                                <td> <c:out value='${msg.body}'/> </td>
+                            </tr>
 						</c:forEach>
+					</table>
+					</div>
 					<div>
 					
 						<form:form modelAttribute="message">  

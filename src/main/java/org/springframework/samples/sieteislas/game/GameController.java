@@ -187,21 +187,24 @@ public class GameController {
     @PostMapping(value = "/gameBoard/{gameId}")
     public String postInChat(@PathVariable("gameId") String id, Principal principal, 
     		@ModelAttribute("message") Message message, ModelMap model){
-        Game game = this.gameService.findById(Integer.valueOf(id)); 
+    	if(message.getBody().isEmpty() || message.getBody().equals(null)) {
+    		model.addAttribute("message", new Message());
+    	} else {
+            Game game = this.gameService.findById(Integer.valueOf(id)); 
         
-        message.setGame(game);
-        message.setDate(LocalDateTime.now());
+            message.setGame(game);
+            message.setDate(LocalDateTime.now());
         
-    	Player p = this.playerService.findByUsername(principal.getName());
-    	message.setPlayer(p);	
-    	this.messageService.save(message);
+    	    Player p = this.playerService.findByUsername(principal.getName());
+    	    message.setPlayer(p);	
+    	    this.messageService.save(message);
     	
-        game.getChat().add(message);
-        this.gameService.save(game);
-        model.addAttribute("message", new Message());
-       
+            game.getChat().add(message);
+            model.addAttribute("message", new Message());
+    	}
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
+    	
     }
     
     
