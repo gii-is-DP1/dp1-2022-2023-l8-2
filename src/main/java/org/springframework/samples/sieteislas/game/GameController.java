@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -177,13 +178,15 @@ public class GameController {
         model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
+        model.put("message", new Message());
         return VIEWS_GAMES_GAMEBOARD;
     }
     
     
-    @PostMapping("/gameBoard/{gameId}/message")
-    public String postInChat(@PathVariable("gameId") String id, Principal principal, @ModelAttribute("message") Message message, ModelMap model){
-        Game game = this.gameService.findById(Integer.valueOf(id));
+    @PostMapping(value = "/gameBoard/{gameId}/message")
+    public String postInChat(@PathVariable("gameId") String id, Principal principal, 
+    		@ModelAttribute("message") Message message, ModelMap model){
+        Game game = this.gameService.findById(Integer.valueOf(id)); 
         
         message.setGame(game);
         

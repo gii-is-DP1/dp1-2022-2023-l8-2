@@ -48,6 +48,8 @@ public class GameService {
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
+    	List<Message> messages = new ArrayList<Message>();
+    	
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
@@ -55,6 +57,7 @@ public class GameService {
         game.setDiceRoll(1);
         game.setHasRolledDice(false);
         game.setNumCardsToPay(0);
+        game.setChat(messages);
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);

@@ -39,6 +39,6 @@
                         </a>
 			    </div>
         </c:otherwise>
-    </c:choose>
+    </c:choose> 
     
 </sieteislas:layout>

@@ -174,12 +174,12 @@
 				    <c:out value="${msg.body}"></c:out>
 				</c:forEach>
 					<div>
-					<%--@elvariable id="message" type="org.springframework.samples.sieteislas.message.Message"--%>
-						<form:form modelAttribute="message">
+					
+						<form:form modelAttribute="message">  
 							<form:input path="body" type="text" class="message-input"></form:input>
 							<button type="submit" class="btn btn-default">Submit</button>
 						</form:form>
-					</div>
+					</div> 
 					
 				</div>
 				<h2 color="black" class="island board-border" style="text-align: center;">PLAYERS</h2>
