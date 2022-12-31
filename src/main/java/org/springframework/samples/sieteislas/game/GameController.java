@@ -218,6 +218,7 @@ public class GameController {
         model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
+        
         return VIEWS_GAMES_GAMEBOARD;
     }
     
@@ -260,7 +261,11 @@ public class GameController {
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
         if(cardsToPay <= 0){
-            this.gameService.passTurn(game);
+        	
+        	if(game.getDeck().size() < 6)
+            	return endGame(id, model, principal);
+        	else
+        		this.gameService.passTurn(game);
         }
 
         String redirect = String.format("redirect:/games/gameBoard/%s", id);

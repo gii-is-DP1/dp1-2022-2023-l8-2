@@ -252,7 +252,7 @@ public class GameService {
 		else {
 			
 			Integer random = (int) Math.round(Math.random() *
-					possibleWinners.size());
+					(possibleWinners.size() - 1));
 			winner = possibleWinners.get(random);
 		}
 		
