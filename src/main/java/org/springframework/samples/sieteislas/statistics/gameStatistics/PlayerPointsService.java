@@ -2,6 +2,7 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -142,4 +143,12 @@ public class PlayerPointsService {
         return list;
     }
 
+    public Map<String, List<String>> getPlayersPointsEndGame(Integer gameId) {
+        List<String> points = playerPointsRepository.findPointsEndGameRanked(gameId).stream().map(Object::toString).collect(Collectors.toList());
+        List<String> usernames = playerPointsRepository.findUsernameEndGameRankedByPoints(gameId);
+        Map<String, List<String>> playerPointsEndGame = new HashMap<>();
+        playerPointsEndGame.put("points", points);
+        playerPointsEndGame.put("usernames", usernames);
+        return playerPointsEndGame;
+    }
 }
