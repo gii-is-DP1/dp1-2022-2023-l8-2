@@ -17,6 +17,7 @@ import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -299,11 +300,15 @@ public class GameController {
         return redirect;
     }
     
-    @GetMapping("/gameBoard/{gameId}/end")
+    @GetMapping("/gameEnd/{gameId}")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	  Game game = gameService.findById(Integer.valueOf(id));
-        model.put("playerPointsEndGame", playerPointsService.getPlayersPointsEndGame(game.getId()));
-        return "redirect:/games/gameBoard/" + id + "/end";
+    	
+    	Game game = gameService.findById(Integer.valueOf(id));
+    	Map<String, List<String>> playerPointsEndGame = playerPointsService.getPlayersPointsEndGame(game.getId());
+    	
+    	model.put("playerPointsEndGame", playerPointsEndGame);
+        
+    	return VIEWS_GAMES_END;
     }
 
 }
