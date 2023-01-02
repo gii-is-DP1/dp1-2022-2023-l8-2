@@ -24,7 +24,7 @@ INSERT INTO users(username,first_name,last_name,password,enabled, profile_image)
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
 INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
-INSERT INTO metrics(id, name) VALUES (2, 'victories');
+INSERT INTO metrics(id, name) VALUES (2, 'gamesWon');
 INSERT INTO metrics(id, name) VALUES (3, 'points');
 
 INSERT INTO achievements(id, name, threshold, description, image, metric_id) VALUES
@@ -110,13 +110,6 @@ INSERT INTO cards(id, card_type_id, game_id) VALUES (12, 12, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (13, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (14, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (15, 1, 5);
-
-INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (4, 100000, 349759.11, 678, 678, 1);
-INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (1, 96, 18708.63, 2, 1, 2);
-INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (2, 300, 62734.03, 13, 5, 3);
-INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (3, 145, 27712.28, 4, 2, 4);
-INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (5, 222, 42704.52, 9, 4, 5);
-INSERT INTO player_statistics(id, total_points, time_played, games_played, games_won, player_id) VALUES (6, 42, 21.28, 1, 0, 6);
 
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 2);

@@ -19,7 +19,6 @@ import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.model.BaseEntity;
 import org.springframework.samples.sieteislas.statistics.achievement.Achievement;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
-import org.springframework.samples.sieteislas.statistics.playerStatistics.PlayerStatistics;
 import org.springframework.samples.sieteislas.user.User;
 
 import lombok.Getter;
@@ -38,9 +37,6 @@ public class Player extends BaseEntity{
 	@OneToMany(mappedBy = "player", cascade = CascadeType.ALL)
 	@NotAudited
 	private List<Card>	cards;
-
-	@OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
-	private PlayerStatistics statistics;
 
 	@ManyToOne
 	@JoinColumn(name="game_id")

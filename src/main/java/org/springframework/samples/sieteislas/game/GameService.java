@@ -253,7 +253,7 @@ public class GameService {
 		else {
 			
 			Integer random = (int) Math.round(Math.random() *
-					possibleWinners.size());
+					(possibleWinners.size() - 1));
 			winner = possibleWinners.get(random);
 		}
 		
@@ -296,7 +296,7 @@ public class GameService {
     	Integer totalPoints = scoreboard.values().stream()
     			.reduce(0, (x,y) -> x+y);
     	
-    	stats.setTotalPoints(totalPoints);
+    	//stats.setTotalPoints(totalPoints);
     	
     	this.gameStatisticsRepository.save(stats);
     }

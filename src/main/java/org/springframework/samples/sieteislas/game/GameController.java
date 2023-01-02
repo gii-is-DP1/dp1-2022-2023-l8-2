@@ -36,6 +36,7 @@ public class GameController {
     private static final String VIEWS_CREATE_GAME_FORM = "games/createNewGameView";
     private static final String VIEWS_GAMES_LIST = "games/gamesList";
     private static final String VIEWS_GAMES_GAMEBOARD = "games/gameBoard";
+    private static final String VIEWS_GAMES_END = "games/gameEnd";
     private static final String VIEWS_GAMES_INVITE = "games/invitation";
 
     private GameService gameService;
@@ -228,6 +229,7 @@ public class GameController {
         model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
+        
         return VIEWS_GAMES_GAMEBOARD;
     }
 
@@ -270,7 +272,11 @@ public class GameController {
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
         if(cardsToPay <= 0){
-            this.gameService.passTurn(game);
+        	
+        	if(game.getDeck().size() < 6)
+            	return endGame(id, model, principal);
+        	else
+        		this.gameService.passTurn(game);
         }
 
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
@@ -292,10 +298,10 @@ public class GameController {
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
-
+    
     @GetMapping("/gameBoard/{gameId}/end")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	Game game = gameService.findById(Integer.valueOf(id));
+    	  Game game = gameService.findById(Integer.valueOf(id));
         model.put("playerPointsEndGame", playerPointsService.getPlayersPointsEndGame(game.getId()));
         return "redirect:/games/gameBoard/" + id + "/end";
     }
