@@ -31,7 +31,7 @@
         </c:when>
 	    <c:otherwise>
             <div style="text-align:center"> 
-                <spring:url value="/games/active" var="returnListUrl">
+                <spring:url value="/games/active/0" var="returnListUrl">
                 </spring:url>
                     <a href="${fn:escapeXml(returnListUrl)}">
                         <p class="btn btn-danger">You can not create a new game if you are already playing or in lobby!</p>

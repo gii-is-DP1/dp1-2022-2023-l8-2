@@ -51,33 +51,37 @@
                 <div style="text-align: center;">
                     <img src="${friend.profileImage}" style="height: 50px; width: 50px;">
                     <c:out value="${friend.username}"/>
-
-                    <spring:url value="/users/friends/remove/{friendUsername}" var="removeFriendUrl">
-                        <spring:param name="friendUsername" value="${friend.username}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(removeFriendUrl)}" class="btn btn-danger">Remove Friend</a>
+                    <c:if test="${user.username.equals(principalName) || isAdmin}">  
+                        <spring:url value="/users/friends/remove/{friendUsername}" var="removeFriendUrl">
+                            <spring:param name="friendUsername" value="${friend.username}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(removeFriendUrl)}" class="btn btn-danger">Remove Friend</a>
+                    </c:if>
                 </div>
         </c:forEach>
     </div>
-    <div>
-        <p>FRIEND REQUESTS</p>
-        <c:forEach items="${friendRequests}" var="request">
-                <div style="text-align: center;">
-                    <img src="${request.sender.profileImage}" style="height: 50px; width: 50px;">
-                    <c:out value="${request.sender.username}"/>
+    <c:if test="${user.username.equals(principalName) || isAdmin}">    
+        <div>
+           
+            <p>FRIEND REQUESTS</p>
+            <c:forEach items="${friendRequests}" var="request">
+                    <div style="text-align: center;">
+                        <img src="${request.sender.profileImage}" style="height: 50px; width: 50px;">
+                        <c:out value="${request.sender.username}"/>
 
-                    <spring:url value="/users/friends/acceptRequest/{requestId}" var="acceptRequestUrl">
-                        <spring:param name="requestId" value="${request.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(acceptRequestUrl)}" class="btn btn-success">Accept request</a>
-                    
-                    <spring:url value="/users/friends/denyRequest/{requestId}" var="denyRequestUrl">
-                        <spring:param name="requestId" value="${request.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(denyRequestUrl)}" class="btn btn-danger">Deny request</a>
-                </div>
-        </c:forEach>
-    </div>
+                        <spring:url value="/users/friends/acceptRequest/{requestId}" var="acceptRequestUrl">
+                            <spring:param name="requestId" value="${request.id}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(acceptRequestUrl)}" class="btn btn-success">Accept request</a>
+                        
+                        <spring:url value="/users/friends/denyRequest/{requestId}" var="denyRequestUrl">
+                            <spring:param name="requestId" value="${request.id}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(denyRequestUrl)}" class="btn btn-danger">Deny request</a>
+                    </div>
+            </c:forEach>
+        </div>
+    </c:if>
 
     
     <c:if test="${user.username.equals(principalName) || isAdmin}">

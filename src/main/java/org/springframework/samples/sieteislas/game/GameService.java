@@ -2,9 +2,7 @@ package org.springframework.samples.sieteislas.game;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +10,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
@@ -30,6 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GameService {
     private final GameRepository gameRepository;
+    private final GameStatisticsRepository gameStatisticsRepository;
     private final GameInvitationRepository gameInvitationRepository;
     private final PlayerRepository playerRepository;
     private final UserRepository userRepository;
@@ -37,9 +37,10 @@ public class GameService {
     private final CardRepository cardRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, PlayerRepository playerRepository, 
+    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, GameStatisticsRepository gameStatisticsRepository,PlayerRepository playerRepository, 
         UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
         this.gameRepository = gameRepository;
+        this.gameStatisticsRepository = gameStatisticsRepository;
         this.gameInvitationRepository = gameInvitationRepository;
         this.playerRepository = playerRepository;
         this.userRepository = userRepository;
@@ -121,8 +122,8 @@ public class GameService {
         this.gameRepository.save(game);
     }
 
-    public Collection<Game> getActiveGames() {
-        return  gameRepository.getActiveGames(true);
+    public Page<Game> getActiveGames(Pageable pageable) {
+        return  gameRepository.getActiveGames(true, pageable);
     }
 
     public Game findById(Integer id) {
@@ -240,11 +241,11 @@ public class GameService {
     	
     	Integer maxCoins = Collections.max(possibleWinners.stream()
 				.map(p->numCoins.apply(p.getCards()))
-				.toList());
+                .collect(Collectors.toList()));
 		
 		possibleWinners = possibleWinners.stream()
 				.filter(p->numCoins.apply(p.getCards()).equals(maxCoins))
-				.toList();
+				.collect(Collectors.toList());
 		
 		if(possibleWinners.size() == 1)
 			winner = possibleWinners.get(0);
@@ -272,7 +273,7 @@ public class GameService {
     	List<Player> possibleWinners = scoreboard.entrySet().stream()
     			.filter(x->x.getValue().equals(biggestMark))
     			.map(Map.Entry::getKey)
-    			.toList();
+    			.collect(Collectors.toList());
     	
     	if(possibleWinners.size() == 1)
     		winner = possibleWinners.get(0);
@@ -289,15 +290,15 @@ public class GameService {
     	
     	GameStatistics stats = new GameStatistics();
     	
-    	/*stats.setWinner(winner);
-    	stats.setPoints(scoreboard.get(winner));*/
+    	/* stats.setWinner(winner); */
+    	stats.setPoints(scoreboard.get(winner));
     	
     	Integer totalPoints = scoreboard.values().stream()
-    			.reduce(0, Integer::sum);
+    			.reduce(0, (x,y) -> x+y);
     	
     	//stats.setTotalPoints(totalPoints);
     	
-    	//gameStatisticsRepository.save(stats);
+    	this.gameStatisticsRepository.save(stats);
     }
 
     @Transactional

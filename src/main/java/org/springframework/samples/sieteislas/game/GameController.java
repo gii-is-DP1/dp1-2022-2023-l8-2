@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardService;
 import org.springframework.samples.sieteislas.message.Message;
@@ -14,6 +17,7 @@ import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
 import org.springframework.stereotype.Controller;
@@ -41,29 +45,36 @@ public class GameController {
     private UserService userService;
     private CardService cardService;
     private MessageService messageService;
+    private PlayerPointsService playerPointsService;
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService, UserService userService,
-                            GameStatisticsService gameStatisticService, CardService cardService, MessageService messageService){
+                          GameStatisticsService gameStatisticService, CardService cardService,
+                          MessageService messageService, PlayerPointsService playerPointsService){
         this.gameService = gameService;
         this.playerService = playerService;
         this.userService = userService;
         this.gameStatisticService = gameStatisticService;
         this.cardService = cardService;
         this.messageService = messageService;
+        this.playerPointsService = playerPointsService;
     }
 
     //GET ALL ACTIVE GAMES
-    @GetMapping("/active")
-    public String getActiveGames(Map<String, Object> model, Principal principal) {
-        Collection<Game> games = gameService.getActiveGames();
+    @GetMapping("/active/{page}")
+    public String getActiveGames(@PathVariable("page") Integer page, Map<String, Object> model, Principal principal) {
+        Pageable paging = PageRequest.of(page, 5);
+        Page<Game>  gamesPage = gameService.getActiveGames(paging);
         Player actualPlayer = this.playerService.findByUsername(principal.getName());
 
         List<GameInvitation> invitations = this.gameService.getInvitationsOfUser(principal.getName());
 
+        model.put("page", page);
+        model.put("hasPrevious", gamesPage.hasPrevious());
+        model.put("hasNext", gamesPage.hasNext());
         model.put("invitations", invitations);
         model.put("actualPlayer", actualPlayer);
-        model.put("games", games);
+        model.put("games", gamesPage.getContent());
         return VIEWS_GAMES_LIST;
     }
 
@@ -122,9 +133,9 @@ public class GameController {
                 if(game.getCreatorUsername().equals(principal.getName())){
                     this.gameService.selectNewCreator(game);
                 }
-            }  
+            }
         }
-        return "redirect:/"; 
+        return "redirect:/";
     }
 
     @GetMapping("/lobby/{id}/kick/{playerId}")
@@ -137,7 +148,7 @@ public class GameController {
             this.gameService.kickOfGame(Integer.valueOf(playerId));
             String redirect = String.format("redirect:/games/lobby/%s", id);
             return redirect;
-        }        
+        }
     }
 
     @GetMapping("/lobby/invitation/{gameId}")
@@ -154,7 +165,7 @@ public class GameController {
         this.gameService.invitePlayerToGame(principal.getName(), invitedUsername, gameId);
 
         String redirect = String.format("redirect:/games/lobby/invitation/{gameId}", gameId);
-        return redirect; 
+        return redirect;
     }
 
     @GetMapping("/lobby/invitation/accept/{invitationId}")
@@ -166,7 +177,7 @@ public class GameController {
         } catch (FullGameException ex){
             redirAttrs.addFlashAttribute("gameFullMessage", "You were unable to join! The game is now full!");
             return "redirect:/games/active";
-        }       
+        }
     }
 
     @GetMapping("/lobby/invitation/decline/{invitationId}")
@@ -179,14 +190,14 @@ public class GameController {
     @GetMapping("/start/{gameId}")
     public String startGame(@PathVariable("gameId") String id, ModelMap model) {
         Game game = this.gameService.findById(Integer.valueOf(id));
-        if(game.getActive()){ //comprobamos si la partida ha comenzado--> active: no ha comenzado, !active: ha comenzado 
+        if(game.getActive()){ //comprobamos si la partida ha comenzado--> active: no ha comenzado, !active: ha comenzado
             List<Card> doblones = gameService.createDeck(game).stream()
                                             .filter(x->(x.getCardType().getName()).equals("coin"))
                                             .collect(Collectors.toList());
             //Repartimos 3 doblones a cada jugador
-            for(Player player: game.getPlayers()) { 
+            for(Player player: game.getPlayers()) {
                 for(int i=0; i < 3; i++){
-                    Card doblon = doblones.stream() 
+                    Card doblon = doblones.stream()
                                             .filter(x-> x.getPlayer() == null)
                                             .findFirst().get();
                     this.gameService.moveCardToPlayer(doblon, player);
@@ -196,15 +207,15 @@ public class GameController {
             this.gameService.toggleActive(game, false);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
-        return redirect; 
+        return redirect;
     }
 
     @GetMapping("/gameBoard/{gameId}")
     public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
-        
-        String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName()); 
+
+        String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName());
         boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
 
         if(!isCurrentPlayer) response.addHeader("Refresh", "2");
@@ -221,14 +232,14 @@ public class GameController {
         
         return VIEWS_GAMES_GAMEBOARD;
     }
-    
+
     /*
     @PostMapping("/gameBoard/{gameId}/comment")
     public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
         Game game = this.gameService.findById(Integer.valueOf(id));
         Player actualPlayer = this.playerService.findByUsername(principal.getName());
         Message message = new Message();
-        
+
         message.setGame(game);
         message.setPlayer(actualPlayer);
         message.setBody(comment);
@@ -237,17 +248,17 @@ public class GameController {
         return redirect;
     }
     */
-    
+
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal, HttpServletResponse response) {
     	Game game = gameService.findById(Integer.valueOf(id));
         this.gameService.toggleHasRolledDice(game, true);
-    	this.gameService.rollDice(game); 
-        
+    	this.gameService.rollDice(game);
+
     	List<Card> possibleChoices = gameService.possibleChoices(game);
-	
-    	model.put("possibleChoices", possibleChoices); 
-        
+
+    	model.put("possibleChoices", possibleChoices);
+
         return renderBoard(id, principal, model, response);
     }
 
@@ -256,7 +267,7 @@ public class GameController {
     	Game game = gameService.findById(Integer.valueOf(id));
         Player currentPlayer = game.getPlayers().get(game.getPlayerTurn());
         Card card = cardService.findById(Integer.valueOf(cardId));
-        
+
         int cardsToPay = this.gameService.setNumCardsToPay(game, card);
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
@@ -288,12 +299,11 @@ public class GameController {
         return redirect;
     }
     
-    @GetMapping("/gameEnd/{gameId}")
+    @GetMapping("/gameBoard/{gameId}/end")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	
-    	Game game = gameService.findById(Integer.valueOf(id));
-    	
-        return VIEWS_GAMES_END;
+    	  Game game = gameService.findById(Integer.valueOf(id));
+        model.put("playerPointsEndGame", playerPointsService.getPlayersPointsEndGame(game.getId()));
+        return "redirect:/games/gameBoard/" + id + "/end";
     }
 
 }

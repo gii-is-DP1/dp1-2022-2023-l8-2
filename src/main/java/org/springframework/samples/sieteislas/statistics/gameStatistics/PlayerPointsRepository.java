@@ -3,11 +3,13 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -76,5 +78,9 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT p FROM PlayerPointsMap p")
     List<PlayerPointsMap> findAll();
 
+    @Query("SELECT p.points FROM PlayerPointsMap p WHERE p.gameStatistics.game.id = :gameId ORDER BY p.points DESC")
+    List<Integer> findPointsEndGameRanked(@Param("gameId") Integer gameId);
 
+    @Query("SELECT p.player.user.username FROM PlayerPointsMap p WHERE p.gameStatistics.game.id = :gameId ORDER BY p.points DESC")
+    List<String> findUsernameEndGameRankedByPoints(@Param("gameId") Integer gameId);
 }
