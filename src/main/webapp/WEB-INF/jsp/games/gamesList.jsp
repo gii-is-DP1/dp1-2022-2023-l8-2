@@ -7,6 +7,7 @@
 
 <petclinic:layout pageName="owners">
 <div style="text-align:center"> 
+    <h1 style="background-color: red;"><c:out value="${gameFullMessage}"></c:out></h1>
     <a href="/games/new" class="btn btn-default">CREATE NEW GAME!</a>   
 </div> 
 <h2> Current Games </h2>
@@ -67,4 +68,37 @@
         </c:forEach>
         </tbody>
     </table>
+    <div style="text-align: center;">
+        <c:if test="${hasPrevious}">
+            <spring:url value="/games/active/{page}" var="previousUrl">
+                <spring:param name="page" value="${page-1}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(previousUrl)}" class="glyphicon glyphicon-chevron-left">Previous</a>
+        </c:if>
+        <c:if test="${hasNext}">
+            <spring:url value="/games/active/{page}" var="NextUrl">
+                <spring:param name="page" value="${page+1}"/>
+            </spring:url>
+            <a href="${fn:escapeXml(NextUrl)}" class="glyphicon glyphicon-chevron-right">Next</a>
+        </c:if>
+    </div>
+    <div style="text-align: center;">
+        <p>GAME INVITATIONS</p>
+        <c:forEach items="${invitations}" var="invitation">
+                <div style="text-align: center;">
+                    <img src="${invitation.host.profileImage}" style="height: 50px; width: 50px;">
+                    <c:out value="${invitation.host.username}"/>
+
+                    <spring:url value="/games/lobby/invitation/accept/{invitationId}" var="acceptInvitationUrl">
+                        <spring:param name="invitationId" value="${invitation.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(acceptInvitationUrl)}" class="btn btn-success">Join Game!</a>
+                    
+                    <spring:url value="/games/lobby/invitation/decline/{invitationId}" var="declineInvitationUrl">
+                        <spring:param name="invitationId" value="${invitation.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(declineInvitationUrl)}" class="btn btn-danger">Decline invitation</a>
+                </div>
+        </c:forEach>
+    </div>
 </petclinic:layout>
