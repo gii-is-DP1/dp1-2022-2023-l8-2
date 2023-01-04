@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.game;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.card.CardRepository;
 import org.springframework.samples.sieteislas.card.CardType;
 import org.springframework.samples.sieteislas.card.CardTypeRepository;
+import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
@@ -49,6 +51,8 @@ public class GameService {
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
+    	List<Message> messages = new ArrayList<Message>();
+    	
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
@@ -56,6 +60,7 @@ public class GameService {
         game.setDiceRoll(1);
         game.setHasRolledDice(false);
         game.setNumCardsToPay(0);
+        game.setChat(messages);
 
         GameStatistics statistics = GameStatistics.createDefault(game);
         game.setStatistics(statistics);
@@ -69,6 +74,17 @@ public class GameService {
 
         return game;
     }
+    
+   /* public Message comment(Game game, Message message, Principal principal) {
+    	message.setGame(game);
+    	Player p = this.playerRepository.findPlayerByUsername(principal.getName());
+    	message.setPlayer(p);	
+    	this.messageRepository.save(message);
+    	
+        game.getChat().add(message);
+        this.gameRepository.save(game);
+    	return message;
+    }*/
 
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();

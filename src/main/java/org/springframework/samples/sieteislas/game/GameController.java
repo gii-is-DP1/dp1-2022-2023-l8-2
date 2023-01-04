@@ -1,6 +1,8 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -229,25 +231,35 @@ public class GameController {
         model.put("currentPlayerName", currentPlayerName);
         model.put("principalName", principal.getName());
         model.put("game", game);
-        
+
+        model.put("message", new Message());
         return VIEWS_GAMES_GAMEBOARD;
     }
 
-    /*
-    @PostMapping("/gameBoard/{gameId}/comment")
-    public String postInChat(@PathVariable("gameId") String id, Principal principal, String comment, ModelMap model){
-        Game game = this.gameService.findById(Integer.valueOf(id));
-        Player actualPlayer = this.playerService.findByUsername(principal.getName());
-        Message message = new Message();
-
-        message.setGame(game);
-        message.setPlayer(actualPlayer);
-        message.setBody(comment);
-        message.save();
+    
+    
+    @PostMapping(value = "/gameBoard/{gameId}")
+    public String postInChat(@PathVariable("gameId") String id, Principal principal, 
+    		@ModelAttribute("message") Message message, ModelMap model){
+    	if(message.getBody().isEmpty() || message.getBody().equals(null)) {
+    		model.addAttribute("message", new Message());
+    	} else {
+            Game game = this.gameService.findById(Integer.valueOf(id)); 
+        
+            message.setGame(game);
+            message.setDate(LocalDateTime.now());
+        
+    	    Player p = this.playerService.findByUsername(principal.getName());
+    	    message.setPlayer(p);	
+    	    this.messageService.save(message);
+    	
+            game.getChat().add(message);
+            model.addAttribute("message", new Message());
+    	}
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
-    */
+    
 
     @GetMapping("/gameBoard/{gameId}/rollDice")
     public String diceManager(@PathVariable("gameId") String id, ModelMap model, Principal principal, HttpServletResponse response) {

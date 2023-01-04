@@ -65,7 +65,7 @@ public class GameStatistics extends BaseEntity{
     public Player winner; */
 
     @Column(name="points")
-    public Integer points;*/
+    public Integer points;
     
     public static GameStatistics createDefault(Game game2) {
         GameStatistics statistics = new GameStatistics();
