@@ -306,7 +306,10 @@ public class GameController {
     	Game game = gameService.findById(Integer.valueOf(id));
     	Map<String, List<String>> playerPointsEndGame = playerPointsService.getPlayersPointsEndGame(game.getId());
     	
-    	model.put("playerPointsEndGame", playerPointsEndGame);
+    	//model.put("playerPointsEndGame", playerPointsEndGame);
+    	
+    	model.put("playersRanked", playerPointsEndGame.get("players"));
+    	model.put("pointsRanked", playerPointsEndGame.get("points"));
         
     	return VIEWS_GAMES_END;
     }

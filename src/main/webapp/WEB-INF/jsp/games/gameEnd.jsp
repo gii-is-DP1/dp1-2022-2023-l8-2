@@ -84,6 +84,30 @@
 <html>
 	<sieteislas:htmlHeader/>
 	<body class="container-fluid">
+		<table id="pointsTable" class="table table-striped">
+			<thead>
+		        <tr>
+		            <th style="width: 150px;">Player</th>
+		            <th style="width: 100px;">Points</th>
+		        </tr>
+	        </thead>
+	        <tbody>
+				<c:forEach items="${playersRanked}" var="playersRanked">
+		            <tr>
+		          		<td>
+		                    <c:out value="${playersRanked}"/>
+		                </td>
+		            </tr>
+		        </c:forEach>
+		        <c:forEach items="${playersRanked}" var="playersRanked">
+		            <tr>
+		          		<td>
+		                    <c:out value="${pointsRanked}"/>
+		                </td>
+		            </tr>
+		        </c:forEach>
+		    </tbody>
+	    </table>
 	</body>
 	<sieteislas:footer/>
 </html>
