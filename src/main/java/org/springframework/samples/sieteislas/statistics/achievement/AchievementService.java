@@ -8,31 +8,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsRepository;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AchievementService {
 
-    private AchievementRepository achievementRepository;
+    private AchievementRepository achievementRepo;
+    private PlayerPointsRepository playerPointsRepo;
+    private PlayerPointsService playerPointsService;
 
     @Autowired
     public AchievementService(AchievementRepository achievementRepository) {
-        this.achievementRepository = achievementRepository;
+        this.achievementRepo = achievementRepository;
     }
 
     public Collection<Achievement> getAllAchievements() {
-        return (Collection<Achievement>) achievementRepository.findAll();
+        return (Collection<Achievement>) achievementRepo.findAll();
     }
     public Achievement getAchievementById(Integer id) {
-        return achievementRepository.findById(id).get();
+        return achievementRepo.findById(id).get();
     }
 
     public void deleteAchievementById(Integer id){
-        achievementRepository.deleteById(id);
+        achievementRepo.deleteById(id);
     }
 
     public void saveAchievement(Achievement achievement){
-        achievementRepository.save(achievement);
+        achievementRepo.save(achievement);
     }
     
     public void refreshAchievements(Game g) {
@@ -40,7 +44,7 @@ public class AchievementService {
     	GameStatistics gs = g.getStatistics();
     	
     	List<Achievement> allAchievements = new ArrayList<>();   	
-    	achievementRepository.findAll().iterator()
+    	achievementRepo.findAll().iterator()
     			.forEachRemaining(a->allAchievements.add(a));
     	
     	List<Player> players = gs.getGame().getPlayers();
@@ -58,21 +62,19 @@ public class AchievementService {
     			String metricName = a.getMetric().getName();
     			Double d = .0;
     			
-    			//TODO fix
-    			
-    			/*if(metricName.equals("gamesPlayed"))
-    				d = gs.getGamesPlayed() * 1.0;
+    			if(metricName.equals("gamesPlayed"))
+    				d = playerPointsRepo.getTotalNumberGamesByUser(player.getUser().toString()) * 1.0;
     			else if(metricName.equals("gamesWon"))
-    				d = gs.getGamesWon() * 1.0;
+    				d = playerPointsService.getWins(player) * 1.0;
     			else if(metricName.equals("points"))
-    				d = gs.getTotalPoints() * 1.0;
+    				d = playerPointsRepo.findTotalPointsUser(player.getUser().toString()) * 1.0;
     			else System.out.println("ERROR: Metric not found.");
     			
     			if(a.getThreshold() < d) {
     				
     				achievements.add(a);
     				player.setAchievements(achievements);
-    			}*/
+    			}
     		}
     	}
     }
