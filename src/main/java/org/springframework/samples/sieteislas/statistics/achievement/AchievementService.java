@@ -35,7 +35,7 @@ public class AchievementService {
         achievementRepository.save(achievement);
     }
     
-    /*public void refreshAchievements(Game g) {
+    public void refreshAchievements(Game g) {
     	
     	GameStatistics gs = g.getStatistics();
     	
@@ -43,9 +43,10 @@ public class AchievementService {
     	achievementRepository.findAll().iterator()
     			.forEachRemaining(a->allAchievements.add(a));
     	
-    	for(PlayerStatistics s:stats) {
+    	List<Player> players = gs.getGame().getPlayers();
+    	
+    	for(Player player:players) {
     		
-    		Player player = s.getPlayer();
     		List<Achievement> achievements = player.getAchievements();
     		
     		List<Achievement> achievementsToGet = achievements.stream()
@@ -57,21 +58,23 @@ public class AchievementService {
     			String metricName = a.getMetric().getName();
     			Double d = .0;
     			
-    			if(metricName.equals("gamesPlayed"))
-    				d = s.getGamesPlayed() * 1.0;
+    			//TODO fix
+    			
+    			/*if(metricName.equals("gamesPlayed"))
+    				d = gs.getGamesPlayed() * 1.0;
     			else if(metricName.equals("gamesWon"))
-    				d = s.getGamesWon() * 1.0;
+    				d = gs.getGamesWon() * 1.0;
     			else if(metricName.equals("points"))
-    				d = s.getTotalPoints() * 1.0;
+    				d = gs.getTotalPoints() * 1.0;
     			else System.out.println("ERROR: Metric not found.");
     			
     			if(a.getThreshold() < d) {
     				
     				achievements.add(a);
     				player.setAchievements(achievements);
-    			}
+    			}*/
     		}
     	}
-    }*/
+    }
     
 }
