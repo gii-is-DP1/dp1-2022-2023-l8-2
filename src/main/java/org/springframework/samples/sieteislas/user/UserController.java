@@ -112,9 +112,11 @@ public class UserController {
 		
 		User user = this.userService.findUser(username).get();
 		Boolean isAdmin = userService.isAdmin(principal.getName());
+		Player actualPlayer = this.playerService.findByUsername(principal.getName());
 
 		List<FriendRequest> friendRequests = this.userService.getAllRequestsReceived(user);
 
+		model.put("actual", actualPlayer);
 		model.put("principalName", principal.getName());
 		model.put("user", user);
 		model.put("isAdmin", isAdmin);

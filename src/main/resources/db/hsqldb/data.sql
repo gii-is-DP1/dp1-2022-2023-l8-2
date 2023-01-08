@@ -110,8 +110,6 @@ INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'thokriale');
 INSERT INTO friends(user_id, friend_id) VALUES ('maravimaq', 'pabberima');
 INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'pabberima');
 
-
-
 INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'jualopqui1');
 INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'jualopqui1');
 INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'joscasvaz');

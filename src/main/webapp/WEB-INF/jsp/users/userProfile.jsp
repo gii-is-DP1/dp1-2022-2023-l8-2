@@ -62,8 +62,16 @@
                              <spring:url value="/games/gameBoard/{gameId}" var="watchGame">
                                 <spring:param name="gameId" value="${friend.player.game.id}"/>
                             </spring:url>
-                           
-                            <a href="${fn:escapeXml(watchGame)}" class="btn btn-primary">Watch Game</a>
+                            
+                           <c:choose>
+                               <c:when test="${not actual.game.id.equals(friend.player.game.id)}">
+                                   <a href="${fn:escapeXml(watchGame)}" class="btn btn-success">Watch Game</a>
+                               </c:when>
+                               <c:otherwise>
+                                   <a href="${fn:escapeXml(watchGame)}" class="btn btn-primary">Return To Game</a>
+                           </c:otherwise>
+                         </c:choose>
+                            
                         </c:if>
                         
                     </c:if>
