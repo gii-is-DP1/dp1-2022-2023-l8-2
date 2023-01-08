@@ -71,17 +71,6 @@ INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (1
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (12, 5, 65, 2);
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (13, 5, 80, 1);
 
-INSERT INTO messages (id, game_id, body, date, player) VALUES (1, 1, 'mensaje', '20221218 10:34:09', 1);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (2, 1, 'mensaje2', '20221218 18:34:09', 2);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (3, 1, 'mensaje3', '20221218 18:34:09', 3);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (4, 2, 'mensaje4', '20221218 18:34:09', 5);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (5, 2, 'mensaje5', '20221218 18:34:09', 4);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (6, 2, 'mensaje6', '20221218 18:34:09', 2);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (7, 3, 'mensaje7', '20221218 18:34:09', 2);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (8, 4, 'mensaje8', '20221218 18:34:09', 2);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (9, 4, 'mensaje9', '20221218 18:34:09', 3);
-INSERT INTO messages (id, game_id, body, date, player) VALUES (10,4, 'mensaje', '20221218 18:34:09', 1);
-
 INSERT INTO card_types(id, name, image) VALUES (1, 'coin', '/resources/images/cards/doblon.png');
 INSERT INTO card_types(id, name, image) VALUES (2, 'coup', '/resources/images/cards/copa.png');
 INSERT INTO card_types(id, name, image) VALUES (3, 'ruby', '/resources/images/cards/rubi.png');
