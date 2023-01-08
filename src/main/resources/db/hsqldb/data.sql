@@ -107,9 +107,15 @@ INSERT INTO player_achievements(player_id, achievement_id) VALUES (2, 1);
 INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'joscasvaz');
 INSERT INTO friends(user_id, friend_id) VALUES ('jualopqui1', 'thokriale');
 INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'thokriale');
+INSERT INTO friends(user_id, friend_id) VALUES ('maravimaq', 'pabberima');
+INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'pabberima');
+
+
 
 INSERT INTO friends(user_id, friend_id) VALUES ('joscasvaz', 'jualopqui1');
 INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'jualopqui1');
 INSERT INTO friends(user_id, friend_id) VALUES ('thokriale', 'joscasvaz');
+INSERT INTO friends(user_id, friend_id) VALUES ('pabberima', 'maravimaq');
+INSERT INTO friends(user_id, friend_id) VALUES ('pabberima', 'joscasvaz');
 
 SET FOREIGN_KEY_CHECKS=0;
