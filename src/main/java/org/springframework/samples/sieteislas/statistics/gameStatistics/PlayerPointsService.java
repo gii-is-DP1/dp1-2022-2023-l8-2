@@ -159,6 +159,5 @@ public class PlayerPointsService {
     	g.getPlayers().stream()
     		.map(p->PlayerPointsMap.createFromScoreboard(g, p, scoreboard))
     		.forEach(ppm->playerPointsRepository.save(ppm));
-    	
     }
 }

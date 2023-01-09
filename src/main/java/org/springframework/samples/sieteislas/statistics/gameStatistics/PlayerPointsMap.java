@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
@@ -42,6 +43,13 @@ public class PlayerPointsMap extends BaseEntity{
         ppm.setPoints(scoreboard.get(p));
         
         return ppm;
+    }
+    
+    public static List<PlayerPointsMap> getFromScoreboard(Game g, Map<Player,Integer> scoreboard){
+    	
+    	return g.getPlayers().stream()
+		.map(p->PlayerPointsMap.createFromScoreboard(g, p, scoreboard))
+		.toList();
     }
     
 }
