@@ -74,17 +74,6 @@ public class GameService {
 
         return game;
     }
-    
-   /* public Message comment(Game game, Message message, Principal principal) {
-    	message.setGame(game);
-    	Player p = this.playerRepository.findPlayerByUsername(principal.getName());
-    	message.setPlayer(p);	
-    	this.messageRepository.save(message);
-    	
-        game.getChat().add(message);
-        this.gameRepository.save(game);
-    	return message;
-    }*/
 
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
@@ -213,8 +202,15 @@ public class GameService {
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
-    	
-    	return game.getDeck().subList(calculateLower(numCards, diceRoll), calculateHigher(numCards, diceRoll) + 1);
+
+        int lowRange = calculateLower(numCards, diceRoll);
+    	int highRange = calculateHigher(numCards, diceRoll) + 1;
+
+        boolean deckSizeBigger = game.getDeck().size() > highRange;
+        //We check if there are enough cards left to fill up the choices, if there isn't we pick the rest of them.
+        highRange = deckSizeBigger ? highRange : game.getDeck().size();
+
+    	return game.getDeck().subList(lowRange, highRange);
     }
     
     Predicate<Card> isCoin = c -> c.getCardType().getId().equals(1);
