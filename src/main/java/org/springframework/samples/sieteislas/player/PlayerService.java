@@ -37,8 +37,8 @@ public class PlayerService {
         return playerRepository.findAllPlayers(pageable);
     }
 
-    public void findById(Integer playerId) {
-		this.playerRepository.findById(playerId);
+    public Player findById(Integer playerId) {
+		return this.playerRepository.findById(playerId).get();
 	}
  
 

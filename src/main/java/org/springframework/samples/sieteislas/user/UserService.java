@@ -69,7 +69,6 @@ public class UserService {
 						.collect(Collectors.toList());
     }
 
-
 	public void sendFriendRequest(User sender, User recipient) {
 		FriendRequest fr = new FriendRequest();
 		fr.setSender(sender);
@@ -122,5 +121,4 @@ public class UserService {
 		this.userRepository.save(user);
 		this.userRepository.save(friend);
     }
-
 }

@@ -75,17 +75,6 @@ public class GameService {
         return game;
     }
     
-   /* public Message comment(Game game, Message message, Principal principal) {
-    	message.setGame(game);
-    	Player p = this.playerRepository.findPlayerByUsername(principal.getName());
-    	message.setPlayer(p);	
-    	this.messageRepository.save(message);
-    	
-        game.getChat().add(message);
-        this.gameRepository.save(game);
-    	return message;
-    }*/
-
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
         for (int i=0; i < 66; i++) {
@@ -112,7 +101,6 @@ public class GameService {
         	} else {//barriles
         		card.setCardType(getCardType("rum"));
         	}
-            card.setGame(game);
             cartas.add(card);
         }
 

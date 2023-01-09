@@ -55,7 +55,25 @@
                         <spring:url value="/users/friends/remove/{friendUsername}" var="removeFriendUrl">
                             <spring:param name="friendUsername" value="${friend.username}"/>
                         </spring:url>
+                        <td width="5%">&nbsp;</td>
                         <a href="${fn:escapeXml(removeFriendUrl)}" class="btn btn-danger">Remove Friend</a>
+                        
+                        <c:if test="${!friend.player.game.equals(null) && friend.player.game.active.equals(false)}">
+                             <spring:url value="/games/gameBoard/{gameId}" var="watchGame">
+                                <spring:param name="gameId" value="${friend.player.game.id}"/>
+                            </spring:url>
+                            
+                           <c:choose>
+                               <c:when test="${not actual.game.id.equals(friend.player.game.id)}">
+                                   <a href="${fn:escapeXml(watchGame)}" class="btn btn-success">Watch Game</a>
+                               </c:when>
+                               <c:otherwise>
+                                   <a href="${fn:escapeXml(watchGame)}" class="btn btn-primary">Return To Game</a>
+                           </c:otherwise>
+                         </c:choose>
+                            
+                        </c:if>
+                        
                     </c:if>
                 </div>
         </c:forEach>
