@@ -322,6 +322,8 @@ public class GameController {
     	
     	model.put("playersRanked", playerPointsEndGame.get("players"));
     	model.put("pointsRanked", playerPointsEndGame.get("points"));
+    	
+    	gameStatisticService.save(game.getStatistics());
         
     	return VIEWS_GAMES_END;
     }

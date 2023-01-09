@@ -41,7 +41,9 @@ public class GameStatisticsService {
         Integer totalNumberGames = gameStatisticsRepository.getTotalNumberGames();
         Integer minNumberGames = min(gameStatisticsRepository.getNumberGames());
         Integer maxNumberGames = max(gameStatisticsRepository.getNumberGames());
-        Integer avgNumberGames = (int)gameStatisticsRepository.getNumberGames().stream().mapToDouble(d -> d).average().orElse(0.0);
+        Integer avgNumberGames = (int)gameStatisticsRepository.getNumberGames().stream()
+        		.mapToDouble(d -> d).average()
+        		.orElse(0.0);
         Map<String, Integer> globalNumberGamesMap = new HashMap<String, Integer>();
         globalNumberGamesMap.put("totalNumberGames", totalNumberGames);
         globalNumberGamesMap.put("minNumberGames", minNumberGames);
@@ -49,5 +51,9 @@ public class GameStatisticsService {
         globalNumberGamesMap.put("avgNumberGames", avgNumberGames);
         return globalNumberGamesMap;
     }
-
+    
+    public void save(GameStatistics stats) {
+    	gameStatisticsRepository.save(stats);
+    }
+    
 }
