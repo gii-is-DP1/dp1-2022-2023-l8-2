@@ -34,13 +34,14 @@ public class PlayerPointsMap extends BaseEntity{
     @JoinColumn(name="player")
     private Player player;
 
-    public void createFromScoreboard(Game g, Player p, Map<Player,Integer> scoreboard) {
+    public static PlayerPointsMap createFromScoreboard(Game g, Player p, Map<Player,Integer> scoreboard) {
         
     	PlayerPointsMap ppm = new PlayerPointsMap();
         ppm.setGameStatistics(g.getStatistics());
         ppm.setPlayer(p);
         ppm.setPoints(scoreboard.get(p));
         
+        return ppm;
     }
     
 }

@@ -153,4 +153,12 @@ public class PlayerPointsService {
         playerPointsEndGame.put("usernames", usernames);
         return playerPointsEndGame;
     }
+    
+    public void storeFromScoreboard(Game g, Map<Player,Integer> scoreboard) {
+    	
+    	g.getPlayers().stream()
+    		.map(p->PlayerPointsMap.createFromScoreboard(g, p, scoreboard))
+    		.forEach(ppm->playerPointsRepository.save(ppm));
+    	
+    }
 }
