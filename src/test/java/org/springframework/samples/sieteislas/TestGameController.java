@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 
 
 import org.junit.jupiter.api.Test;
@@ -57,9 +59,10 @@ public class TestGameController {
 	
 	@Test
 	public void testPostInChat() throws Exception {
-	    mockMvc.perform(get("/games/gameBoard/{gameId}", TEST_GAME_ID))
-			//.param("body", "hola"))
-	        .andExpect(status().isOk());
+	    mockMvc.perform(post("/games/gameBoard/{gameId}", TEST_GAME_ID)
+							.with(csrf())	
+							.param("body", "hola"))
+	        			.andExpect(status().isOk());
 	        //.andExpect(model().attributeExists("message"));
 	        //.andExpect(status().is3xxRedirection())
 	        //.andExpect(view().name("/games/gameBoard"));

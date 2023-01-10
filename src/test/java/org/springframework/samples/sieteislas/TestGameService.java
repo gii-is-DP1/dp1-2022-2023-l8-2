@@ -50,8 +50,10 @@ public class TestGameService {
 	void testCreateDeck() {
 		Game g1 = this.gameService.findById(1);
 		List<Card> deck = this.gameService.createDeck(g1);
-		//Map<String, Long> cardTypes = deck.stream().map(c -> c.getCardType()).collect(Collectors.groupingBy(CardType::getName, Collectors.counting()));
-		
+		Integer numCardTypes = deck.stream().map(c -> c.getCardType())
+                                        .collect(Collectors.toSet())
+                                        .size();
+        assertEquals(numCardTypes, 10);
 		assertEquals(deck.size(), 66);
 		assertEquals(deck.get(33).getGame().getId(), 1);
 		//assertEquals(deck.get(33).getCardType().getId(), 1);
