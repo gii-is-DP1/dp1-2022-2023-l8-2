@@ -179,7 +179,7 @@ public class GameController {
     public String declineInvitation(@PathVariable("invitationId") String invitationId){
         this.gameService.declineGameInvitation(invitationId);
 
-        return "redirect:/games/active";
+        return "redirect:/games/active/0";
     }
 
     @GetMapping("/start/{gameId}")
