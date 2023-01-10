@@ -1,6 +1,8 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.stereotype.Service;
@@ -44,16 +46,17 @@ public class PlayerPointsService {
     }
 
     public Collection<List<String>> getAllPlayerPointsMaps(Collection<GameStatistics> gameStatistics) {
-        Collection<List<String>> players = new ArrayList<>();
-        for (GameStatistics gm: gameStatistics) {
-            List<String> playerNested = new ArrayList<>();
-            for (Player pl: gm.getGame().getPlayers()){
-                playerNested.add(pl.getUser().getUsername());
+        Collection<List<String>> allUsernames = new ArrayList<>();
+        for (GameStatistics gm : gameStatistics) {
+            List<String> usernames = new ArrayList<>();
+            for (PlayerPointsMap ppm : gm.getPlayerPoints()) {
+                usernames.add(ppm.getPlayer().getUser().getUsername());
             }
-            players.add(playerNested);
+            allUsernames.add(usernames);
         }
-        return players;
+        return allUsernames;
     }
+
 
     public Map<String, Double> getTimePlayedUserMap(String currentUser){
         Double avgTimePlayedUser = playerPointsRepository.findAvgTimePlayedByUser(currentUser);
@@ -140,4 +143,12 @@ public class PlayerPointsService {
         return list;
     }
 
+    public Map<String, List<String>> getPlayersPointsEndGame(Integer gameId) {
+        List<String> points = playerPointsRepository.findPointsEndGameRanked(gameId).stream().map(Object::toString).collect(Collectors.toList());
+        List<String> usernames = playerPointsRepository.findUsernameEndGameRankedByPoints(gameId);
+        Map<String, List<String>> playerPointsEndGame = new HashMap<>();
+        playerPointsEndGame.put("points", points);
+        playerPointsEndGame.put("usernames", usernames);
+        return playerPointsEndGame;
+    }
 }

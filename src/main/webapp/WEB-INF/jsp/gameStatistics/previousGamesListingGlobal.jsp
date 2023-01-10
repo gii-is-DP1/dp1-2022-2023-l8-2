@@ -10,7 +10,7 @@
 
 <sieteislas:layout pageName="previousGamesGlobal">
     <h1 style="text-align: center;">PREVIOUS GAMES (GLOBALLY)</h1>
-    <table id="previousGamesGlobalTable" class="table table-striped">
+    <table id="previousGamesGlobalTable" class="table table-striped" style="justify-content: space-around;">
         <thead>
             <tr>
                 <th>Game Id</th>

@@ -22,12 +22,14 @@
                 <div class="form-group">
                     <sieteislas:inputField label="Game name" name="gameName"/>
                 </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" type="submit">Add Game</button>
                     </div>
                 </div>
             </form:form>
+
         </c:when>
 	    <c:otherwise>
             <div style="text-align:center"> 
@@ -38,6 +40,6 @@
                     </a>
             </div>
         </c:otherwise>
-    </c:choose>
+    </c:choose> 
     
 </sieteislas:layout>

@@ -24,7 +24,12 @@
                         <img src="${player.user.profileImage}" alt="profileImage" style="height: 50px; width: 50px;" />
                     </td>
                     <td>
-                        <c:out value="${player.user.username}" />
+                        <spring:url value="/users/profile/{username}" var="viewProfileUrl">
+                                <spring:param name="username" value="${player.user.username}"/>
+                        </spring:url>
+                        <a href="${fn:escapeXml(viewProfileUrl)}">
+                            <c:out value="${player.user.username}" />
+                        </a>
                     </td>
                     <td>
                         <c:if test="${!friendOrSentRequest.contains(player.user.username) && !principalName.equals(player.user.username)}">

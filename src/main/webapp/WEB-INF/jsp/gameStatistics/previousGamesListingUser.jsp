@@ -18,7 +18,7 @@
                 <th>Game Creator</th>
                 <th>Players</th>
                 <th>Duration (in sec)</th>
-                <th>Gained Points</th>
+                <th>Your Gained Points</th>
             </tr>
             </thead>
             <tbody>
