@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.sieteislas.game.Game;
@@ -28,13 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Sql(scripts = "/test.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class TestDice {
 	
-	@Mock
+	@Autowired
 	private Game game;
 	
-	@Mock
-	private GameRepository gameRepo;
+	/*@Autowired
+	private GameRepository gameRepo;*/
 	
-	@InjectMocks
+	@Autowired
 	private GameService gameService;
 	
 	@Test
@@ -44,6 +45,7 @@ public class TestDice {
 	
 	@Transactional
 	public void testDiceRolls() throws Exception {
+		
 		List<Integer> diceRolls = new ArrayList<>();
 		
 		for(int i = 0; i < 99; i++) {
@@ -51,7 +53,7 @@ public class TestDice {
 			gameService.rollDice(game);
 			diceRolls.add(game.getDiceRoll());
 			
-			//gameService.toggleHasRolledDice(game, false);
+			gameService.passTurn(game);
 		}
 		
 		Map<Integer, Long> mem = diceRolls.stream()
