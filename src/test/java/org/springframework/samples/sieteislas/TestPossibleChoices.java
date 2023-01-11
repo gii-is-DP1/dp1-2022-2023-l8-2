@@ -37,12 +37,12 @@ public class TestPossibleChoices {
 	private PlayerRepository playerRepo;
 	
 	@Test
-	public void testGetPossibleChoices() throws Exception {
+	public void testGetPossibleChoices() {
 		getPossibleChoices();
 	}
 	
 	@Transactional
-	private void getPossibleChoices() throws Exception {
+	private void getPossibleChoices() {
 		
 		Game game = gameRepo.findById(1).get();
 		
