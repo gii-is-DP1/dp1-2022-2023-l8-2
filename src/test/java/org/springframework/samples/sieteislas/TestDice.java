@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +11,6 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,10 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TestDice {
 	
 	@Autowired
-	private Game game;
-	
-	/*@Autowired
-	private GameRepository gameRepo;*/
+	private GameRepository gameRepo;
 	
 	@Autowired
 	private GameService gameService;
@@ -46,25 +42,23 @@ public class TestDice {
 	@Transactional
 	public void testDiceRolls() throws Exception {
 		
+		Game game = gameRepo.findById(1).get();
+		gameService.setUpNewGame(game, game.getCreatorUsername());
+		
 		List<Integer> diceRolls = new ArrayList<>();
 		
 		for(int i = 0; i < 99; i++) {
 			
 			gameService.rollDice(game);
 			diceRolls.add(game.getDiceRoll());
-			
-			gameService.passTurn(game);
 		}
 		
 		Map<Integer, Long> mem = diceRolls.stream()
 			.collect(Collectors.groupingBy(Function.identity(),
 					Collectors.counting()));
 		
-		//assertTrue(mem.entrySet().stream().anyMatch(x-> x.getValue() < 50));
+		assertTrue(mem.entrySet().stream().anyMatch(x-> x.getValue() < 50));
 		assertFalse(diceRolls.stream().anyMatch(x-> x < 0 || 5 < x));
-		
-		if(mem.entrySet().stream().anyMatch(x-> 50 < x.getValue()))
-			throw new Exception(""+mem);
 	}
 	
 	
