@@ -48,7 +48,7 @@ public class TestPossibleChoices {
 		gamePlayers.add(player);
 		
 		game.setPlayers(gamePlayers);
-		game.setPlayerTurn(game.getPlayers().indexOf(player));
+		game.setPlayerTurn(game.getPlayers().indexOf(player) - 1);
 		
 		game.setDiceRoll(3);
 		player.setCards(List.of(new Card(), new Card()));
