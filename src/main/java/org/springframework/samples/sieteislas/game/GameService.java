@@ -74,7 +74,11 @@ public class GameService {
 
         return game;
     }
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> 4a219e9224ab888c6ce93437b2a7e3cd8435458e
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
         for (int i=0; i < 66; i++) {
@@ -201,8 +205,15 @@ public class GameService {
     	
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
-    	
-    	return game.getDeck().subList(calculateLower(numCards, diceRoll), calculateHigher(numCards, diceRoll) + 1);
+
+        int lowRange = calculateLower(numCards, diceRoll);
+    	int highRange = calculateHigher(numCards, diceRoll) + 1;
+
+        boolean deckSizeBigger = game.getDeck().size() > highRange;
+        //We check if there are enough cards left to fill up the choices, if there isn't we pick the rest of them.
+        highRange = deckSizeBigger ? highRange : game.getDeck().size();
+
+    	return game.getDeck().subList(lowRange, highRange);
     }
     
     Predicate<Card> isCoin = c -> c.getCardType().getId().equals(1);

@@ -313,7 +313,7 @@ public class GameController {
     
     @GetMapping("/gameBoard/{gameId}/end")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
-    	  Game game = gameService.findById(Integer.valueOf(id));
+    	Game game = gameService.findById(Integer.valueOf(id));
         model.put("playerPointsEndGame", playerPointsService.getPlayersPointsEndGame(game.getId()));
         return "redirect:/games/gameBoard/" + id + "/end";
     }
