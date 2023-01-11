@@ -186,7 +186,7 @@ public class GameController {
     public String declineInvitation(@PathVariable("invitationId") String invitationId){
         this.gameService.declineGameInvitation(invitationId);
 
-        return "redirect:/games/active";
+        return "redirect:/games/active/0";
     }
 
     @GetMapping("/start/{gameId}")
@@ -213,7 +213,7 @@ public class GameController {
     }
 
     @GetMapping("/gameBoard/{gameId}")
-    public String renderBoard(@PathVariable("gameId") String id, Principal principal, ModelMap model, HttpServletResponse response) {
+    public String renderBoard(@PathVariable("gameId") String id, Principal principal, Map<String, Object>  model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
 

@@ -74,7 +74,11 @@ public class GameService {
 
         return game;
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 4a219e9224ab888c6ce93437b2a7e3cd8435458e
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
         for (int i=0; i < 66; i++) {
@@ -101,7 +105,6 @@ public class GameService {
         	} else {//barriles
         		card.setCardType(getCardType("rum"));
         	}
-            card.setGame(game);
             cartas.add(card);
         }
 
