@@ -24,9 +24,12 @@ import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsRepository;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 @Service
 public class GameService {
@@ -37,10 +40,11 @@ public class GameService {
     private final UserRepository userRepository;
     private final CardTypeRepository cardTypeRepository;
     private final CardRepository cardRepository;
+    private final PlayerPointsService playerPointsService;
 
     @Autowired
     public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, GameStatisticsRepository gameStatisticsRepository,PlayerRepository playerRepository, 
-        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
+        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository, PlayerPointsService playerPointsService){
         this.gameRepository = gameRepository;
         this.gameStatisticsRepository = gameStatisticsRepository;
         this.gameInvitationRepository = gameInvitationRepository;
@@ -48,6 +52,7 @@ public class GameService {
         this.userRepository = userRepository;
         this.cardTypeRepository = cardTypeRepository;
         this.cardRepository = cardRepository;
+        this.playerPointsService = playerPointsService;
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
@@ -74,11 +79,8 @@ public class GameService {
 
         return game;
     }
-<<<<<<< HEAD
 
-=======
     
->>>>>>> 4a219e9224ab888c6ce93437b2a7e3cd8435458e
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
         for (int i=0; i < 66; i++) {
@@ -215,106 +217,6 @@ public class GameService {
 
     	return game.getDeck().subList(lowRange, highRange);
     }
-    
-    Predicate<Card> isCoin = c -> c.getCardType().getId().equals(1);
-    
-    Function<List<Card>,Integer> numCoins = l -> (int) l.stream()
-    		.filter(isCoin)
-    		.count();
-    
-    Function<List<Card>,Integer> points = l -> {
-    	
-    	Integer nC = numCoins.apply(l);
-    	List<Integer> pointsPerNumOfSets = List.of(0,1,3,7,13,21,30,40,50,60);
-    	
-    	Integer numOfSets = l.stream()
-    			.filter(isCoin.negate())
-    			.map(c->c.getCardType().getName())
-    			.collect(Collectors.toSet())
-    			.size();
-    	
-    	return nC + pointsPerNumOfSets.get(numOfSets);
-    };
-    
-    
-    public Map<Player,Integer> scoreboard(Game g) {
-    	
-    	Map<Player,Integer> scoreboard = new HashMap<>();
-    	
-    	for(Player p:g.getPlayers()) {
-    		
-    		Integer pts = points.apply(p.getCards());
-    		scoreboard.put(p, pts);
-    	}
-    	
-    	return scoreboard;
-    }
-    
-    private Player resolveDraw(List<Player> possibleWinners) {
-    	
-    	Player winner = null;
-    	
-    	Integer maxCoins = Collections.max(possibleWinners.stream()
-				.map(p->numCoins.apply(p.getCards()))
-                .collect(Collectors.toList()));
-		
-		possibleWinners = possibleWinners.stream()
-				.filter(p->numCoins.apply(p.getCards()).equals(maxCoins))
-				.collect(Collectors.toList());
-		
-		if(possibleWinners.size() == 1)
-			winner = possibleWinners.get(0);
-		
-		else {
-			
-			Integer random = (int) Math.round(Math.random() *
-					(possibleWinners.size() - 1));
-			winner = possibleWinners.get(random);
-		}
-		
-		return winner;
-    }
-    
-    public Player winner(Game g) {
-    	
-    	Player winner = null;
-    	
-    	Map<Player,Integer> scoreboard = scoreboard(g);
-    	
-    	Integer biggestMark = scoreboard.values().stream()
-    			.max(Comparator.naturalOrder())
-    			.get();
-    	
-    	List<Player> possibleWinners = scoreboard.entrySet().stream()
-    			.filter(x->x.getValue().equals(biggestMark))
-    			.map(Map.Entry::getKey)
-    			.collect(Collectors.toList());
-    	
-    	if(possibleWinners.size() == 1)
-    		winner = possibleWinners.get(0);
-    	else
-    		winner = resolveDraw(possibleWinners);
-    	
-    	return winner;
-    }
-    
-    public void gameEnd(Game g) {
-    	
-    	Map<Player,Integer> scoreboard = scoreboard(g);
-    	Player winner = winner(g);
-    	
-    	GameStatistics stats = new GameStatistics();
-    	
-    	/* stats.setWinner(winner); */
-    	stats.setPoints(scoreboard.get(winner));
-    	
-    	Integer totalPoints = scoreboard.values().stream()
-    			.reduce(0, (x,y) -> x+y);
-    	
-    	//stats.setTotalPoints(totalPoints);
-    	
-    	this.gameStatisticsRepository.save(stats);
-    }
 
     @Transactional
     public void selectNewCreator(Game game) {
@@ -367,6 +269,14 @@ public class GameService {
         this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
     }
 
+    public List<PlayerPointsMap> endGame(String id, ModelMap model, Principal principal) {
+        Game game = findById(Integer.valueOf(id));
+        
+        List<PlayerPointsMap> playerPointMaps = this.playerPointsService.calculatePointsOfPlayersInGame(game);
+
+        return playerPointMaps;
+    }
+
     public void invitePlayerToGame(String hostUsername, String invitedUsername, String gameId) {
         User host = this.userRepository.findById(hostUsername).get();
         User guest = this.userRepository.findById(invitedUsername).get();
@@ -405,5 +315,10 @@ public class GameService {
         return this.gameInvitationRepository.findAllByUser(name);
     }
 
+    public void setFinishTimeAndStatistics(Game game) {
+        game.setStatistics(GameStatistics.createDefault(game));
+        game.setEnd(LocalDateTime.now());  
+        this.gameRepository.save(game);   
+    }
 
 }

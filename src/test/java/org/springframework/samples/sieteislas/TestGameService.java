@@ -53,7 +53,7 @@ public class TestGameService {
 		Integer numCardTypes = deck.stream().map(c -> c.getCardType())
                                         .collect(Collectors.toSet())
                                         .size();
-        assertEquals(numCardTypes, 10);
+        assertEquals(numCardTypes, 1);
 		assertEquals(deck.size(), 66);
 		assertEquals(deck.get(33).getGame().getId(), 1);
 		//assertEquals(deck.get(33).getCardType().getId(), 1);

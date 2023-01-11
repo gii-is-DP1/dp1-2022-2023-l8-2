@@ -23,6 +23,15 @@ INSERT INTO authorities(id,username,authority) VALUES (8,'joscasvaz','owner');
 INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('thokriale','Thomas','Kristan','thokriale',TRUE, 'https://thumbs.dreamstime.com/b/foto-de-perfil-un-empresario-montado-en-una-tabla-surf-aislado-sobre-fondo-blanco-216887924.jpg');
 INSERT INTO authorities(id,username,authority) VALUES (9,'thokriale','owner');
 
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('larry11','Larry','Lumbard','larry11',TRUE, 'https://static1.personality-database.com/profile_images/6ecab6c1f1b84f5da1ab8f23750a0963.png');
+INSERT INTO authorities(id,username,authority) VALUES (10,'larry11','owner');
+
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('pruebas11','Pruebas','11','pruebas11',TRUE, 'https://www.digitallearning.es/wp-content/uploads/2017/03/Test_cuadrado.jpg');
+INSERT INTO authorities(id,username,authority) VALUES (11,'pruebas11','owner');
+
+INSERT INTO users(username,first_name,last_name,password,enabled, profile_image) VALUES ('chrisPbacon','Chris','Pbacon','chrisPbacon',TRUE, 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Bacon_%281%29.jpg/1200px-Bacon_%281%29.jpg');
+INSERT INTO authorities(id,username,authority) VALUES (12,'chrisPbacon','owner');
+
 INSERT INTO metrics(id, name) VALUES (1, 'gamesPlayed');
 INSERT INTO metrics(id, name) VALUES (2, 'gamesWon');
 INSERT INTO metrics(id, name) VALUES (3, 'points');
@@ -56,6 +65,9 @@ INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 1);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
 INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 5);
+INSERT INTO players(id, user, game_id) VALUES (8, 'chrisPbacon', 2);
+INSERT INTO players(id, user, game_id) VALUES (9, 'larry11', 2);
+INSERT INTO players(id, user, game_id) VALUES (10, 'pruebas11', 2);
 
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (1, 1, 140, 1);
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (2, 1, 95, 2);

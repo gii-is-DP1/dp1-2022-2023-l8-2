@@ -2,8 +2,6 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +17,7 @@ import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -220,7 +219,7 @@ public class GameController {
         String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName());
         boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
 
-        if(!isCurrentPlayer) response.addHeader("Refresh", "2");
+        if(!isCurrentPlayer) response.addHeader("Refresh", "4"); //Refrescar cada 4 seg.
 
         User u = this.userService.findUser(principal.getName()).get();
         Player principalPlayer = this.playerService.findByUser(u);
@@ -240,7 +239,7 @@ public class GameController {
     
     @PostMapping(value = "/gameBoard/{gameId}")
     public String postInChat(@PathVariable("gameId") String id, Principal principal, 
-    		@ModelAttribute("message") Message message, ModelMap model){
+    		                    @ModelAttribute("message") Message message, ModelMap model){
     	if(message.getBody().isEmpty() || message.getBody().equals(null)) {
     		model.addAttribute("message", new Message());
     	} else {
@@ -284,11 +283,7 @@ public class GameController {
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
         if(cardsToPay <= 0){
-        	
-        	if(game.getDeck().size() < 6)
-            	return endGame(id, model, principal);
-        	else
-        		this.gameService.passTurn(game);
+        	this.gameService.passTurn(game);
         }
 
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
@@ -305,16 +300,22 @@ public class GameController {
         int leftToPay = this.gameService.decrementNumCardsToPay(game);
 
         if(leftToPay <= 0){
+            if(game.getDeck().size() < 6){
+            	return "redirect:/gameBoard/{gameId}/end";
+        	}
             this.gameService.passTurn(game);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
-    
+
     @GetMapping("/gameBoard/{gameId}/end")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
     	Game game = gameService.findById(Integer.valueOf(id));
-        model.put("playerPointsEndGame", playerPointsService.getPlayersPointsEndGame(game.getId()));
+        this.gameService.setFinishTimeAndStatistics(game);
+        List<PlayerPointsMap> playerPoints = this.playerPointsService.calculatePointsOfPlayersInGame(game);
+        
+        model.put("playerPointsEndGame", playerPoints);
         return "redirect:/games/gameBoard/" + id + "/end";
     }
 
