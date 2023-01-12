@@ -35,12 +35,12 @@ public class TestDice {
 	private GameService gameService;
 	
 	@Test
-	public void testDice() throws Exception {
+	public void testDice() {
 		testDiceRolls();
 	}
 	
 	@Transactional
-	public void testDiceRolls() throws Exception {
+	public void testDiceRolls() {
 		
 		Game game = gameRepo.findById(1).get();
 		gameService.setUpNewGame(game, game.getCreatorUsername());
