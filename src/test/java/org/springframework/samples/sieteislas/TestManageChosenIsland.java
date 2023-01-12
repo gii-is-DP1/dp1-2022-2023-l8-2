@@ -1,13 +1,9 @@
 package org.springframework.samples.sieteislas;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,7 +37,7 @@ import org.springframework.test.web.servlet.MockMvc;
     excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
     excludeAutoConfiguration= SecurityConfiguration.class)
 @WithMockUser(roles="ADMIN")
-public class TestDiscardCard {
+public class TestManageChosenIsland {
 	
 	@MockBean
 	private GameService gameService;
@@ -101,49 +97,23 @@ public class TestDiscardCard {
 		cards.addAll(List.of(card1,card2));
 		
 		player1.setCards(cards);
+		game.setDeck(cards);
 		
 		Mockito.when(gameService.findById(0)).thenReturn(game);
 	}
 	
     @Test
-    public void testDiscardCard() throws Exception {
+    public void testChooseIsland() throws Exception {
         
     	Game game = gameService.findById(0);
-    	//game.setPlayerTurn(0);
-    	
     	Player player = game.getPlayers().get(0);
-    	List<Card> cards = player.getCards();
     	
-    	Integer idCardToDiscard = cards.get(0).getId();
-    	mvc.perform(get(String.format("/gameBoard/%s/discard/%s",
-				game.getId().toString(), idCardToDiscard.toString())));
+    	game.setPlayerTurn(0);
+    	Integer idCardSelected = 0;
     	
-    	//assertTrue(successfullyDiscarded(cards, player.getCards(), idCardToDiscard));
-    	if(!successfullyDiscarded(cards, player.getCards(), idCardToDiscard))
-    		throw new Exception("" + String.format("C: %s - PC: %s",
-    				cards.stream()
-    				.map(c->c.getId().toString())
-    				.toList(),
-    				player.getCards().stream()
-    				.map(c->c.getId().toString())
-    				.toList()));
+    	mvc.perform(get(String.format("/gameBoard/{gameId}/chooseCard/{cardId}",
+				game.getId().toString(), idCardSelected.toString())));
+    	
     }
-    
-    private Boolean successfullyDiscarded(List<Card> cardsBefore,
-			List<Card> cardsAfter, Integer cardToDiscardId) {
-		
-		Map<Integer, Long> countBefore = cardsBefore.stream()
-				.map(Card::getId)
-				.collect(Collectors.groupingBy(Function.identity(),
-						Collectors.counting()));
-		
-		Map<Integer, Long> countAfter = cardsAfter.stream()
-				.map(Card::getId)
-				.collect(Collectors.groupingBy(Function.identity(),
-						Collectors.counting()));
-		
-		return countBefore.get(cardToDiscardId) - 1
-				== countAfter.get(cardToDiscardId);
-	}
 	
 }
