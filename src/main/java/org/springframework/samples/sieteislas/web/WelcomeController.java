@@ -37,7 +37,7 @@ public class WelcomeController {
 
 		Person thomas = new Person();
 		thomas.setFirstName("Thomas");
-		thomas.setLastName(" Österreich");
+		thomas.setLastName(" Kristan");
 
 		List<Person> people = List.of(juan,jose,maria,victoria,pablo,thomas);
 		model.put("people", people);
