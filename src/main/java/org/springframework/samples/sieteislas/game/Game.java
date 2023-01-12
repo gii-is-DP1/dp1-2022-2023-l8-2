@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.game;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -81,5 +82,26 @@ public class Game extends BaseEntity{
     @Size(min=1, max=4)
     @OneToMany(mappedBy = "game", cascade=CascadeType.PERSIST)
     private List<Player> players;
+    
+    public static Game createDefault() {
+    	
+    	Game game = new Game();
+    	
+    	game.setActive(true);
+    	game.setChat(new ArrayList<>());
+    	game.setCreatorUsername("defaultPlayer");
+    	game.setDeck(new ArrayList<>());
+    	game.setDiceRoll(0);
+    	game.setGameName("defaultGame");
+    	game.setHasRolledDice(false);
+    	game.setId(0);
+    	game.setNumCardsToPay(0);
+    	game.setPlayers(new ArrayList<>());
+    	game.setPlayerTurn(0);
+    	game.setStart(LocalDateTime.now());
+    	game.setStatistics(new GameStatistics());
+    	
+    	return game;
+    }
 
 }

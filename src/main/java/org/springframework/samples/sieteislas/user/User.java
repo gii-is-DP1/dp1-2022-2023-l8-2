@@ -1,5 +1,7 @@
 package org.springframework.samples.sieteislas.user;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
@@ -62,5 +64,23 @@ public class User{
 				inverseJoinColumns = @JoinColumn(name="user_id"))
 	private List<User> friendOf;
 
+	
+	public static User createDefault() {
+		
+		User user = new User();
+		
+		user.setAuthorities(new HashSet<>());
+		user.setEnabled(true);
+		user.setFirstName("Default");
+		user.setLastName("Default");
+		user.setFriendOf(new ArrayList<>());
+		user.setFriends(new ArrayList<>());
+		user.setPassword("default");
+		user.setPlayer(null);
+		user.setProfileImage("");
+		user.setUsername("defaultUsername");
+		
+		return user;
+	}
 
 }
