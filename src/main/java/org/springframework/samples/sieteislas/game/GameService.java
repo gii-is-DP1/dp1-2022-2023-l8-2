@@ -39,7 +39,7 @@ public class GameService {
     private final CardRepository cardRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, GameStatisticsRepository gameStatisticsRepository,PlayerRepository playerRepository, 
+    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, GameStatisticsRepository gameStatisticsRepository,PlayerRepository playerRepository,
         UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
         this.gameRepository = gameRepository;
         this.gameStatisticsRepository = gameStatisticsRepository;
@@ -52,7 +52,7 @@ public class GameService {
 
     public Game setUpNewGame(Game game, String creatorName) {
     	List<Message> messages = new ArrayList<Message>();
-    	
+
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
@@ -74,11 +74,7 @@ public class GameService {
 
         return game;
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 4a219e9224ab888c6ce93437b2a7e3cd8435458e
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
         for (int i=0; i < 66; i++) {
@@ -143,7 +139,7 @@ public class GameService {
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(null);
         //game.setActive(false);
-        this.playerRepository.save(p);  
+        this.playerRepository.save(p);
     }
 
     public void delete(Game game) {
@@ -179,30 +175,30 @@ public class GameService {
     	User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(game);
-        this.playerRepository.save(p);  
+        this.playerRepository.save(p);
     }
-    
+
     public void rollDice(Game game) {
     	Double rand = Math.random() * 5;
     	Long num = Math.round(rand);
-    	
+
     	game.setDiceRoll(num.intValue());
     	gameRepository.save(game);
     }
-    
+
     private int calculateHigher(Integer numCards, int diceRoll) {
     	int res = numCards + diceRoll;
     	return (5 < res) ? 5 : res;
     }
-    
+
     private int calculateLower(Integer numCards, int diceRoll) {
     	int res = diceRoll - numCards;
     	return (res < 0) ? 0 : res;
     }
-    
+
     public List<Card> possibleChoices(Game game){
     	int diceRoll = game.getDiceRoll();
-    	
+
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
 
@@ -215,104 +211,104 @@ public class GameService {
 
     	return game.getDeck().subList(lowRange, highRange);
     }
-    
+
     Predicate<Card> isCoin = c -> c.getCardType().getId().equals(1);
-    
+
     Function<List<Card>,Integer> numCoins = l -> (int) l.stream()
     		.filter(isCoin)
     		.count();
-    
+
     Function<List<Card>,Integer> points = l -> {
-    	
+
     	Integer nC = numCoins.apply(l);
     	List<Integer> pointsPerNumOfSets = List.of(0,1,3,7,13,21,30,40,50,60);
-    	
+
     	Integer numOfSets = l.stream()
     			.filter(isCoin.negate())
     			.map(c->c.getCardType().getName())
     			.collect(Collectors.toSet())
     			.size();
-    	
+
     	return nC + pointsPerNumOfSets.get(numOfSets);
     };
-    
-    
+
+
     public Map<Player,Integer> scoreboard(Game g) {
-    	
+
     	Map<Player,Integer> scoreboard = new HashMap<>();
-    	
+
     	for(Player p:g.getPlayers()) {
-    		
+
     		Integer pts = points.apply(p.getCards());
     		scoreboard.put(p, pts);
     	}
-    	
+
     	return scoreboard;
     }
-    
+
     private Player resolveDraw(List<Player> possibleWinners) {
-    	
+
     	Player winner = null;
-    	
+
     	Integer maxCoins = Collections.max(possibleWinners.stream()
 				.map(p->numCoins.apply(p.getCards()))
                 .collect(Collectors.toList()));
-		
+
 		possibleWinners = possibleWinners.stream()
 				.filter(p->numCoins.apply(p.getCards()).equals(maxCoins))
 				.collect(Collectors.toList());
-		
+
 		if(possibleWinners.size() == 1)
 			winner = possibleWinners.get(0);
-		
+
 		else {
-			
+
 			Integer random = (int) Math.round(Math.random() *
 					(possibleWinners.size() - 1));
 			winner = possibleWinners.get(random);
 		}
-		
+
 		return winner;
     }
-    
+
     public Player winner(Game g) {
-    	
+
     	Player winner = null;
-    	
+
     	Map<Player,Integer> scoreboard = scoreboard(g);
-    	
+
     	Integer biggestMark = scoreboard.values().stream()
     			.max(Comparator.naturalOrder())
     			.get();
-    	
+
     	List<Player> possibleWinners = scoreboard.entrySet().stream()
     			.filter(x->x.getValue().equals(biggestMark))
     			.map(Map.Entry::getKey)
     			.collect(Collectors.toList());
-    	
+
     	if(possibleWinners.size() == 1)
     		winner = possibleWinners.get(0);
     	else
     		winner = resolveDraw(possibleWinners);
-    	
+
     	return winner;
     }
-    
+
     public void gameEnd(Game g) {
-    	
+
     	Map<Player,Integer> scoreboard = scoreboard(g);
     	Player winner = winner(g);
-    	
+
     	GameStatistics stats = new GameStatistics();
-    	
+
     	/* stats.setWinner(winner); */
     	stats.setPoints(scoreboard.get(winner));
-    	
+
     	Integer totalPoints = scoreboard.values().stream()
     			.reduce(0, (x,y) -> x+y);
-    	
+
     	//stats.setTotalPoints(totalPoints);
-    	
+
     	this.gameStatisticsRepository.save(stats);
     }
 
@@ -326,7 +322,7 @@ public class GameService {
     public void toggleActive(Game game, boolean b) {
         this.gameRepository.toggleActive(game.getId(), b);
     }
-    
+
 	public void toggleHasRolledDice(Game game, Boolean b) {
 		game.setHasRolledDice(b);
     	gameRepository.save(game);
@@ -339,7 +335,7 @@ public class GameService {
         int toPay = Math.abs(rolledIsland-chosenIsland);
         game.setNumCardsToPay(toPay);
     	gameRepository.save(game);
-        
+
         return Math.abs(rolledIsland-chosenIsland);
     }
 
@@ -363,7 +359,7 @@ public class GameService {
         int currentPlayer = game.getPlayerTurn();
         int numPlayers = game.getPlayers().size();
         int nextPlayer = (currentPlayer+1) % numPlayers;
-        
+
         this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
     }
 
@@ -371,7 +367,7 @@ public class GameService {
         User host = this.userRepository.findById(hostUsername).get();
         User guest = this.userRepository.findById(invitedUsername).get();
         Game game = this.gameRepository.findById(Integer.valueOf(gameId)).get();
-        
+
         GameInvitation invitation = new GameInvitation();
         invitation.setGame(game);
         invitation.setHost(host);
@@ -398,7 +394,7 @@ public class GameService {
 
             return game.getId();
         }
-        
+
     }
 
     public List<GameInvitation> getInvitationsOfUser(String name) {
