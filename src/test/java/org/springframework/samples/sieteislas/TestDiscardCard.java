@@ -1,107 +1,133 @@
 package org.springframework.samples.sieteislas;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.sieteislas.card.Card;
-import org.springframework.samples.sieteislas.card.CardRepository;
+import org.springframework.samples.sieteislas.card.CardService;
+import org.springframework.samples.sieteislas.configuration.SecurityConfiguration;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.game.GameController;
-import org.springframework.samples.sieteislas.game.GameRepository;
 import org.springframework.samples.sieteislas.game.GameService;
+import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
-import org.springframework.samples.sieteislas.player.PlayerRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
+import org.springframework.samples.sieteislas.player.PlayerService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
+import org.springframework.samples.sieteislas.user.User;
+import org.springframework.samples.sieteislas.user.UserService;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
-@ExtendWith(MockitoExtension.class)
-@DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
-@Transactional
-@Sql(scripts = "/test.sql" ,executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(value = GameController.class,
+    excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class),
+    excludeAutoConfiguration= SecurityConfiguration.class)
+@WithMockUser(roles="ADMIN")
 public class TestDiscardCard {
 	
-	@Autowired
-	private GameRepository gameRepo;
-	
-	@Autowired
+	@MockBean
 	private GameService gameService;
 	
+	@MockBean
+	private GameStatisticsService gameStatisticService;
+	
+	@MockBean
+	private PlayerService playerService;
+	
+	@MockBean
+	private UserService userService;
+	
+	@MockBean
+	private CardService cardService;
+	
+	@MockBean
+	private MessageService messageService;
+	
+	@MockBean
+	private PlayerPointsService playerPointsService;
+    
 	@Autowired
-	private PlayerRepository playerRepo;
+    MockMvc mvc;
 	
-	@Autowired
-	private CardRepository cardRepo;
-	
-	@Autowired
-	private GameController gameController;
-	
-	@Autowired
-	private ModelMap model;
-	
-	@Autowired
-	private Principal principal;
-	
-	@Test
-	public void testDiscardCard() {
-		getPossibleChoices();
-	}
-	
-	@Transactional
-	private void getPossibleChoices() {
+	@BeforeEach
+	public void configureMock() {
 		
-		Game game = gameRepo.findById(1).get();
+		User user1 = User.createDefault();
+		User user2 = User.createDefault();
 		
-		Player player1 = playerRepo.findById(1).get();
-		Player player2 = playerRepo.findById(2).get();
+		user2.setUsername("defaultUsername2");
+		
+		Player player1 = Player.createDefault();
+		Player player2 = Player.createDefault();
+		
+		player1.setUser(user1);
+		player2.setUser(user2);
+		
+		user1.setPlayer(player1);
+		user2.setPlayer(player2);
+		
+		Game game = Game.createDefault();
+		
+		player1.setGame(game);
+		player2.setGame(game);
 		
 		List<Player> players = new ArrayList<>();
-		players.add(player1); players.add(player2);
+		players.addAll(List.of(player1,player2));
 		
-		game.setCreatorUsername(player1.getUser().getUsername());
 		game.setPlayers(players);
 		
-		gameService.createDeck(game);
-		
-		game.setPlayerTurn(0);
-		game.setDiceRoll(3);
-		
-		Boolean successfullyDiscarded = setPlayerCards(game, player2);
-		
-		assertTrue(successfullyDiscarded);
-	}
-	
-	private Boolean setPlayerCards(Game game, Player p) {
+		Card card1 = Card.createDefault();
+		Card card2 = Card.createDefault();
 		
 		List<Card> cards = new ArrayList<>();
-		cardRepo.findAll().iterator().forEachRemaining(c->cards.add(c));
+		cards.addAll(List.of(card1,card2));
 		
-		List<Card> playerCards = cards.subList(0, 3);
+		player1.setCards(cards);
 		
-		p.setCards(playerCards);
-		Integer idCardToDiscard = p.getCards().get(0).getId();
-		
-		gameController.discardCard(game.getId().toString(),
-				idCardToDiscard.toString(), model, principal);
-		
-		return successfullyDiscarded(playerCards, p.getCards(), idCardToDiscard);
+		Mockito.when(gameService.findById(0)).thenReturn(game);
 	}
 	
-	private Boolean successfullyDiscarded(List<Card> cardsBefore,
+    @Test
+    public void testDiscardCard() throws Exception {
+        
+    	Game game = gameService.findById(0);
+    	Player player = game.getPlayers().get(0);
+    	List<Card> cards = player.getCards();
+    	
+    	Integer idCardToDiscard = cards.get(0).getId();
+    	mvc.perform(get(String.format("/gameBoard/%s/discard/%s",
+				game.getId().toString(), idCardToDiscard.toString())));
+    	
+    	//assertTrue(successfullyDiscarded(cards, player.getCards(), idCardToDiscard));
+    	if(!successfullyDiscarded(cards, player.getCards(), idCardToDiscard))
+    		throw new Exception("" + String.format("C: %s - PC: %s",
+    				cards.stream()
+    				.map(c->c.getId().toString())
+    				.toList(),
+    				player.getCards().stream()
+    				.map(c->c.getId().toString())
+    				.toList()));
+    }
+    
+    private Boolean successfullyDiscarded(List<Card> cardsBefore,
 			List<Card> cardsAfter, Integer cardToDiscardId) {
 		
 		Map<Integer, Long> countBefore = cardsBefore.stream()
