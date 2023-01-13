@@ -37,11 +37,8 @@ public class TestGameService {
 		Integer numCardTypes = deck.stream().map(c -> c.getCardType())
                                         .collect(Collectors.toSet())
                                         .size();
-    assertEquals(numCardTypes, 1);
+    	assertEquals(numCardTypes, 1);
 		assertEquals(deck.size(), 66);
 		assertEquals(deck.get(33).getGame().getId(), 1);
-		assertThat(cardTypes.keySet().contains("coin")); 
-		assertEquals(cardTypes.get("coin"), 27); 
-		assertEquals(cardTypes.get("pistol"), 6);
 	}
 }

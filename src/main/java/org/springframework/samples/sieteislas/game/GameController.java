@@ -41,7 +41,6 @@ public class GameController {
     private static final String VIEWS_GAMES_INVITE = "games/invitation";
 
     private GameService gameService;
-    private GameStatisticsService gameStatisticService;
     private PlayerService playerService;
     private UserService userService;
     private CardService cardService;
@@ -50,12 +49,10 @@ public class GameController {
 
     @Autowired
     public GameController(GameService gameService, PlayerService playerService, UserService userService,
-                          GameStatisticsService gameStatisticService, CardService cardService,
-                          MessageService messageService, PlayerPointsService playerPointsService){
+                         CardService cardService, MessageService messageService, PlayerPointsService playerPointsService){
         this.gameService = gameService;
         this.playerService = playerService;
         this.userService = userService;
-        this.gameStatisticService = gameStatisticService;
         this.cardService = cardService;
         this.messageService = messageService;
         this.playerPointsService = playerPointsService;

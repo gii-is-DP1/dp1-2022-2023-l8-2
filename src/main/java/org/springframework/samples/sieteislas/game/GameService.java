@@ -1,16 +1,9 @@
 package org.springframework.samples.sieteislas.game;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,36 +16,28 @@ import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
-import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsRepository;
-import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
-import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 @Service
 public class GameService {
     private final GameRepository gameRepository;
-    private final GameStatisticsRepository gameStatisticsRepository;
     private final GameInvitationRepository gameInvitationRepository;
     private final PlayerRepository playerRepository;
     private final UserRepository userRepository;
     private final CardTypeRepository cardTypeRepository;
     private final CardRepository cardRepository;
-    private final PlayerPointsService playerPointsService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, GameStatisticsRepository gameStatisticsRepository,PlayerRepository playerRepository, 
-        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository, PlayerPointsService playerPointsService){
+    public GameService(GameRepository gameRepository, GameInvitationRepository gameInvitationRepository, PlayerRepository playerRepository, 
+        UserRepository userRepository, CardTypeRepository cardTypeRepository, CardRepository cardRepository){
         this.gameRepository = gameRepository;
-        this.gameStatisticsRepository = gameStatisticsRepository;
         this.gameInvitationRepository = gameInvitationRepository;
         this.playerRepository = playerRepository;
         this.userRepository = userRepository;
         this.cardTypeRepository = cardTypeRepository;
         this.cardRepository = cardRepository;
-        this.playerPointsService = playerPointsService;
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
