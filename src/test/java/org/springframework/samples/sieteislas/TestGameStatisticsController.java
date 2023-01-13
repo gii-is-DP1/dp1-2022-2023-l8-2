@@ -51,7 +51,6 @@ public class TestGameStatisticsController {
             .andExpect(view().name("/gameStatistics/previousGamesListingUser"));
     }
 
-//TODO: check userTimePlayed, userNumberGames, userPoints for authenticated user
     @Test
     public void testGetDashboardData() throws Exception {
         mockMvc.perform(get("/statistics/dashboard"))

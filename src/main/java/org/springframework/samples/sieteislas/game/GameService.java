@@ -57,7 +57,7 @@ public class GameService {
 
     public Game setUpNewGame(Game game, String creatorName) {
     	List<Message> messages = new ArrayList<Message>();
-    	
+
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
@@ -80,7 +80,6 @@ public class GameService {
         return game;
     }
 
-    
     public List<Card> createDeck(Game game) {
     	List<Card> cartas = new ArrayList<Card>();
         for (int i=0; i < 66; i++) {
@@ -145,7 +144,7 @@ public class GameService {
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(null);
         //game.setActive(false);
-        this.playerRepository.save(p);  
+        this.playerRepository.save(p);
     }
 
     public void delete(Game game) {
@@ -181,30 +180,30 @@ public class GameService {
     	User user = this.userRepository.findById(name).get();
         Player p = this.playerRepository.findPlayerByUser(user);
         p.setGame(game);
-        this.playerRepository.save(p);  
+        this.playerRepository.save(p);
     }
-    
+
     public void rollDice(Game game) {
     	Double rand = Math.random() * 5;
     	Long num = Math.round(rand);
-    	
+
     	game.setDiceRoll(num.intValue());
     	gameRepository.save(game);
     }
-    
+
     private int calculateHigher(Integer numCards, int diceRoll) {
     	int res = numCards + diceRoll;
     	return (5 < res) ? 5 : res;
     }
-    
+
     private int calculateLower(Integer numCards, int diceRoll) {
     	int res = diceRoll - numCards;
     	return (res < 0) ? 0 : res;
     }
-    
+
     public List<Card> possibleChoices(Game game){
     	int diceRoll = game.getDiceRoll();
-    	
+
     	Player playing = game.getPlayers().get(game.getPlayerTurn());
     	Integer numCards = playing.getCards().size();
 
@@ -228,7 +227,7 @@ public class GameService {
     public void toggleActive(Game game, boolean b) {
         this.gameRepository.toggleActive(game.getId(), b);
     }
-    
+
 	public void toggleHasRolledDice(Game game, Boolean b) {
 		game.setHasRolledDice(b);
     	gameRepository.save(game);
@@ -241,7 +240,7 @@ public class GameService {
         int toPay = Math.abs(rolledIsland-chosenIsland);
         game.setNumCardsToPay(toPay);
     	gameRepository.save(game);
-        
+
         return Math.abs(rolledIsland-chosenIsland);
     }
 
@@ -265,7 +264,7 @@ public class GameService {
         int currentPlayer = game.getPlayerTurn();
         int numPlayers = game.getPlayers().size();
         int nextPlayer = (currentPlayer+1) % numPlayers;
-        
+
         this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
     }
 
@@ -273,7 +272,7 @@ public class GameService {
         User host = this.userRepository.findById(hostUsername).get();
         User guest = this.userRepository.findById(invitedUsername).get();
         Game game = this.gameRepository.findById(Integer.valueOf(gameId)).get();
-        
+
         GameInvitation invitation = new GameInvitation();
         invitation.setGame(game);
         invitation.setHost(host);
@@ -300,7 +299,7 @@ public class GameService {
 
             return game.getId();
         }
-        
+
     }
 
     public List<GameInvitation> getInvitationsOfUser(String name) {
