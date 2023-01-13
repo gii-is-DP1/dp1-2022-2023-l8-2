@@ -1,5 +1,6 @@
 package org.springframework.samples.sieteislas.player;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -58,6 +59,21 @@ public class Player extends BaseEntity{
 
     public String toString(){
         return user.getUsername();
+    }
+    
+    public static Player createDefault() {
+    	
+    	Player player = new Player();
+    	
+    	player.setCards(new ArrayList<>());
+    	player.setAchievements(new ArrayList<>());
+    	player.setGame(null);
+    	player.setId(0);
+    	player.setMessages(new ArrayList<>());
+    	player.setPlayerPointsMap(null);
+    	player.setUser(null);
+    	
+    	return player;
     }
 
 }

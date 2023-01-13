@@ -27,6 +27,15 @@ public class Card extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name="player_id")
-    private Player player;   
+    private Player player;
+    
+    public static Card createDefault() {
+    	
+    	Card card = new Card();
+    	
+    	card.setId(0);
+    	
+    	return card;
+    }
 
 }
