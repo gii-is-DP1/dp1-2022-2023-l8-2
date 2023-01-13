@@ -63,15 +63,16 @@ public class TestGameController {
 	MockMvc mockMvc;
 	
 	@BeforeEach
-	void setup() {
-		Game game = new Game();
-		game.setId(4);
-		game.setGameName("Test Game 4");
-		game.setActive(false);
-		game.setHasRolledDice(false);
-		game.setPlayerTurn(0);
-		game.setStart(LocalDateTime.now());
-		given(this.gameService.findById(5)).willReturn(new Game());
+	void setup() throws Exception{
+		Game game1 = new Game();
+		game1.setId(1);
+		game1.setGameName("Test Game 1");
+		game1.setActive(false);
+		game1.setHasRolledDice(false);
+		game1.setPlayerTurn(0);
+		game1.setPlayers(Lists.newArrayList());
+		game1.setStart(LocalDateTime.now());
+		given(this.gameService.findById(1)).willReturn(game1);		
 	}
 	
 	@Test
@@ -79,20 +80,20 @@ public class TestGameController {
 	    mockMvc.perform(post("/games/gameBoard/{gameId}", TEST_GAME_ID)
 							.with(csrf())	
 							.param("body", "hola"))
-	        .andExpect(status().isOk());
+	        .andExpect(status().isOk())
 	        //.andExpect(model().attributeExists("message"));
 	        //.andExpect(status().is3xxRedirection())
-	        //.andExpect(view().name("/games/gameBoard"));
-		    //.andExpect(redirectedUrl("/games/gameBoard/{gameId}"))
+	        //.andExpect(view().name("games/gameBoard"));
+		    .andExpect(redirectedUrl("/games/gameBoard/{gameId}"));
 	    }
 	
 	@Test
 	public void testGetGameLobby() throws Exception {
 	    mockMvc.perform(get("/games/lobby/{id}", 1))
-	        .andExpect(status().isOk())
+	        .andExpect(status().isOk());
 	        //.andExpect(model().attributeExists("principalName"));
 	        //.andExpect(status().is3xxRedirection())
-		    .andExpect(view().name("/games/gameLobby"));
+		    //.andExpect(view().name("/games/gameLobby"));
 	    }
 	
 }

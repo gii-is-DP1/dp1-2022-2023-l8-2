@@ -92,5 +92,29 @@ public class TestUserService {
 		assertThat(sent.getFriends()).isEmpty();
 	}
     
+    @Test
+    @Transactional
+    void testAddFriend() {
+    	User user1 = this.userService.findUser("testplayer1").get();
+    	User user2 = this.userService.findUser("testplayer2").get();
+    	this.userService.addFriend(user1, user2);
+    	
+    	assertEquals(user1.getFriends().size(), 1);
+    	assertEquals(user1.getFriendOf().size(), 0);
+		assertEquals(user1.getFriends().get(0).getUsername(), "testplayer2");
+	}
+    
+    @Test
+    @Transactional
+    void testRemoveFriend() {
+    	User user1 = this.userService.findUser("testplayer1").get();
+    	User user2 = this.userService.findUser("testplayer2").get();
+    	this.userService.addFriend(user1, user2);
+    	this.userService.removeFriend(user1, user2);
+    	
+    	assertEquals(user1.getFriends().size(), 0);
+    	assertEquals(user1.getFriendOf().size(), 0);
+	}
+    
 
 }
