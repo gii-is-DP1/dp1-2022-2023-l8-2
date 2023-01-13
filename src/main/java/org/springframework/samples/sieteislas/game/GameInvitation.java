@@ -24,7 +24,7 @@ public class GameInvitation extends BaseEntity{
     @JoinColumn(name="guest")
     private User guest;
 
-    @ManyToOne(cascade={CascadeType.REMOVE})
+    @ManyToOne
     private Game game;
 
 }
