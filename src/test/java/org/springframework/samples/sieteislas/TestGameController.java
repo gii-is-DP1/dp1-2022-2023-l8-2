@@ -5,10 +5,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.time.LocalDateTime;
+
+import org.assertj.core.util.Lists;
+
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.sieteislas.card.CardService;
 import org.springframework.samples.sieteislas.configuration.SecurityConfiguration;
+import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.game.GameController;
 import org.springframework.samples.sieteislas.game.GameService;
 import org.springframework.samples.sieteislas.message.MessageService;
@@ -56,17 +62,29 @@ public class TestGameController {
 	@Autowired
 	MockMvc mockMvc;
 	
+	@BeforeEach
+	void setup() throws Exception{
+		Game game1 = new Game();
+		game1.setId(1);
+		game1.setGameName("Test Game 1");
+		game1.setActive(false);
+		game1.setHasRolledDice(false);
+		game1.setPlayerTurn(0);
+		game1.setPlayers(Lists.newArrayList());
+		game1.setStart(LocalDateTime.now());
+		given(this.gameService.findById(1)).willReturn(game1);		
+	}
 	
 	@Test
 	public void testPostInChat() throws Exception {
 	    mockMvc.perform(post("/games/gameBoard/{gameId}", TEST_GAME_ID)
 							.with(csrf())	
 							.param("body", "hola"))
-	        			.andExpect(status().isOk());
+	        .andExpect(status().isOk())
 	        //.andExpect(model().attributeExists("message"));
 	        //.andExpect(status().is3xxRedirection())
-	        //.andExpect(view().name("/games/gameBoard"));
-		    //.andExpect(view().name("redirect:/games/gameBoard/{gameId}"));
+	        //.andExpect(view().name("games/gameBoard"));
+		    .andExpect(redirectedUrl("/games/gameBoard/{gameId}"));
 	    }
 	
 	@Test
