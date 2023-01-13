@@ -41,19 +41,15 @@ public class GameService {
     }
 
     public Game setUpNewGame(Game game, String creatorName) {
-    	List<Message> messages = new ArrayList<Message>();
 
         game.setCreatorUsername(creatorName);
         game.setActive(true);
         game.setPlayerTurn(0);
         game.setStart(LocalDateTime.now());
+        game.setEnd(null);
         game.setDiceRoll(1);
         game.setHasRolledDice(false);
         game.setNumCardsToPay(0);
-        game.setChat(messages);
-
-        GameStatistics statistics = GameStatistics.createDefault(game);
-        game.setStatistics(statistics);
 
         this.gameRepository.save(game);
 

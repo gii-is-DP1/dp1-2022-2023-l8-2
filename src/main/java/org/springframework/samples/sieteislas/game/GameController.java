@@ -175,7 +175,7 @@ public class GameController {
             return redirect;
         } catch (FullGameException ex){
             redirAttrs.addFlashAttribute("gameFullMessage", "You were unable to join! The game is now full!");
-            return "redirect:/games/active";
+            return "redirect:/games/active/0";
         }
     }
 
