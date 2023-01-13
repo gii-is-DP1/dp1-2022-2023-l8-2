@@ -214,6 +214,12 @@ public class GameController {
     @GetMapping("/gameBoard/{gameId}")
     public String renderBoard(@PathVariable("gameId") String id, Principal principal, Map<String, Object>  model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
+        //when the "game.end" property has been set it means that it has ended
+        // as that only happens when the finish game controller has been called upon triggering the ending condition.
+        if(game.getEnd() != null){
+            String redirect = String.format("redirect:/games/gameBoard/%s/renderEnd", id);
+            return redirect;
+        }
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
 
         String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName());
@@ -283,7 +289,11 @@ public class GameController {
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
         if(cardsToPay <= 0){
-        	this.gameService.passTurn(game);
+        	if(game.getDeck().size() <= 6) { //<= 6 means the deck is empty. (game ending condition)
+                String redirect = String.format("redirect:/games/gameBoard/%s/end", id);
+                return redirect;
+        	}
+            this.gameService.passTurn(game); 
         }
 
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
@@ -299,9 +309,10 @@ public class GameController {
 
         int leftToPay = this.gameService.decrementNumCardsToPay(game);
 
-        if(leftToPay <= 0){
-            if(game.getDeck().size() < 6){
-            	return "redirect:/gameBoard/{gameId}/end";
+        if(leftToPay <= 0){  //<= 6 means the deck is empty. (game ending condition)
+            if(game.getDeck().size() <= 6 && everyoneHasPlayedLastRound(game)){
+            	String redirect = String.format("redirect:/games/gameBoard/%s/end", id);
+                return redirect;
         	}
             this.gameService.passTurn(game);
         }
@@ -309,14 +320,30 @@ public class GameController {
         return redirect;
     }
 
+    private boolean everyoneHasPlayedLastRound(Game game) {
+        // If the turn is 0 it means that it has looped around everyone 
+        // and its turn for the 1st player again, so we stop as everyone has played their last round.
+        return game.getPlayerTurn()%game.getPlayers().size() == 0;
+    }
+
     @GetMapping("/gameBoard/{gameId}/end")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
     	Game game = gameService.findById(Integer.valueOf(id));
         this.gameService.setFinishTimeAndStatistics(game);
-        List<PlayerPointsMap> playerPoints = this.playerPointsService.calculatePointsOfPlayersInGame(game);
+        this.playerPointsService.calculatePointsOfPlayersInGame(game);
         
-        model.put("playerPointsEndGame", playerPoints);
-        return "redirect:/games/gameBoard/" + id + "/end";
+        String redirect = String.format("redirect:/games/gameBoard/%s/renderEnd", id);
+        return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}/renderEnd")
+    public String renderEndGameBoard(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    	Game game = gameService.findById(Integer.valueOf(id));
+        List<PlayerPointsMap> playerPointsEndGame = this.playerPointsService.findMappingsEndGameRanked(game.getId());
+        Player winner = playerPointsEndGame.get(0).getPlayer(); //method returns mappings ordered by points greater2lower.
+        model.put("playerPointsEndGame", playerPointsEndGame);
+        model.put("winner", winner);
+        return VIEWS_GAMES_END;
     }
 
 }

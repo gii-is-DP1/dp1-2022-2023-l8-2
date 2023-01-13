@@ -51,6 +51,7 @@ INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (8, 'Game 8', FALSE,'joscasvaz', 0, FALSE, 0, '20221218 10:34:09', null, 0);
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (9, 'Game 9', FALSE,'maravimaq', 0, FALSE, 0, '20221218 10:34:09', null, 0);
 INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (10, 'Game 10', FALSE,'jualopqui1', 0, FALSE, 0, '20221218 10:34:09', null, 0);
+INSERT INTO games(id, game_name, active, creator_username, dice_roll, has_rolled_dice, player_turn, start, end, num_cards_to_pay) VALUES (11, 'Test Game', TRUE,'jualopqui1', 0, FALSE, 0, '20221218 10:34:09', null, 0);
 
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (6, 'pabberima', 1808.63, 2021, 07);
 INSERT INTO game_statistics(game_id, game_creator_name, duration, year, month) VALUES (7, 'thokriale', 1676.09, 2021, 08);
@@ -65,9 +66,9 @@ INSERT INTO players(id, user, game_id) VALUES (4, 'maravimaq', 1);
 INSERT INTO players(id, user, game_id) VALUES (5, 'vicruidel1', 5);
 INSERT INTO players(id, user, game_id) VALUES (6, 'jualopqui1', 5);
 INSERT INTO players(id, user, game_id) VALUES (7, 'admin1', 5);
-INSERT INTO players(id, user, game_id) VALUES (8, 'chrisPbacon', 2);
-INSERT INTO players(id, user, game_id) VALUES (9, 'larry11', 2);
-INSERT INTO players(id, user, game_id) VALUES (10, 'pruebas11', 2);
+INSERT INTO players(id, user, game_id) VALUES (8, 'chrisPbacon', 11);
+INSERT INTO players(id, user, game_id) VALUES (9, 'larry11', 11);
+INSERT INTO players(id, user, game_id) VALUES (10, 'pruebas11', null);
 
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (1, 1, 140, 1);
 INSERT INTO player_points_maps(id, game_statistics_id, points, player) VALUES (2, 1, 95, 2);
@@ -111,6 +112,18 @@ INSERT INTO cards(id, card_type_id, game_id) VALUES (12, 12, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (13, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (14, 1, 1);
 INSERT INTO cards(id, card_type_id, game_id) VALUES (15, 1, 5);
+/* Test player cards */
+INSERT INTO cards(id, card_type_id, player_id) VALUES (16, 1, 8);
+INSERT INTO cards(id, card_type_id, player_id) VALUES (17, 1, 9);
+INSERT INTO cards(id, card_type_id, player_id) VALUES (18, 1, 10);
+/* Test game cards */
+INSERT INTO cards(id, card_type_id, game_id) VALUES (19, 1, 11);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (20, 1, 11);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (21, 1, 11);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (22, 1, 11);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (23, 1, 11);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (24, 1, 11);
+INSERT INTO cards(id, card_type_id, game_id) VALUES (25, 1, 11);
 
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 1);
 INSERT INTO player_achievements(player_id, achievement_id) VALUES (1, 2);

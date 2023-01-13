@@ -269,14 +269,6 @@ public class GameService {
         this.gameRepository.setPlayerTurn(game.getId(), nextPlayer);
     }
 
-    public List<PlayerPointsMap> endGame(String id, ModelMap model, Principal principal) {
-        Game game = findById(Integer.valueOf(id));
-        
-        List<PlayerPointsMap> playerPointMaps = this.playerPointsService.calculatePointsOfPlayersInGame(game);
-
-        return playerPointMaps;
-    }
-
     public void invitePlayerToGame(String hostUsername, String invitedUsername, String gameId) {
         User host = this.userRepository.findById(hostUsername).get();
         User guest = this.userRepository.findById(invitedUsername).get();
@@ -316,8 +308,8 @@ public class GameService {
     }
 
     public void setFinishTimeAndStatistics(Game game) {
-        game.setStatistics(GameStatistics.createDefault(game));
         game.setEnd(LocalDateTime.now());  
+        game.setStatistics(GameStatistics.createDefault(game));
         this.gameRepository.save(game);   
     }
 

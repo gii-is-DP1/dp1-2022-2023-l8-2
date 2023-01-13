@@ -159,12 +159,11 @@ public class PlayerPointsService {
     }
 
 
-    public List<PlayerPointsMap> calculatePointsOfPlayersInGame(Game game) {
+    public void calculatePointsOfPlayersInGame(Game game) {
         for(Player p : game.getPlayers()){
             calculateNewMapping(p, game);
         }
-        checkAndResolveDraw(game);
-        return this.playerPointsRepository.findMappingsEndGameRanked(game.getId());
+        checkAndResolveDraw(game); 
     }
 
     private void checkAndResolveDraw(Game game) {
@@ -214,4 +213,8 @@ public class PlayerPointsService {
     	
     	return nC + pointsPerNumOfSets.get(numOfSets);
     };
+
+    public List<PlayerPointsMap> findMappingsEndGameRanked(Integer id) {
+        return this.playerPointsRepository.findMappingsEndGameRanked(id);
+    }
 }
