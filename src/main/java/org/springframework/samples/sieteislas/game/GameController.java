@@ -16,6 +16,7 @@ import org.springframework.samples.sieteislas.message.Message;
 import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatistics;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;

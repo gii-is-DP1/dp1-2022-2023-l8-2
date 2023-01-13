@@ -87,6 +87,7 @@
 <html>
 	<sieteislas:htmlHeader/>
 	<body class="container-fluid">
+
 		<div style="text-align: center;" class="board-element">
 			<h1>GAME FINISHED!</h1>
 		</div>
@@ -119,9 +120,6 @@
 		<div style="text-align: center;">
 			<a href="/" class="btn btn-default" style="height: 100px; width: 300px; font-size: 50;" >HOME</a>
 		</div>
-
-
-
 	</body>
 	<sieteislas:footer/>
 </html>

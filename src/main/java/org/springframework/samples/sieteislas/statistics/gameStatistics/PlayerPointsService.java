@@ -150,14 +150,15 @@ public class PlayerPointsService {
     }
 
     public Map<String, List<String>> getPlayersPointsEndGame(Integer gameId) {
-        List<String> points = playerPointsRepository.findPointsEndGameRanked(gameId).stream().map(Object::toString).collect(Collectors.toList());
+        List<String> points = playerPointsRepository.findPointsEndGameRanked(gameId).stream()
+        		.map(Object::toString)
+        		.toList();
         List<String> usernames = playerPointsRepository.findUsernameEndGameRankedByPoints(gameId);
         Map<String, List<String>> playerPointsEndGame = new HashMap<>();
         playerPointsEndGame.put("points", points);
         playerPointsEndGame.put("usernames", usernames);
         return playerPointsEndGame;
     }
-
 
     public void calculatePointsOfPlayersInGame(Game game) {
         for(Player p : game.getPlayers()){
