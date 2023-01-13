@@ -3,6 +3,7 @@ package org.springframework.samples.sieteislas.statistics.achievement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.game.Game;
@@ -55,7 +56,7 @@ public class AchievementService {
     		
     		List<Achievement> achievementsToGet = achievements.stream()
     				.filter(a->!achievements.contains(a))
-    				.toList();
+    				.collect(Collectors.toList());
     		
     		for(Achievement a:achievementsToGet) {
     			

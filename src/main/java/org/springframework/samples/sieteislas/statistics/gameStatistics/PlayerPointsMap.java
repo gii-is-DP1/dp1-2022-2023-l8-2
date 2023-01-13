@@ -3,6 +3,7 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -49,7 +50,7 @@ public class PlayerPointsMap extends BaseEntity{
     	
     	return g.getPlayers().stream()
 		.map(p->PlayerPointsMap.createFromScoreboard(g, p, scoreboard))
-		.toList();
+		.collect(Collectors.toList());
     }
     
 }

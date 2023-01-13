@@ -123,10 +123,10 @@ public class TestDiscardCard {
     		throw new Exception("" + String.format("C: %s - PC: %s",
     				cards.stream()
     				.map(c->c.getId().toString())
-    				.toList(),
+    				.collect(Collectors.toList()),
     				player.getCards().stream()
     				.map(c->c.getId().toString())
-    				.toList()));
+    				.collect(Collectors.toList())));
     }
     
     private Boolean successfullyDiscarded(List<Card> cardsBefore,
