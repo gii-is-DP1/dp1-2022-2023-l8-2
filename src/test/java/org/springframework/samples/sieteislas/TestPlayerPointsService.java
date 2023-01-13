@@ -44,6 +44,17 @@ public class TestPlayerPointsService {
     }
 
     @Test
+    void nTestGetTimePlayedUserMap() {
+        Map<String, Double> expected = new HashMap<>();
+        expected.put("avgTimePlayed", null);
+        expected.put("maxTimePlayed", null);
+        expected.put("minTimePlayed", null);
+        expected.put("totalTimePlayed", null);
+        Map<String, Double> actual = pps.getTimePlayedUserMap("anonymousUser");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testGetNumberGamesUserMap() {
         Map<String, Integer> expected = new HashMap<>();
         expected.put("totalNumberGamesUser", 2);
@@ -53,6 +64,7 @@ public class TestPlayerPointsService {
         Map<String, Integer> actual = pps.getNumberGamesUserMap("testplayer1");
         assertEquals(expected, actual);
     }
+
 
     @Test
     void testGetPointsGlobal() {
@@ -73,6 +85,16 @@ public class TestPlayerPointsService {
         expected.put("maxPoints", 140);
         expected.put("avgPoints", 115);
         Map<String, Integer> actual = pps.getPointsUser("testplayer1");
+        assertEquals(expected, actual);
+    }
+    @Test
+    void nTestGetPointsUser() {
+        Map<String, Integer> expected = new HashMap<>();
+        expected.put("totalPoints", null);
+        expected.put("minPoints", null);
+        expected.put("maxPoints", null);
+        expected.put("avgPoints", null);
+        Map<String, Integer> actual = pps.getPointsUser("anonymousUser");
         assertEquals(expected, actual);
     }
 

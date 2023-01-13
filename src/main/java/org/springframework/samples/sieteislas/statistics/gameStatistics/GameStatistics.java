@@ -1,6 +1,7 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
 import java.time.YearMonth;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -57,21 +58,15 @@ public class GameStatistics extends BaseEntity{
     @NotNull
     @Column(name="year")
     private Integer year;
-    
-    @Column(name="total_points")
-    public Integer totalPoints;
-    
-    /*@Column(name="winner")
-    public Player winner;*/
 
     @Column(name="points")
     public Integer points;
     
-    public static GameStatistics createDefault(Game game2) {
+    public static GameStatistics createDefault(Game game) {
         GameStatistics statistics = new GameStatistics();
-        statistics.setGame(game2);
-        statistics.setGameCreatorName(game2.getCreatorUsername());
-        statistics.setDuration(0.0);
+        statistics.setGame(game);
+        statistics.setGameCreatorName(game.getCreatorUsername());
+        statistics.setDuration((double) game.getStart().until(game.getEnd(), ChronoUnit.MINUTES));
         statistics.setMonth(YearMonth.now().getMonthValue());
         statistics.setYear(YearMonth.now().getYear());
         return statistics;

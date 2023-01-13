@@ -81,6 +81,10 @@ public interface PlayerPointsRepository extends CrudRepository<PlayerPointsMap, 
     @Query("SELECT p.points FROM PlayerPointsMap p WHERE p.gameStatistics.game.id = :gameId ORDER BY p.points DESC")
     List<Integer> findPointsEndGameRanked(@Param("gameId") Integer gameId);
 
+    @Query("SELECT p FROM PlayerPointsMap p WHERE p.gameStatistics.game.id = :gameId ORDER BY p.points DESC")
+    List<PlayerPointsMap> findMappingsEndGameRanked(@Param("gameId") Integer gameId);
+
     @Query("SELECT p.player.user.username FROM PlayerPointsMap p WHERE p.gameStatistics.game.id = :gameId ORDER BY p.points DESC")
     List<String> findUsernameEndGameRankedByPoints(@Param("gameId") Integer gameId);
+
 }

@@ -2,13 +2,11 @@ package org.springframework.samples.sieteislas.player;
 
 
 import java.security.Principal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
 import org.springframework.stereotype.Controller;

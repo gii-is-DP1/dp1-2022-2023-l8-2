@@ -1,13 +1,19 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
-import org.hibernate.collection.internal.PersistentBag;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerRepository;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import javax.validation.constraints.NotNull;
 
 import static java.util.Collections.max;
 import static java.util.Collections.min;
@@ -153,11 +159,63 @@ public class PlayerPointsService {
         playerPointsEndGame.put("usernames", usernames);
         return playerPointsEndGame;
     }
+
+    public void calculatePointsOfPlayersInGame(Game game) {
+        for(Player p : game.getPlayers()){
+            calculateNewMapping(p, game);
+        }
+        checkAndResolveDraw(game); 
+    }
+
+    private void checkAndResolveDraw(Game game) {
+        List<PlayerPointsMap> pointsMap = this.playerPointsRepository.findMappingsEndGameRanked(game.getId());
+        Set<Integer> points = pointsMap.stream()
+                                        .map(x -> x.getPoints())
+                                        .collect(Collectors.toSet());
+        Boolean thereIsDraw = pointsMap.size() != points.size(); //Not equal lenghts mean that a point value has repeated itself.
+        if(thereIsDraw) { 
+           //We decide an arbitrary winner in case of a draw.
+            PlayerPointsMap firstPossibleWinner = pointsMap.stream().max(Comparator.comparing(PlayerPointsMap::getPoints)).get();
+            firstPossibleWinner.setPoints(firstPossibleWinner.getPoints()+1);
+            this.playerPointsRepository.save(firstPossibleWinner);
+        }
+    }
+
+    private void calculateNewMapping(Player p, Game game) {
+            PlayerPointsMap newPointMap = new PlayerPointsMap();
+            newPointMap.setPlayer(p);
+            newPointMap.setPoints(calculatePoints(p));
+            newPointMap.setGameStatistics(game.getStatistics());
+            this.playerPointsRepository.save(newPointMap);
+    }
+
+    private Integer calculatePoints(Player p) {
+        Integer pts = points.apply(p.getCards());
+        return pts;
+    }
+
+    //Points calculation logic; by joscasvaz
+    Predicate<Card> isCoin = c -> c.getCardType().getName().equals("coin");
     
-    public void storeFromScoreboard(Game g, Map<Player,Integer> scoreboard) {
+    Function<List<Card>,Integer> numCoins = l -> (int) l.stream()
+    		.filter(isCoin)
+    		.count();
+    
+    Function<List<Card>,Integer> points = l -> {
     	
-    	g.getPlayers().stream()
-    		.map(p->PlayerPointsMap.createFromScoreboard(g, p, scoreboard))
-    		.forEach(ppm->playerPointsRepository.save(ppm));
+    	Integer nC = numCoins.apply(l);
+    	List<Integer> pointsPerNumOfSets = List.of(0,1,3,7,13,21,30,40,50,60);
+    	
+    	Integer numOfSets = l.stream()
+    			.filter(isCoin.negate())
+    			.map(c->c.getCardType().getName())
+    			.collect(Collectors.toSet())
+    			.size();
+    	
+    	return nC + pointsPerNumOfSets.get(numOfSets);
+    };
+
+    public List<PlayerPointsMap> findMappingsEndGameRanked(Integer id) {
+        return this.playerPointsRepository.findMappingsEndGameRanked(id);
     }
 }

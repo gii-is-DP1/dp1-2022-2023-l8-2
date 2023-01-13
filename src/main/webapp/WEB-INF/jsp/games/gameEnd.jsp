@@ -29,7 +29,7 @@
 		display: table-cell;
 		float: none;
 	}
-	.board {
+	.board{
 		background-image: url('/resources/images/board/board8.png');
   		background-repeat: no-repeat;
 		background-size: 100% 100%;
@@ -37,8 +37,11 @@
 	}
 	.board-element{
 		background-color: rgba(241, 202, 139, 0.811); 
-		height: 20%;
-	
+		height: 10%;
+	}
+	.board-element-winner{
+		background-color: rgba(255, 234, 2, 0.811); 
+		height: 10%;
 	}
 	.board-border{
 		border-style: solid;
@@ -84,30 +87,39 @@
 <html>
 	<sieteislas:htmlHeader/>
 	<body class="container-fluid">
-		<table id="pointsTable" class="table table-striped">
-			<thead>
-		        <tr>
-		            <th style="width: 150px;">Player</th>
-		            <th style="width: 100px;">Points</th>
-		        </tr>
-	        </thead>
-	        <tbody>
-				<c:forEach items="${playersRanked}" var="playersRanked">
-		            <tr>
-		          		<td>
-		                    <c:out value="${playersRanked}"/>
-		                </td>
-		            </tr>
-		        </c:forEach>
-		        <c:forEach items="${playersRanked}" var="playersRanked">
-		            <tr>
-		          		<td>
-		                    <c:out value="${pointsRanked}"/>
-		                </td>
-		            </tr>
-		        </c:forEach>
-		    </tbody>
-	    </table>
+
+		<div style="text-align: center;" class="board-element">
+			<h1>GAME FINISHED!</h1>
+		</div>
+		<div style="display:inline-flex; position:relative; left: 5%; width: 100%;">
+			<c:forEach items="${playerPointsEndGame}" var="pointsMap">
+				<c:choose>
+					<c:when test="${pointsMap.player.equals(winner)}">
+						<div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin: 10px; text-align: center; width: 20%; height: 20%;" class="board-element-winner board-border">
+							<div style="width: 100%; height: 100%;">
+								<img src="${pointsMap.player.user.profileImage}" alt="image" style="width: 100%; height: 100%; object-fit: cover;">
+							</div>
+							<h4 style="color: black;"><c:out value="${pointsMap.player.user.username}" /></h4>
+							<h4 style="color: black;">POINTS: <c:out value="${pointsMap.points}" /></h4>
+							<p class="glyphicon glyphicon-king" style="color: rgb(112, 107, 107); font-size: 150%;">WINNER</p>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); margin: 10px; text-align: center; width: 20%; height: 20%;" class="board-element board-border">
+							<div style="width: 100%; height: 100%;">
+								<img src="${pointsMap.player.user.profileImage}" alt="image" style="width: 100%; height: 100%; object-fit: cover;">
+							</div>
+							<h4 style="color: black;"><c:out value="${pointsMap.player.user.username}" /></h4>
+							<h4 style="color: black;">POINTS: <c:out value="${pointsMap.points}" /></h4> 
+							<br>         
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>    
+		</div>
+		<div style="text-align: center;">
+			<a href="/" class="btn btn-default" style="height: 100px; width: 300px; font-size: 50;" >HOME</a>
+		</div>
 	</body>
 	<sieteislas:footer/>
 </html>
