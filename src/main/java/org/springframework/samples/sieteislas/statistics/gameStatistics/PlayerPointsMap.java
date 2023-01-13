@@ -1,6 +1,5 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

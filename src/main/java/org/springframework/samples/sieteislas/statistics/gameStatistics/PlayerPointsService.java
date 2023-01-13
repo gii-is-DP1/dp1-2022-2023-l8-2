@@ -1,6 +1,5 @@
 package org.springframework.samples.sieteislas.statistics.gameStatistics;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.sieteislas.card.Card;
 import org.springframework.samples.sieteislas.game.Game;
@@ -10,10 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotNull;
 
 import static java.util.Collections.max;
 import static java.util.Collections.min;

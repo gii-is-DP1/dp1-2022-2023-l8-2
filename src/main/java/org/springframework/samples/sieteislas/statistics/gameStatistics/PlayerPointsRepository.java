@@ -3,7 +3,6 @@ package org.springframework.samples.sieteislas.statistics.gameStatistics;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.sieteislas.game.Game;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.stereotype.Repository;
 

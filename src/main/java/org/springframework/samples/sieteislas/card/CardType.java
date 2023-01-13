@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.springframework.samples.sieteislas.model.BaseEntity;
 import org.springframework.samples.sieteislas.model.NamedEntity;
 
 
