@@ -133,7 +133,7 @@ public class UserController {
 			return VIEWS_UPDATE_USER_PROFILE;
 		} else{
 			User userToUpdate = this.userService.findUser(username).get();
-			BeanUtils.copyProperties(user, userToUpdate, "username","player","password","enabled","authorities"); 
+			BeanUtils.copyProperties(user, userToUpdate, "username","player","password","enabled","authorities", "friends"); 
 			this.userService.saveUser(userToUpdate);
 			
 			return String.format("redirect:/users/profile/%s", username);                                                                        

@@ -70,13 +70,6 @@
 							</div>
 						</li>
 						<li class="divider"></li>
-						<li>
-							<div class="navbar-login">
-								<p class="text-left">
-									<a href="<c:url value="/statistics/achievements/" />">My Achievements</a>
-								</p>
-							</div>
-						</li>
 					</ul>
 				</sieteislas:menuItem>
 
