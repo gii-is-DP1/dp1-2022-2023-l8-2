@@ -2,8 +2,6 @@ package org.springframework.samples.sieteislas.game;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +17,7 @@ import org.springframework.samples.sieteislas.message.MessageService;
 import org.springframework.samples.sieteislas.player.Player;
 import org.springframework.samples.sieteislas.player.PlayerService;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.GameStatisticsService;
+import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsMap;
 import org.springframework.samples.sieteislas.statistics.gameStatistics.PlayerPointsService;
 import org.springframework.samples.sieteislas.user.User;
 import org.springframework.samples.sieteislas.user.UserService;
@@ -215,12 +214,18 @@ public class GameController {
     @GetMapping("/gameBoard/{gameId}")
     public String renderBoard(@PathVariable("gameId") String id, Principal principal, Map<String, Object>  model, HttpServletResponse response) {
         Game game = this.gameService.findById(Integer.valueOf(id));
+        //when the "game.end" property has been set it means that it has ended
+        // as that only happens when the finish game controller has been called upon triggering the ending condition.
+        if(game.getEnd() != null){
+            String redirect = String.format("redirect:/games/gameBoard/%s/renderEnd", id);
+            return redirect;
+        }
         boolean isPlayer = this.gameService.isPlayer(game.getPlayers(), principal.getName());
 
         String currentPlayerName = this.gameService.getCurrentPlayerName(game, principal.getName());
         boolean isCurrentPlayer = this.gameService.isCurrentPlayer(currentPlayerName, principal.getName());
 
-        if(!isCurrentPlayer) response.addHeader("Refresh", "2");
+        if(!isCurrentPlayer) response.addHeader("Refresh", "4"); //Refrescar cada 4 seg.
 
         User u = this.userService.findUser(principal.getName()).get();
         Player principalPlayer = this.playerService.findByUser(u);
@@ -240,7 +245,7 @@ public class GameController {
     
     @PostMapping(value = "/gameBoard/{gameId}")
     public String postInChat(@PathVariable("gameId") String id, Principal principal, 
-    		@ModelAttribute("message") Message message, ModelMap model){
+    		                    @ModelAttribute("message") Message message, ModelMap model){
     	if(message.getBody().isEmpty() || message.getBody().equals(null)) {
     		model.addAttribute("message", new Message());
     	} else {
@@ -284,11 +289,11 @@ public class GameController {
         this.gameService.moveCardToPlayer(card, currentPlayer);
 
         if(cardsToPay <= 0){
-        	
-        	if(game.getDeck().size() < 6)
-            	return endGame(id, model, principal);
-        	else
-        		this.gameService.passTurn(game);
+        	if(game.getDeck().size() <= 6) { //<= 6 means the deck is empty. (game ending condition)
+                String redirect = String.format("redirect:/games/gameBoard/%s/end", id);
+                return redirect;
+        	}
+            this.gameService.passTurn(game); 
         }
 
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
@@ -304,18 +309,41 @@ public class GameController {
 
         int leftToPay = this.gameService.decrementNumCardsToPay(game);
 
-        if(leftToPay <= 0){
+        if(leftToPay <= 0){  //<= 6 means the deck is empty. (game ending condition)
+            if(game.getDeck().size() <= 6 && everyoneHasPlayedLastRound(game)){
+            	String redirect = String.format("redirect:/games/gameBoard/%s/end", id);
+                return redirect;
+        	}
             this.gameService.passTurn(game);
         }
         String redirect = String.format("redirect:/games/gameBoard/%s", id);
         return redirect;
     }
-    
+
+    private boolean everyoneHasPlayedLastRound(Game game) {
+        // If the turn is 0 it means that it has looped around everyone 
+        // and its turn for the 1st player again, so we stop as everyone has played their last round.
+        return game.getPlayerTurn()%game.getPlayers().size() == 0;
+    }
+
     @GetMapping("/gameBoard/{gameId}/end")
     public String endGame(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
     	Game game = gameService.findById(Integer.valueOf(id));
-        model.put("playerPointsEndGame", playerPointsService.getPlayersPointsEndGame(game.getId()));
-        return "redirect:/games/gameBoard/" + id + "/end";
+        this.gameService.setFinishTimeAndStatistics(game);
+        this.playerPointsService.calculatePointsOfPlayersInGame(game);
+        
+        String redirect = String.format("redirect:/games/gameBoard/%s/renderEnd", id);
+        return redirect;
+    }
+
+    @GetMapping("/gameBoard/{gameId}/renderEnd")
+    public String renderEndGameBoard(@PathVariable("gameId") String id, ModelMap model, Principal principal) {
+    	Game game = gameService.findById(Integer.valueOf(id));
+        List<PlayerPointsMap> playerPointsEndGame = this.playerPointsService.findMappingsEndGameRanked(game.getId());
+        Player winner = playerPointsEndGame.get(0).getPlayer(); //method returns mappings ordered by points greater2lower.
+        model.put("playerPointsEndGame", playerPointsEndGame);
+        model.put("winner", winner);
+        return VIEWS_GAMES_END;
     }
 
 }
